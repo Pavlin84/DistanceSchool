@@ -36,4 +36,8 @@
     <ProjectReference Include="..\DistanceSchool.Web.Infrastructure\DistanceSchool.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\DistanceSchool.Web.ViewModels\DistanceSchool.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
 </Project>
