@@ -17,7 +17,7 @@ namespace DistanceSchool.Data.Migrations
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.0");
+                .HasAnnotation("ProductVersion", "5.0.1");
 
             modelBuilder.Entity("DistanceSchool.Data.Models.ApplicationRole", b =>
                 {
@@ -139,6 +139,254 @@ namespace DistanceSchool.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("DistanceSchool.Data.Models.Candidacy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("ApplicationDocumentsPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DisciplineId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SecondName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("DisciplineId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("SchoolId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("Candidacies");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Discipline", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Disciplines");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.DisciplineTeacher", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("DisciplineId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisciplineId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("DisciplineTeachers");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Exam", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DisciplineId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisciplineId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Exams");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Lesson", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DisciplineId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisciplineId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Lessons");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.School", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Schools");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.SchoolDiscipline", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("DisciplineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisciplineId");
+
+                    b.HasIndex("SchoolId");
+
+                    b.ToTable("SchoolDisciplines");
+                });
+
             modelBuilder.Entity("DistanceSchool.Data.Models.Setting", b =>
                 {
                     b.Property<int>("Id")
@@ -169,6 +417,249 @@ namespace DistanceSchool.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Settings");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Student", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationDocumentsPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SecondName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.StudentExam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("Evaluation")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExamDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ExamId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExamId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentExams");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.StudentLesson", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<bool>("IsAttended")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LessonId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("StudyDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessonId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentLessons");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Teacher", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationDocumentsPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SecondName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("SchoolId");
+
+                    b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.TeacherTeam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DisciplineId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisciplineId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("TeacherId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("TeacherTeams");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Team", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MyProperty")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("SchoolId");
+
+                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -275,6 +766,195 @@ namespace DistanceSchool.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("DistanceSchool.Data.Models.Candidacy", b =>
+                {
+                    b.HasOne("DistanceSchool.Data.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("DistanceSchool.Data.Models.Discipline", null)
+                        .WithMany("Candidacies")
+                        .HasForeignKey("DisciplineId");
+
+                    b.HasOne("DistanceSchool.Data.Models.School", "School")
+                        .WithMany("Candidacies")
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DistanceSchool.Data.Models.Team", "Team")
+                        .WithMany("Candidacies")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("School");
+
+                    b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.DisciplineTeacher", b =>
+                {
+                    b.HasOne("DistanceSchool.Data.Models.Discipline", "Discipline")
+                        .WithMany("DisciplineTeachers")
+                        .HasForeignKey("DisciplineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DistanceSchool.Data.Models.Teacher", "Teacher")
+                        .WithMany("DisciplineTeachers")
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Discipline");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Exam", b =>
+                {
+                    b.HasOne("DistanceSchool.Data.Models.Discipline", "Discipline")
+                        .WithMany("Exams")
+                        .HasForeignKey("DisciplineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Discipline");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Lesson", b =>
+                {
+                    b.HasOne("DistanceSchool.Data.Models.Discipline", "Discipline")
+                        .WithMany("Lessons")
+                        .HasForeignKey("DisciplineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Discipline");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.SchoolDiscipline", b =>
+                {
+                    b.HasOne("DistanceSchool.Data.Models.Discipline", "Discipline")
+                        .WithMany("SchoolDisciplines")
+                        .HasForeignKey("DisciplineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DistanceSchool.Data.Models.School", "School")
+                        .WithMany("SchoolDisciplines")
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Discipline");
+
+                    b.Navigation("School");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Student", b =>
+                {
+                    b.HasOne("DistanceSchool.Data.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("DistanceSchool.Data.Models.Team", "Team")
+                        .WithMany("Students")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.StudentExam", b =>
+                {
+                    b.HasOne("DistanceSchool.Data.Models.Exam", "Exam")
+                        .WithMany("StudentExams")
+                        .HasForeignKey("ExamId");
+
+                    b.HasOne("DistanceSchool.Data.Models.Student", "Student")
+                        .WithMany("StudentExams")
+                        .HasForeignKey("StudentId");
+
+                    b.Navigation("Exam");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.StudentLesson", b =>
+                {
+                    b.HasOne("DistanceSchool.Data.Models.Lesson", "Lesson")
+                        .WithMany("StudentLessons")
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DistanceSchool.Data.Models.Student", "Student")
+                        .WithMany("StudentLessons")
+                        .HasForeignKey("StudentId");
+
+                    b.Navigation("Lesson");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Teacher", b =>
+                {
+                    b.HasOne("DistanceSchool.Data.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("DistanceSchool.Data.Models.School", "School")
+                        .WithMany("Teachers")
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("School");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.TeacherTeam", b =>
+                {
+                    b.HasOne("DistanceSchool.Data.Models.Discipline", "Discipline")
+                        .WithMany("TeacherTeams")
+                        .HasForeignKey("DisciplineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DistanceSchool.Data.Models.Teacher", "Teacher")
+                        .WithMany("TeacherTeams")
+                        .HasForeignKey("TeacherId");
+
+                    b.HasOne("DistanceSchool.Data.Models.Team", "Team")
+                        .WithMany("TeacherTeams")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Discipline");
+
+                    b.Navigation("Teacher");
+
+                    b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Team", b =>
+                {
+                    b.HasOne("DistanceSchool.Data.Models.School", "School")
+                        .WithMany("Teams")
+                        .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("School");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("DistanceSchool.Data.Models.ApplicationRole", null)
@@ -333,6 +1013,65 @@ namespace DistanceSchool.Data.Migrations
                     b.Navigation("Logins");
 
                     b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Discipline", b =>
+                {
+                    b.Navigation("Candidacies");
+
+                    b.Navigation("DisciplineTeachers");
+
+                    b.Navigation("Exams");
+
+                    b.Navigation("Lessons");
+
+                    b.Navigation("SchoolDisciplines");
+
+                    b.Navigation("TeacherTeams");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Exam", b =>
+                {
+                    b.Navigation("StudentExams");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Lesson", b =>
+                {
+                    b.Navigation("StudentLessons");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.School", b =>
+                {
+                    b.Navigation("Candidacies");
+
+                    b.Navigation("SchoolDisciplines");
+
+                    b.Navigation("Teachers");
+
+                    b.Navigation("Teams");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Student", b =>
+                {
+                    b.Navigation("StudentExams");
+
+                    b.Navigation("StudentLessons");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Teacher", b =>
+                {
+                    b.Navigation("DisciplineTeachers");
+
+                    b.Navigation("TeacherTeams");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.Team", b =>
+                {
+                    b.Navigation("Candidacies");
+
+                    b.Navigation("Students");
+
+                    b.Navigation("TeacherTeams");
                 });
 #pragma warning restore 612, 618
         }

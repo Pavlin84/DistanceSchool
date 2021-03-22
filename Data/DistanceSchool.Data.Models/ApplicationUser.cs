@@ -5,7 +5,6 @@ namespace DistanceSchool.Data.Models
     using System.Collections.Generic;
 
     using DistanceSchool.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
@@ -17,6 +16,14 @@ namespace DistanceSchool.Data.Models
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
         }
+
+        //public string StudentId { get; set; }
+
+        //public virtual Student Student { get; set; }
+
+        //public string TeacherId { get; set; }
+
+        //public virtual Teacher Teacher { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }

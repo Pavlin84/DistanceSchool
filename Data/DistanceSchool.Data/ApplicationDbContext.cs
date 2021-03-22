@@ -26,6 +26,32 @@
 
         public DbSet<Setting> Settings { get; set; }
 
+        public DbSet<School> Schools { get; set; }
+
+        public DbSet<Discipline> Disciplines { get; set; }
+
+        public DbSet<Team> Teams { get; set; }
+
+        public DbSet<Teacher> Teachers { get; set; }
+
+        public DbSet<Student> Students { get; set; }
+
+        public DbSet<Lesson> Lessons { get; set; }
+
+        public DbSet<Exam> Exams { get; set; }
+
+        public DbSet<Candidacy> Candidacies { get; set; }
+
+        public DbSet<TeacherTeam> TeacherTeams { get; set; }
+
+        public DbSet<SchoolDiscipline> SchoolDisciplines { get; set; }
+
+        public DbSet<DisciplineTeacher> DisciplineTeachers { get; set; }
+
+        public DbSet<StudentLesson> StudentLessons { get; set; }
+
+        public DbSet<StudentExam> StudentExams { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
