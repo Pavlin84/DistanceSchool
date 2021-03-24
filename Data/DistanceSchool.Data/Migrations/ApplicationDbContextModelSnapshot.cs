@@ -117,6 +117,12 @@ namespace DistanceSchool.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -135,6 +141,10 @@ namespace DistanceSchool.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -338,6 +348,9 @@ namespace DistanceSchool.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -350,17 +363,21 @@ namespace DistanceSchool.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ManagerId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("ManagerId");
 
                     b.ToTable("Schools");
                 });
@@ -766,6 +783,21 @@ namespace DistanceSchool.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("DistanceSchool.Data.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("DistanceSchool.Data.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId");
+
+                    b.HasOne("DistanceSchool.Data.Models.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Teacher");
+                });
+
             modelBuilder.Entity("DistanceSchool.Data.Models.Candidacy", b =>
                 {
                     b.HasOne("DistanceSchool.Data.Models.ApplicationUser", "ApplicationUser")
@@ -832,6 +864,15 @@ namespace DistanceSchool.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Discipline");
+                });
+
+            modelBuilder.Entity("DistanceSchool.Data.Models.School", b =>
+                {
+                    b.HasOne("DistanceSchool.Data.Models.ApplicationUser", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId");
+
+                    b.Navigation("Manager");
                 });
 
             modelBuilder.Entity("DistanceSchool.Data.Models.SchoolDiscipline", b =>
