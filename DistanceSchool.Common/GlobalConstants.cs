@@ -6,8 +6,12 @@
 
         public const string AdministratorRoleName = "Administrator";
 
-        //Cyrillic text
+        public const string TeacherApplicationDocumentsPath = "";
 
+        // Cyrillic text
         public const string CyrillicProjectName = "Дистанционно училище";
+
+        // Sucsess messages
+        public const string CyrillicSucssesMangerCandidacy = "Успешно подадохте заявка за директор !";
     }
 }
