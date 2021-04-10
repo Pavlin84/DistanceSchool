@@ -142,9 +142,13 @@ namespace DistanceSchool.Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentId")
+                        .IsUnique()
+                        .HasFilter("[StudentId] IS NOT NULL");
 
-                    b.HasIndex("TeacherId");
+                    b.HasIndex("TeacherId")
+                        .IsUnique()
+                        .HasFilter("[TeacherId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -171,9 +175,6 @@ namespace DistanceSchool.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DisciplineId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
@@ -195,11 +196,12 @@ namespace DistanceSchool.Data.Migrations
                     b.Property<int?>("TeamId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("DisciplineId");
 
                     b.HasIndex("IsDeleted");
 
@@ -444,7 +446,7 @@ namespace DistanceSchool.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -477,8 +479,6 @@ namespace DistanceSchool.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("IsDeleted");
 
@@ -552,7 +552,7 @@ namespace DistanceSchool.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -585,8 +585,6 @@ namespace DistanceSchool.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("IsDeleted");
 
@@ -785,12 +783,12 @@ namespace DistanceSchool.Data.Migrations
             modelBuilder.Entity("DistanceSchool.Data.Models.ApplicationUser", b =>
                 {
                     b.HasOne("DistanceSchool.Data.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId");
+                        .WithOne("ApplicationUser")
+                        .HasForeignKey("DistanceSchool.Data.Models.ApplicationUser", "StudentId");
 
                     b.HasOne("DistanceSchool.Data.Models.Teacher", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("TeacherId");
+                        .WithOne("ApplicationUser")
+                        .HasForeignKey("DistanceSchool.Data.Models.ApplicationUser", "TeacherId");
 
                     b.Navigation("Student");
 
@@ -802,10 +800,6 @@ namespace DistanceSchool.Data.Migrations
                     b.HasOne("DistanceSchool.Data.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("DistanceSchool.Data.Models.Discipline", null)
-                        .WithMany("Candidacies")
-                        .HasForeignKey("DisciplineId");
 
                     b.HasOne("DistanceSchool.Data.Models.School", "School")
                         .WithMany("Candidacies")
@@ -891,17 +885,11 @@ namespace DistanceSchool.Data.Migrations
 
             modelBuilder.Entity("DistanceSchool.Data.Models.Student", b =>
                 {
-                    b.HasOne("DistanceSchool.Data.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("DistanceSchool.Data.Models.Team", "Team")
                         .WithMany("Students")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Team");
                 });
@@ -940,17 +928,11 @@ namespace DistanceSchool.Data.Migrations
 
             modelBuilder.Entity("DistanceSchool.Data.Models.Teacher", b =>
                 {
-                    b.HasOne("DistanceSchool.Data.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("DistanceSchool.Data.Models.School", "School")
                         .WithMany("Teachers")
                         .HasForeignKey("SchoolId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("ApplicationUser");
 
                     b.Navigation("School");
                 });
@@ -1053,8 +1035,6 @@ namespace DistanceSchool.Data.Migrations
 
             modelBuilder.Entity("DistanceSchool.Data.Models.Discipline", b =>
                 {
-                    b.Navigation("Candidacies");
-
                     b.Navigation("DisciplineTeachers");
 
                     b.Navigation("Exams");
@@ -1089,6 +1069,8 @@ namespace DistanceSchool.Data.Migrations
 
             modelBuilder.Entity("DistanceSchool.Data.Models.Student", b =>
                 {
+                    b.Navigation("ApplicationUser");
+
                     b.Navigation("StudentExams");
 
                     b.Navigation("StudentLessons");
@@ -1096,6 +1078,8 @@ namespace DistanceSchool.Data.Migrations
 
             modelBuilder.Entity("DistanceSchool.Data.Models.Teacher", b =>
                 {
+                    b.Navigation("ApplicationUser");
+
                     b.Navigation("DisciplineTeachers");
 
                     b.Navigation("TeacherTeams");
