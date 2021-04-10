@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\Data\DistanceSchool.Data.Models\DistanceSchool.Data.Models.csproj" />
     <ProjectReference Include="..\..\DistanceSchool.Common\DistanceSchool.Common.csproj" />
     <ProjectReference Include="..\..\Services\DistanceSchool.Services.Mapping\DistanceSchool.Services.Mapping.csproj" />
+    <ProjectReference Include="..\DistanceSchool.Web.Infrastructure\DistanceSchool.Web.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

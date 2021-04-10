@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistanceSchool.Web.Tests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistanceSchool.Web.ViewModels", "Web\DistanceSchool.Web.ViewModels\DistanceSchool.Web.ViewModels.csproj", "{13B7AACB-9C85-4409-8D4B-95A67D0DFFF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistanceSchool.Services.DataTests", "Services\DistanceSchool.Services.DataTests\DistanceSchool.Services.DataTests.csproj", "{051AABBA-7DA5-4ABE-8908-416B0E20E29B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistanceSchool.Services.DataTests", "Services\DistanceSchool.Services.DataTests\DistanceSchool.Services.DataTests.csproj", "{051AABBA-7DA5-4ABE-8908-416B0E20E29B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
