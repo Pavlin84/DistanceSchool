@@ -32,7 +32,7 @@
             this.disciplineService = disciplineService;
         }
 
-        public async Task AddManagerAsync(int candidacyId)
+        public async Task<int> AddManagerAsync(int candidacyId)
         {
             var managerDto = await this.teacherServisce.CreateTeacherAsync(candidacyId);
             var school = this.schoolRepository.All().FirstOrDefault(x => x.Id == managerDto.SchoolId);
@@ -49,6 +49,8 @@
             await this.candidacyService.DeleteAllSchoolMangerCandidacyAsync(managerDto.SchoolId);
             await this.teacherServisce.CahngeSchoolIdAsync(managerDto.ManagerId, managerDto.SchoolId);
             await this.schoolRepository.SaveChangesAsync();
+
+            return school.Id;
         }
 
         public async Task AddSchoolAsync(AddSchoolInputModel inputModel)

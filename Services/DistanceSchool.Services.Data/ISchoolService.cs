@@ -15,7 +15,7 @@
 
         string GetSchoolName(int id);
 
-        Task AddManagerAsync(int candidacyId);
+        Task<int> AddManagerAsync(int candidacyId);
 
         OneSchoolViewModel GetSchoolData(int schoolId);
 
