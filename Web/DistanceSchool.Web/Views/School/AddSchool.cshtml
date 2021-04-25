@@ -1,0 +1,28 @@
+﻿@model DistanceSchool.Web.ViewModels.Schools.AddSchoolInputModel
+@{
+    ViewData["Title"] = "New School";
+}
+
+
+<form method="post" class="col-md-8 offset-2 rounded">
+    <h3 class="text-md-center">Създаване на училище:</h3>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group" style="background-color:aquamarine">
+        <div class="m-md-2">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="m-md-2">
+            <label asp-for="Description"></label>
+            <textarea rows="3" asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="m-md-2">
+            <label asp-for="Address"></label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+            <input type="submit" value="Приложи" class="btn btn-light m-md-2" />
+    </div>
+</form>

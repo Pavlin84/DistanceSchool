@@ -1,0 +1,43 @@
+﻿@model DistanceSchool.Web.ViewModels.Administration.Dashboard.AdministrationHomeViewModel
+@{
+    ViewData["Title"] = "Administration";
+}
+
+<h1 class="text-md-center border-dark">Администраторска страница</h1>
+<div class="row">
+    <div class="col-md-5 rounded container-fluid" style="background-color:aquamarine">
+        <h4 class="text-md-center">Дисциплини :</h4>
+        <ul>
+            @foreach (var discipline in Model.Disciplines)
+            {
+                <li>@discipline</li>
+            }
+        </ul>
+        <a class="btn btn-outline-primary mb-2  container-fluid border-dark" asp-area="" asp-controller="Discipline" asp-action="CreateDiscipline">Нова Дисциплина</a>
+    </div>
+    <div class="col-md-5 rounded container-fluid" style="background-color:aquamarine">
+        <h4 class="text-md-center">Кандидати за директор :</h4>
+        @foreach (var candidacye in Model.Candidacyes)
+        {
+    <div class="col-md-10 container-fluid rounded offset-1 mb-2" style="background-color:white">
+        <p><i class="fas fa-school text-md-center"> @candidacye.SchoolName</i></p>
+        <p>@candidacye.FirstName @candidacye.SecondName @candidacye.LastName</p>
+        <p>@candidacye.Year години</p>
+        <a href="/School/AddManager/@candidacye.Id" class="btn btn-outline-success mb-2 border-dark">Назначи</a>
+        <a href="/Candidacy/DelеteCandidacy/@candidacye.Id" class="btn btn-outline-light mb-2 border-dark offset-2 text-dark">Откажи</a>
+
+    </div>
+        }
+    </div>
+</div>
+
+
+
+@section PrivateSideBar{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="School" asp-action="AddSchool">Ново училище</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Discipline" asp-action="CreateDiscipline">Нова Дисциплина</a>
+    </li>
+}

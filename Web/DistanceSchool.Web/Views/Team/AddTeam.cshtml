@@ -1,0 +1,26 @@
+﻿@using DistanceSchool.Data.Models
+@model DistanceSchool.Web.ViewModels.Teams.AddTeamInputModel
+@{
+    ViewData["Title"] = "New Team";
+}
+
+<h1>Добавяне на клас</h1>
+<form method="post" class="col-md-7 rounded">
+    <input type="hidden" name="SchoolId" value="@Model.SchoolId" />
+    <div class="form-group" style="background-color:aquamarine">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="m-md-2">
+            <label asp-for="TeamName"></label>
+            <input asp-for="TeamName" class="form-control" />
+            <span asp-validation-for="TeamName" class="text-danger"></span>
+        </div>
+        <div class="m-md-2">
+            <label asp-for="TeamLevel"></label>
+            <select asp-for="TeamLevel" class="form-control" asp-items="@Html.GetEnumSelectList<TeamLevel>()"></select>
+            <span asp-validation-for="TeamLevel" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 m-md-2">
+            <input type="submit" value="Приложи" class="btn btn-light form-control m-md-2" />
+        </div>
+    </div>
+</form>

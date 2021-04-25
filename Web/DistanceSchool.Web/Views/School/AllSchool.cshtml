@@ -1,0 +1,39 @@
+﻿@model List<DistanceSchool.Web.ViewModels.Schools.AllScholsViewModel>
+@{
+    ViewData["Title"] = "All Schools";
+}
+
+<h1 class="text-center font-weight-bold">Списък с училища :</h1>
+
+<div class="row">
+    @foreach (var school in Model)
+    {
+
+    <div class="card col-6 col-lg-3 border-secondary offset-md-1 mb-3" style="background-color:whitesmoke; padding: 15px">
+        <p class="text-center"><i class="fas fa-school"></i></p>
+        <p class="text-md-center font-italic">@school.Name</p>
+        <div class="m-md-2 ">
+            @if (!string.IsNullOrWhiteSpace(school.Manager))
+            {
+                <p class="text-md-center font-italic">Директор: @school.Manager</p>
+            }
+            else if (User.Identity.IsAuthenticated)
+            {
+                <a href="/Candidacy/MangerCandidacy/?Id=@school.Id" class="btn btn-light col-md-12">Стани Директор</a>
+            }
+        </div>
+     
+        <p class="rounded mb-1 text-center" style="background-color:white">@school.Description</p>
+        <a href="/School/OneSchool/?Id=@school.Id" class="btn btn-light">Разгледай</a>
+    </div>
+    }
+<div class="card col-6 col-lg-3 border-secondary offset-md-1 mb-3" style="background-color:whitesmoke; padding: 15px">
+    <h1 class="text-center mb-5"><i class="fas fa-school"></i></h1>
+    <a href="/School/AddSchool" class="btn btn-light border-dark">Ново Училище</a>
+</div>
+</div>
+@section PrivateSideBar{ 
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="School" asp-action="AddSchool">Ново училище</a>
+    </li>
+}

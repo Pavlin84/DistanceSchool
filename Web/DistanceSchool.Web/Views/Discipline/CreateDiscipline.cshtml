@@ -1,0 +1,21 @@
+﻿@model DistanceSchool.Web.ViewModels.Disciplines.CreateDisciplineInputModel
+@{
+    ViewData["Title"] = "CreateDiscipline";
+}
+
+<h1 class="text-md-center">Създаване на дисциплина</h1>
+<div>
+    <form method="post" class="col-md-8 offset-2">
+        <div asp-validation-summary="All"class="text-danger"></div>
+        <div class="form-group rounded" style="background-color:aquamarine">
+            <div class="m-md-2">
+                <label asp-for="Name"></label>
+                <input class="form-control" asp-for="Name" />
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+            <input type="submit" value="Създай" class="btn btn-outline-primary m-md-2"/>
+        </div>
+    </form>
+
+</div>
+

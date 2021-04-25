@@ -1,0 +1,40 @@
+﻿@model DistanceSchool.Web.ViewModels.Teams.OneTeamViewModel;
+
+@{
+    ViewData["Title"] = "School Team";
+}
+<div class="row mb-2" style="background-color:azure">
+    <h1 class="col-md-8 rounded"><i class="fas fa-school">@Model.SchoolName</i></h1>
+    <h1 class="col-md-4 text-center rounded"><i class="fas fa-book-open"></i>@Model.TeamName</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-7 rounded mr-4" style="background-color:azure">
+        <h3 class="text-md-center">Дисциплини:</h3>
+        <div class="row">
+            @foreach (var discipline in Model.Disciplines)
+            {
+                <div class="col-lg-3 rounded m-1 container-fluid" style="background-color:aqua">
+                    <h5>@discipline.DisciplineName</h5>
+                    <p class="text-md-center">Преподавател: @discipline.TeacherNames</p>
+                </div>
+            }
+            <a href="/Team/AddDiscipline/@Model.Id" class="btn btn-outline-primary col-md-3 rounded m-1 container-fluid text-md-center" style="background-color:aqua">
+                <h5 class="text-md-center">Добави дисциплина</h5>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-4 rounded ml-4" style="background-color:azure" >
+        <h3 class="text-md-center">Ученици:</h3>
+        <ol class="text-dark">
+            @foreach (var student in Model.Students)
+            {
+                <li><a href="/Students/OneStudent?Id=@student.Id" class=" btn-link">@student.SudentNames</a></li>
+            }
+        </ol>
+    </div>
+
+</div>
+
+
+
