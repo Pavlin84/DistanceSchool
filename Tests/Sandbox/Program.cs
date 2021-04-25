@@ -25,6 +25,11 @@
     {
         public static int Main(string[] args)
         {
+            var test = "klkfj-fsfsas-fasfs";
+
+            var result = test.Split("-", 2, StringSplitOptions.RemoveEmptyEntries);
+            Console.WriteLine(result[0] + " * " + result[1]);
+
             Console.WriteLine($"{typeof(Program).Namespace} ({string.Join(" ", args)}) starts working...");
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
