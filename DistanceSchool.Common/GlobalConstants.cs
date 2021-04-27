@@ -17,6 +17,9 @@
         public const string CyrillicRequiredFieldMessage = "Полето е задължително";
 
         // Sucsess messages
-        public const string CyrillicSucssesMangerCandidacy = "Успешно подадохте заявка за директор !";
+        public const string CyrillicSucssesMangerCandidacy = "Успешно подадохте заявка за директор на {0}!";
+
+        public const string CyrillicSucssesTeacherCandidacy = "Успешно подадохте заявка за учител !";
+
     }
 }

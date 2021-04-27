@@ -1,11 +1,11 @@
 ﻿namespace DistanceSchool.Web.ViewModels.Candidacyes
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Text;
+
     using DistanceSchool.Common;
     using DistanceSchool.Web.Infrastructure.ValidationAttributes;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
 
     public class ManagerCandidacyInputModel : BaseCandidacyModel
     {
@@ -15,5 +15,8 @@
         public DateTime BirthDate { get; set; }
 
         public int SchoolId { get; set; }
+
+        [BindNever]
+        public bool IsAlreadyTeacher { get; set; }
     }
 }

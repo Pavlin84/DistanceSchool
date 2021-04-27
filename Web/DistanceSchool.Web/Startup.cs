@@ -8,6 +8,7 @@
     using DistanceSchool.Data.Models;
     using DistanceSchool.Data.Repositories;
     using DistanceSchool.Data.Seeding;
+    using DistanceSchool.Services;
     using DistanceSchool.Services.Data;
     using DistanceSchool.Services.Mapping;
     using DistanceSchool.Services.Messaging;
@@ -69,6 +70,7 @@
             services.AddTransient<IDisciplineService, DisciplineService>();
             services.AddTransient<ICandidacyServices, CandidacyServices>();
             services.AddTransient<ITeacherServisce, TeacherService>();
+            services.AddTransient<IDisciplineAttributeService, DisciplineAttributeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

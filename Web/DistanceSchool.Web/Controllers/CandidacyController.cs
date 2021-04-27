@@ -40,29 +40,25 @@
         [Authorize]
         public async Task<IActionResult> MangerCandidacy(int id)
         {
-            var schollName = this.schoolService.GetSchoolName(id);
+            var inputModel = await this.CreateCandidacyForm(id);
 
-            if (schollName == null)
+            if (inputModel.IsAlreadyTeacher)
             {
-                this.Redirect("/");
+                return this.RedirectToSucsessPage(string.Format(GlobalConstants.CyrillicSucssesMangerCandidacy, inputModel.SchoolName, 0));
             }
 
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return this.View(inputModel);
+        }
 
-            var inputModel = new ManagerCandidacyInputModel
-            {
-                SchoolId = id,
-                SchoolName = schollName,
-            };
+        [Authorize]
+        public async Task<IActionResult> TeacherCandidacy(int id)
+        {
+            var inputModel = await this.CreateCandidacyForm(id);
 
-            if (this.teacherServisce.IsTeacher(userId))
+            if (inputModel.IsAlreadyTeacher)
             {
-                inputModel.UserId = userId;
-                await this.candidacyServices.AddCandidacyAsync(inputModel);
-                return this.RedirectToSucsessPage();
+                return this.RedirectToSucsessPage(GlobalConstants.CyrillicSucssesTeacherCandidacy);
             }
-
-            inputModel.BirthDate = DateTime.UtcNow.AddYears(-21);
 
             return this.View(inputModel);
         }
@@ -84,15 +80,40 @@
 
             inputModel.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             await this.candidacyServices.AddCandidacyAsync(inputModel);
-            return this.RedirectToSucsessPage();
+            return this.RedirectToSucsessPage(GlobalConstants.CyrillicSucssesMangerCandidacy);
         }
 
-        private IActionResult RedirectToSucsessPage()
+        private IActionResult RedirectToSucsessPage(string message)
         {
             var controlerName = nameof(HomeController).Replace("Controller", string.Empty);
             var actionName = nameof(HomeController.Sucsess);
 
-            return this.RedirectToAction(actionName, controlerName, new { message = GlobalConstants.CyrillicSucssesMangerCandidacy });
+            return this.RedirectToAction(actionName, controlerName, new { message = message });
+        }
+
+        private async Task<ManagerCandidacyInputModel> CreateCandidacyForm(int id)
+        {
+            var schollName = this.schoolService.GetSchoolName(id);
+
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var inputModel = new ManagerCandidacyInputModel
+            {
+                SchoolId = id,
+                SchoolName = schollName,
+            };
+
+            if (this.teacherServisce.IsTeacher(userId))
+            {
+                inputModel.UserId = userId;
+                await this.candidacyServices.AddCandidacyAsync(inputModel);
+                inputModel.IsAlreadyTeacher = true;
+                return inputModel;
+            }
+
+            inputModel.BirthDate = DateTime.UtcNow.AddYears(-21);
+
+            return inputModel;
         }
     }
 }
