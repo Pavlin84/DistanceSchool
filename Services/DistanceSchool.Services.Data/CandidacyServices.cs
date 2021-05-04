@@ -23,16 +23,19 @@
             this.schoolRepository = schoolRepository;
         }
 
-        public async Task AddCandidacyAsync(ManagerCandidacyInputModel inputModel)
+        public async Task AddCandidacyAsync(CandidacyInputModel inputModel, CandidacyType candidacyType)
         {
-            var teacher = this.schoolRepository.All()
-                .Where(x => x.Id == inputModel.SchoolId)
-                .Select(x => x.Manager)
-                .FirstOrDefault();
-
-            if (teacher != null)
+            if (candidacyType == CandidacyType.Manager)
             {
-                return;
+                var teacher = this.schoolRepository.All()
+               .Where(x => x.Id == inputModel.SchoolId)
+               .Select(x => x.Manager)
+               .FirstOrDefault();
+
+                if (teacher != null)
+                {
+                    return;
+                }
             }
 
             var candidacy = new Candidacy
@@ -44,7 +47,7 @@
                 BirthDate = inputModel.BirthDate,
                 SchoolId = inputModel.SchoolId,
                 ApplicationDocumentsPath = GlobalConstants.TeacherApplicationDocumentsPath + inputModel.UserId,
-                Type = CandidacyType.Manager,
+                Type = candidacyType,
             };
 
             await this.candidacyRepository.AddAsync(candidacy);

@@ -19,7 +19,12 @@
         // Sucsess messages
         public const string CyrillicSucssesMangerCandidacy = "Успешно подадохте заявка за директор на {0}!";
 
-        public const string CyrillicSucssesTeacherCandidacy = "Успешно подадохте заявка за учител !";
+        public const string CyrillicSucssesTeacherCandidacy = "Успешно подадохте заявка за учител в {0}!";
+
+        // Candidacy form Hedar message
+        public const string CyrillicMangerCandicdacyHedarMessage = "Кандидатура за директор на";
+        public const string CyrillicTeachererCandicdacyHedarMessage = "Кандидатура за учител в";
+
 
     }
 }

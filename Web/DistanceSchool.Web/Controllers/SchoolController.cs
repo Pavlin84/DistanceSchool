@@ -73,7 +73,7 @@
         {
            var schoolId = await this.schoolService.AddManagerAsync(id);
 
-            return this.RedirectToAction(nameof(this.OneSchool), new { Id = schoolId });
+           return this.RedirectToAction(nameof(this.OneSchool), new { Id = schoolId });
         }
 
         public async Task<IActionResult> RemoveManager(int id)

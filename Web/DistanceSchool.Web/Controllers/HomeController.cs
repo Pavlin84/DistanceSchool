@@ -27,7 +27,6 @@
             return this.View();
         }
 
-
         // TO DO Create constraints
         public IActionResult Administration()
         {

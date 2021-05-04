@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Text;
+
     using DistanceSchool.Common;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-    public class BaseCandidacyModel
+    public abstract class BaseCandidacyModel
     {
         [BindNever]
         public string UserId { get; set; }
