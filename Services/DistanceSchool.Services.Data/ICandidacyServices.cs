@@ -11,10 +11,12 @@
     {
         Task AddCandidacyAsync(CandidacyInputModel inputModel, CandidacyType candidacyType);
 
-        ICollection<MangerCandidacyViewModel> GetAllManagerCandidacy();
+        ICollection<CandidacyViewModel> GetAllManagerCandidacy();
 
         Task DeleteCandicayAsync(int id);
 
         Task DeleteAllSchoolMangerCandidacyAsync(int schoolId);
+
+        ICollection<CandidacyViewModel> GetSchoolCandidacies(int schoolId, CandidacyType candidacyType);
     }
 }

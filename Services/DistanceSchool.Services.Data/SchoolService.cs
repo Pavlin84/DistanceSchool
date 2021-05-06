@@ -9,6 +9,7 @@
     using DistanceSchool.Data.Common.Repositories;
     using DistanceSchool.Data.Models;
     using DistanceSchool.Web.ViewModels.Disciplines;
+    using DistanceSchool.Web.ViewModels.Managers;
     using DistanceSchool.Web.ViewModels.Schools;
     using DistanceSchool.Web.ViewModels.Teachers;
     using DistanceSchool.Web.ViewModels.Teams;
@@ -177,6 +178,32 @@
             school.ManagerId = null;
 
             await this.schoolRepository.SaveChangesAsync();
+        }
+
+        public int GetSchoolIdWithManager(string managerId)
+        {
+            var schoolId = this.schoolRepository.All()
+                .Where(x => x.ManagerId == managerId)
+                .Select(x => x.Id)
+                .FirstOrDefault();
+
+            return schoolId;
+        }
+
+        public SchoolManagerHomeViewModel GetManagerHomePageData(string managerId)
+        {
+            var schoolId = this.GetSchoolIdWithManager(managerId);
+
+            var viewModel = this.schoolRepository.All()
+                .Where(x => x.Id == schoolId)
+                .Select(x => new SchoolManagerHomeViewModel
+                {
+                    SchoolName = x.Name,
+                    SchoolManager = x.Manager.Teacher.FirstName + " " + x.Manager.Teacher.LastName,
+                    TeacherCandidacies = this.candidacyService.GetSchoolCandidacies(schoolId, CandidacyType.Teacher),
+                }).FirstOrDefault();
+
+            return viewModel;
         }
     }
 }

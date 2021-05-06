@@ -11,11 +11,11 @@
         public AdministrationHomeViewModel()
         {
             this.Disciplines = new HashSet<string>();
-            this.Candidacyes = new HashSet<MangerCandidacyViewModel>();
+            this.Candidacyes = new HashSet<CandidacyViewModel>();
         }
 
         public ICollection<string> Disciplines { get; set; }
 
-        public ICollection<MangerCandidacyViewModel> Candidacyes { get; set; }
+        public ICollection<CandidacyViewModel> Candidacyes { get; set; }
     }
 }

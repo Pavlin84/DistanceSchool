@@ -54,37 +54,9 @@
             await this.candidacyRepository.SaveChangesAsync();
         }
 
-        public ICollection<MangerCandidacyViewModel> GetAllManagerCandidacy()
+        public ICollection<CandidacyViewModel> GetAllManagerCandidacy()
         {
-            var result = this.candidacyRepository
-                .All()
-                .Where(x => x.FirstName != null && x.Type == CandidacyType.Manager)
-                .Select(x => new MangerCandidacyViewModel
-                {
-                    Id = x.Id,
-                    FirstName = x.FirstName,
-                    SecondName = x.SecondName,
-                    LastName = x.LastName,
-                    SchoolName = x.School.Name,
-                    Year = DateTime.UtcNow.Year - ((DateTime)x.BirthDate).Year,
-                }).ToList();
-
-            var teacherCandidacy = this.candidacyRepository.All()
-                .Where(x => x.FirstName == null && x.Type == CandidacyType.Manager)
-                .Select(x => new MangerCandidacyViewModel
-                 {
-                     Id = x.Id,
-                     FirstName = x.ApplicationUser.Teacher.FirstName,
-                     SecondName = x.ApplicationUser.Teacher.SecondName,
-                     LastName = x.ApplicationUser.Teacher.LastName,
-                     SchoolName = x.School.Name,
-                     Year = DateTime.UtcNow.Year - x.ApplicationUser.Teacher.BirthDate.Year,
-                 }).ToList();
-
-            result.AddRange(teacherCandidacy);
-            var orderedReuslt = result.OrderBy(x => x.SchoolName).ThenBy(x => x.FirstName).ToList();
-
-            return orderedReuslt;
+            return this.GetCandidacies(null, CandidacyType.Manager);
         }
 
         public async Task DeleteAllSchoolMangerCandidacyAsync(int schoolId)
@@ -109,6 +81,45 @@
             candidacyForDeleted.DeletedOn = DateTime.UtcNow;
 
             await this.candidacyRepository.SaveChangesAsync();
+        }
+
+        public ICollection<CandidacyViewModel> GetSchoolCandidacies(int schoolId, CandidacyType candidacyType)
+        {
+
+            return this.GetCandidacies(schoolId, candidacyType);
+        }
+
+        private ICollection<CandidacyViewModel> GetCandidacies(int? schoolId, CandidacyType candidacyType)
+        {
+            var result = this.candidacyRepository
+            .All()
+            .Where(x => x.FirstName != null && x.Type == candidacyType && (x.SchoolId == schoolId || schoolId == null))
+            .Select(x => new CandidacyViewModel
+            {
+                Id = x.Id,
+                FirstName = x.FirstName,
+                SecondName = x.SecondName,
+                LastName = x.LastName,
+                SchoolName = x.School.Name,
+                Year = DateTime.UtcNow.Year - ((DateTime)x.BirthDate).Year,
+            }).ToList();
+
+            var teacherCandidacy = this.candidacyRepository.All()
+                .Where(x => x.FirstName == null && x.Type == candidacyType && (x.SchoolId == schoolId || schoolId == null))
+                .Select(x => new CandidacyViewModel
+                {
+                    Id = x.Id,
+                    FirstName = x.ApplicationUser.Teacher.FirstName,
+                    SecondName = x.ApplicationUser.Teacher.SecondName,
+                    LastName = x.ApplicationUser.Teacher.LastName,
+                    SchoolName = x.School.Name,
+                    Year = DateTime.UtcNow.Year - x.ApplicationUser.Teacher.BirthDate.Year,
+                }).ToList();
+
+            result.AddRange(teacherCandidacy);
+            var orderedReuslt = result.OrderBy(x => x.SchoolName).ThenBy(x => x.FirstName).ToList();
+
+            return result;
         }
     }
 }

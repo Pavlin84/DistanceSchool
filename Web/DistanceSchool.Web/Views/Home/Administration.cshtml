@@ -17,17 +17,7 @@
     </div>
     <div class="col-md-5 rounded container-fluid" style="background-color:aquamarine">
         <h4 class="text-md-center">Кандидати за директор :</h4>
-        @foreach (var candidacye in Model.Candidacyes)
-        {
-    <div class="col-md-10 container-fluid rounded offset-1 mb-2" style="background-color:white">
-        <p><i class="fas fa-school text-md-center"> @candidacye.SchoolName</i></p>
-        <p>@candidacye.FirstName @candidacye.SecondName @candidacye.LastName</p>
-        <p>@candidacye.Year години</p>
-        <a href="/School/AddManager/@candidacye.Id" class="btn btn-outline-success mb-2 border-dark">Назначи</a>
-        <a href="/Candidacy/DelеteCandidacy/@candidacye.Id" class="btn btn-outline-light mb-2 border-dark offset-2 text-dark">Откажи</a>
-
-    </div>
-        }
+        <partial name="_CandidacesList" model="@Model.Candidacyes" />
     </div>
 </div>
 
