@@ -27,6 +27,16 @@
 
         public IActionResult Index()
         {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return this.View();
+            }
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (this.schoolService.IsUserManger(userId))
+            {
+                return this.RedirectToAction(nameof(this.SchoolManager));
+            }
+
             return this.View();
         }
 
@@ -41,7 +51,7 @@
             var viewModel = new AdministrationHomeViewModel();
             viewModel.Disciplines = this.disciplineService.GetAllDiscpline();
             viewModel.Candidacyes = this.candidacyServices.GetAllManagerCandidacy();
-            this.ViewData["ActionName"] = nameof(SchoolController.AddManager);
+            this.ViewData["CreateActionName"] = nameof(SchoolController.AddManager);
             return this.View(viewModel);
         }
 
@@ -52,6 +62,7 @@
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var viewModel = this.schoolService.GetManagerHomePageData(userId);
+            this.ViewData["CreateActionName"] = nameof(SchoolController.AddTeacher);
             return this.View(viewModel);
         }
 

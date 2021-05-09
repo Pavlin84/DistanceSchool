@@ -19,12 +19,14 @@
 
         OneSchoolViewModel GetSchoolData(int schoolId);
 
-        bool IsUserManger(string userId, int schoolId);
+        bool IsUserMangerToSchool(string userId, int schoolId);
 
         Task RemoveManagerAsync(int schoolId);
 
         int GetSchoolIdWithManager(string managerId);
 
         SchoolManagerHomeViewModel GetManagerHomePageData(string managerId);
+
+        bool IsUserManger(string userId);
     }
 }

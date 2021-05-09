@@ -76,7 +76,7 @@
 
         public async Task DeleteCandicayAsync(int id)
         {
-            var candidacyForDeleted = this.candidacyRepository.All().FirstOrDefault(x => x.Id == id && x.Type == CandidacyType.Manager);
+            var candidacyForDeleted = this.candidacyRepository.All().FirstOrDefault(x => x.Id == id);
             candidacyForDeleted.IsDeleted = true;
             candidacyForDeleted.DeletedOn = DateTime.UtcNow;
 

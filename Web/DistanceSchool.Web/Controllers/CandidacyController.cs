@@ -35,7 +35,7 @@
         {
             await this.candidacyServices.DeleteCandicayAsync(id);
 
-            return this.Redirect("/Home/Administration");
+            return this.Redirect("/");
         }
 
         [Authorize]

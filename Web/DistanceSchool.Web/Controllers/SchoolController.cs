@@ -44,7 +44,7 @@
         {
             var school = this.schoolService.GetSchoolData(id);
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            school.IsUserManager = this.schoolService.IsUserManger(userId, id);
+            school.IsUserManager = this.schoolService.IsUserMangerToSchool(userId, id);
 
             return this.View(school);
         }
@@ -74,6 +74,11 @@
            var schoolId = await this.schoolService.AddManagerAsync(id);
 
            return this.RedirectToAction(nameof(this.OneSchool), new { Id = schoolId });
+        }
+
+        public async Task<IActionResult> AddTeacher(int id)
+        {
+            return this.Redirect("/Home/Index");
         }
 
         public async Task<IActionResult> RemoveManager(int id)

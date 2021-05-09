@@ -165,12 +165,20 @@
             return school.Name;
         }
 
-        public bool IsUserManger(string userId, int schoolId)
+        public bool IsUserMangerToSchool(string userId, int schoolId)
         {
             var school = this.schoolRepository.All().FirstOrDefault(x => x.Id == schoolId);
 
             return school.ManagerId == userId;
         }
+
+        public bool IsUserManger(string userId)
+        {
+            var isManager = this.schoolRepository.All().Any(x => x.ManagerId == userId);
+
+            return isManager;
+        }
+
 
         public async Task RemoveManagerAsync(int schoolId)
         {
