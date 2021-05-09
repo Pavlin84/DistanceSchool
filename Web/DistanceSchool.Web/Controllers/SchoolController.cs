@@ -78,7 +78,9 @@
 
         public async Task<IActionResult> AddTeacher(int id)
         {
-            return this.Redirect("/Home/Index");
+            var teacherId = await this.schoolService.AddTeacherToSchool(id);
+
+            return this.RedirectToAction(nameof(TeacherController.OneTeacher), nameof(TeacherController).Replace("Controller", string.Empty), new { Id = teacherId });
         }
 
         public async Task<IActionResult> RemoveManager(int id)

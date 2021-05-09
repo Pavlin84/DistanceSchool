@@ -17,7 +17,7 @@
     public class SchoolService : ISchoolService
     {
         private readonly IDeletableEntityRepository<School> schoolRepository;
-        private readonly ITeacherServisce teacherServisce;
+        private readonly ITeacherServisce teacherService;
         private readonly ICandidacyServices candidacyService;
         private readonly IDisciplineService disciplineService;
 
@@ -28,30 +28,38 @@
             IDisciplineService disciplineService)
         {
             this.schoolRepository = schoolRepository;
-            this.teacherServisce = teacherServisce;
+            this.teacherService = teacherServisce;
             this.candidacyService = candidacyService;
             this.disciplineService = disciplineService;
         }
 
         public async Task<int> AddManagerAsync(int candidacyId)
         {
-            var managerDto = await this.teacherServisce.CreateTeacherAsync(candidacyId);
-            var school = this.schoolRepository.All().FirstOrDefault(x => x.Id == managerDto.SchoolId);
+            var managerDto = await this.teacherService.CreateTeacherAsync(candidacyId);
 
             // If User is manger set old scholl manager to null
-            var oldSchool = this.schoolRepository.All().FirstOrDefault(x => x.ManagerId == managerDto.ManagerId);
+            await this.CheckAndDeleteOldSchoolManager(managerDto.UserId);
+
+            var school = this.schoolRepository.All().FirstOrDefault(x => x.Id == managerDto.SchoolId);
+
+            school.ManagerId = managerDto.UserId;
+
+            await this.candidacyService.DeleteAllSchoolMangerCandidacyAsync(managerDto.SchoolId);
+            await this.teacherService.ChangeSchoolIdAsync(managerDto.UserId, managerDto.SchoolId);
+            await this.schoolRepository.SaveChangesAsync();
+
+            return school.Id;
+        }
+
+        public async Task CheckAndDeleteOldSchoolManager(string userId)
+        {
+            var oldSchool = this.schoolRepository.All().FirstOrDefault(x => x.ManagerId == userId);
             if (oldSchool != null)
             {
                 oldSchool.ManagerId = null;
             }
 
-            school.ManagerId = managerDto.ManagerId;
-
-            await this.candidacyService.DeleteAllSchoolMangerCandidacyAsync(managerDto.SchoolId);
-            await this.teacherServisce.CahngeSchoolIdAsync(managerDto.ManagerId, managerDto.SchoolId);
             await this.schoolRepository.SaveChangesAsync();
-
-            return school.Id;
         }
 
         public async Task AddSchoolAsync(AddSchoolInputModel inputModel)
@@ -85,28 +93,7 @@
 
         public OneSchoolViewModel GetSchoolData(int schoolId)
         {
-            var techer = new TeacherForOneSchoolViewModel
-            {
-                Id = "TecherId",
-                Name = "TecherName",
-                Disciplines = new List<string>
-                {
-                    "Discipine1",
-                    "Discipine2",
-                    "Discipine3",
-                },
-            };
-            var discipline = new DisciplineForOneSchoolViewModel
-            {
-                Id = "DiscId",
-                Name = "DisciplineName",
-                Techers = new List<string>
-                {
-                    "Teacher1",
-                    "Teacher2",
-                    "Teacher3",
-                },
-            };
+            var techers = this.teacherService.GetAllTeacherFromSchool(schoolId);
 
             var team = new TeamForOneSchoolViewModel
             {
@@ -143,9 +130,13 @@
                     Name = x.Name,
                 }).FirstOrDefault();
 
+            foreach (var teacher in techers)
+            {
+                school.Teachers.Add(teacher);
+            }
+
             for (int i = 0; i < 5; i++)
             {
-                school.Teacher.Add(techer);
                 school.Teams.Add(team);
             }
 
@@ -212,6 +203,16 @@
                 }).FirstOrDefault();
 
             return viewModel;
+        }
+
+        public async Task<string> AddTeacherToSchool(int candidacyId)
+        {
+            var teacherDto = await this.teacherService.CreateTeacherAsync(candidacyId);
+            await this.CheckAndDeleteOldSchoolManager(teacherDto.UserId);
+            await this.teacherService.ChangeSchoolIdAsync(teacherDto.UserId, teacherDto.SchoolId);
+            await this.candidacyService.DeleteCandicayAsync(candidacyId);
+
+            return teacherDto.TeacherId;
         }
     }
 }

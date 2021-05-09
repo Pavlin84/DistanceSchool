@@ -11,8 +11,10 @@
     {
         bool IsTeacher(string userId);
 
-        Task<AddMangerDtoModel> CreateTeacherAsync(int candidacyId);
+        Task<AddTeacherDtoModel> CreateTeacherAsync(int candidacyId);
 
-        Task CahngeSchoolIdAsync(string id, int schoolId);
+        Task ChangeSchoolIdAsync(string id, int schoolId);
+
+        ICollection<TeacherForOneSchoolViewModel> GetAllTeacherFromSchool(int schoolId);
     }
 }

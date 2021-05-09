@@ -38,12 +38,12 @@
             </div>
         </div>
 
-        <div class="col-lg-3 rounded container-fluid mb-2" style="background-color:whitesmoke">
+        <div class="col-lg-3 rounded container-fluid mb-3">
             <h3 class="font-weight-bold text-md-center container-fluid">Дисциплини :</h3>
             <div class="row">
                 @foreach (var discipline in Model.Disciplines)
                 {
-                    <div class="col-md-10 container-fluid rounded mb-2" style="background-color:aquamarine">
+                    <div class="col-md-10 container-fluid rounded mb-3" style="background-color:white">
                         <h5>@discipline.Name</h5>
                         <p>
                             Учители:
@@ -62,7 +62,7 @@
                 {
                     @foreach (var discipline in Model.NotStudiedDisciplines)
                     {
-                        <div class="col-md-10 container-fluid rounded mb-2" style="background-color:silver">
+                        <div class="col-md-10 container-fluid rounded mb-3" style="background-color:silver">
                             <h5 class="text-md-center">@discipline.Name</h5>
 
                             <a href="/Discipline/AddToSchool/?disciplineId=@discipline.Id&schoolId=@Model.Id" class="btn btn-light mb-2 text-md-center container-fluid">Добави</a>
@@ -71,12 +71,12 @@
                 }
             </div>
         </div>
-        <div class="col-lg-3 rounded" style="background-color:whitesmoke">
+        <div class="col-lg-3 rounded" style="background-color:aquamarine">
             <h3 class="font-weight-bold text-md-center">Учители :</h3>
             <div class="row">
-                @foreach (var teacher in Model.Teacher)
+                @foreach (var teacher in Model.Teachers)
                 {
-                    <div class="col-md-10 container-fluid rounded mb-2" style="background-color:silver">
+                    <div class="col-md-10 container-fluid rounded mb-3 m" style="background-color:whitesmoke">
                         <h5>@teacher.Name</h5>
                         <p>
                             Дисциплини:
@@ -85,12 +85,12 @@
                                 <i>@discipilne, </i>
                             }
                         </p>
-                        <a href="/Teacher/OneTeacher/@teacher.Id" class="btn btn-light mb-2 text-md-center container-fluid">Подробности</a>
+                        <a href="/Teacher/OneTeacher/@teacher.Id" class="btn btn-light mb-3 text-md-center container-fluid">Подробности</a>
                     </div>
                 }
             </div>
             <div class="col-md-12 container-fluid rounded mb-2">
-                <a class="container-fluid btn btn-outline-primary" style="background-color:silver" href="/Candidacy/TeacherCandidacy/@Model.Id">
+                <a class="container-fluid btn btn-outline-success" style="background-color:navy" href="/Candidacy/TeacherCandidacy/@Model.Id">
                 Преподавай
                 </a>
             </div>

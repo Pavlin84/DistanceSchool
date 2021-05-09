@@ -15,7 +15,9 @@
         private readonly IDeletableEntityRepository<Teacher> teacherRepository;
         private readonly IDeletableEntityRepository<Candidacy> candidacyRepository;
 
-        public TeacherService(IDeletableEntityRepository<Teacher> teacherRepository, IDeletableEntityRepository<Candidacy> candidacyRepository)
+        public TeacherService(
+            IDeletableEntityRepository<Teacher> teacherRepository,
+            IDeletableEntityRepository<Candidacy> candidacyRepository)
         {
             this.teacherRepository = teacherRepository;
             this.candidacyRepository = candidacyRepository;
@@ -28,13 +30,13 @@
             return teacher != null;
         }
 
-        public async Task<AddMangerDtoModel> CreateTeacherAsync(int candidacyId)
+        public async Task<AddTeacherDtoModel> CreateTeacherAsync(int candidacyId)
         {
             var teacherDto = this.candidacyRepository.All()
               .Where(x => x.Id == candidacyId)
-              .Select(x => new AddMangerDtoModel
+              .Select(x => new AddTeacherDtoModel
               {
-                  ManagerId = x.ApplicationUser.Id,
+                  UserId = x.ApplicationUser.Id,
                   SchoolId = (int)x.SchoolId,
                   TeacherId = x.ApplicationUser.TeacherId,
               }).FirstOrDefault();
@@ -54,9 +56,9 @@
                     SchoolId = (int)candidacyTeacher.SchoolId,
                 };
 
-                teacherDto = new AddMangerDtoModel
+                teacherDto = new AddTeacherDtoModel
                 {
-                    ManagerId = teacher.ApplicationUserId,
+                    UserId = teacher.ApplicationUserId,
                     SchoolId = teacher.SchoolId,
                 };
 
@@ -67,12 +69,27 @@
             return teacherDto;
         }
 
-        public async Task CahngeSchoolIdAsync(string id, int schoolId)
+        public async Task ChangeSchoolIdAsync(string id, int schoolId)
         {
             var teacher = this.teacherRepository.All().FirstOrDefault(x => x.ApplicationUserId == id);
             teacher.SchoolId = schoolId;
 
             await this.teacherRepository.SaveChangesAsync();
+        }
+
+        public ICollection<TeacherForOneSchoolViewModel> GetAllTeacherFromSchool(int schoolId)
+        {
+            var viewModel = this.teacherRepository.All()
+                .Where(x => x.SchoolId == schoolId)
+                .OrderByDescending(x => x.BirthDate)
+                .Select(x => new TeacherForOneSchoolViewModel
+                {
+                    Id = x.Id,
+                    Name = x.FirstName + " " + x.LastName,
+                    Disciplines = x.DisciplineTeachers.Select(x => x.Discipline.Name).ToList(),
+                }).ToList();
+
+            return viewModel;
         }
     }
 }
