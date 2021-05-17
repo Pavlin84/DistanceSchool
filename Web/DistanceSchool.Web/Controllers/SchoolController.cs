@@ -49,13 +49,13 @@
             return this.View(school);
         }
 
-        // TODO Create constraint only for administrator
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public IActionResult AddSchool()
         {
             return this.View();
         }
 
-        // TODO Create constraint only for administrator
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpPost]
         public async Task<IActionResult> AddSchool(AddSchoolInputModel inputModel)
         {
@@ -69,6 +69,7 @@
             return this.RedirectToAction(nameof(this.AllSchool));
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> AddManager(int id)
         {
            var schoolId = await this.schoolService.AddManagerAsync(id);
@@ -83,6 +84,7 @@
             return this.RedirectToAction(nameof(TeacherController.OneTeacher), nameof(TeacherController).Replace("Controller", string.Empty), new { Id = teacherId });
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> RemoveManager(int id)
         {
             await this.schoolService.RemoveManagerAsync(id);

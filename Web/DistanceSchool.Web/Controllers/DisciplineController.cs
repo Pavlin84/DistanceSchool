@@ -2,8 +2,10 @@
 {
     using System.Threading.Tasks;
 
+    using DistanceSchool.Common;
     using DistanceSchool.Services.Data;
     using DistanceSchool.Web.ViewModels.Disciplines;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class DisciplineController : BaseController
@@ -33,13 +35,14 @@
                 new { Id = schoolId });
         }
 
-        // TO DO only administrator
+
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public IActionResult CreateDiscipline()
         {
             return this.View();
         }
 
-        // TO DO only administrator
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpPost]
         public async Task<IActionResult> CreateDiscipline(CreateDisciplineInputModel inputModel)
         {

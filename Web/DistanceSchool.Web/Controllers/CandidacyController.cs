@@ -30,7 +30,7 @@
             this.teacherServisce = teacherServisce;
         }
 
-        // TO DO Only Administration Acsses
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> DelеteCandidacy(int id)
         {
             await this.candidacyServices.DeleteCandicayAsync(id);

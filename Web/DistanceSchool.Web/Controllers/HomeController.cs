@@ -2,7 +2,9 @@
 {
     using System.Diagnostics;
     using System.Security.Claims;
+    using DistanceSchool.Common;
     using DistanceSchool.Services.Data;
+    using DistanceSchool.Web.Areas.Administration.Controllers;
     using DistanceSchool.Web.ViewModels;
     using DistanceSchool.Web.ViewModels.Administration.Dashboard;
     using DistanceSchool.Web.ViewModels.Managers;
@@ -31,10 +33,16 @@
             {
                 return this.View();
             }
+
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (this.schoolService.IsUserManger(userId))
             {
                 return this.RedirectToAction(nameof(this.SchoolManager));
+            }
+
+            if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+            {
+                return this.Redirect("/Administration/Dashboard/AdminHome");
             }
 
             return this.View();
@@ -43,16 +51,6 @@
         public IActionResult Privacy()
         {
             return this.View();
-        }
-
-        // TO DO Create constraints
-        public IActionResult Administration()
-        {
-            var viewModel = new AdministrationHomeViewModel();
-            viewModel.Disciplines = this.disciplineService.GetAllDiscpline();
-            viewModel.Candidacyes = this.candidacyServices.GetAllManagerCandidacy();
-            this.ViewData["CreateActionName"] = nameof(SchoolController.AddManager);
-            return this.View(viewModel);
         }
 
         // TO DO Create constraints

@@ -5,6 +5,10 @@
         public const string SystemName = "DistanceSchool";
 
         public const string AdministratorRoleName = "Administrator";
+        public const string AdministratorName = "pvs.k.brod@abv.bg";
+        public const string AdministratorPassword = "AdminC#123";
+        public const string AdministratorEmail = "pvs.k.brod@abv.bg";
+
 
         public const string TeacherApplicationDocumentsPath = "";
 
