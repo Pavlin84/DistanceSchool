@@ -71,6 +71,7 @@
             services.AddTransient<ICandidacyServices, CandidacyServices>();
             services.AddTransient<ITeacherServisce, TeacherService>();
             services.AddTransient<IDisciplineAttributeService, DisciplineAttributeService>();
+            services.AddTransient<ICheckRoleAttributeService, CheckRoleAttributeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

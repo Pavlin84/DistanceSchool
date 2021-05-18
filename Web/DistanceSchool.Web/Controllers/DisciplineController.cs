@@ -4,6 +4,7 @@
 
     using DistanceSchool.Common;
     using DistanceSchool.Services.Data;
+    using DistanceSchool.Web.Infrastructure.CustomAuthorizeAttribute;
     using DistanceSchool.Web.ViewModels.Disciplines;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -17,14 +18,14 @@
             this.disciplineService = disciplineService;
         }
 
-        // TODO add constraints
+        [AdminManagerAuthorizeAttribute]
         public async Task<IActionResult> RemoveToSchool(int disciplineId, int schoolId)
         {
             await this.disciplineService.RemoveDisciplineFromSchoolAsync(disciplineId, schoolId);
             return this.RedirectToAction("OneSchool", "School", new { Id = schoolId });
         }
 
-        // TO DO onlu for administrator and school manager
+        [AdminManagerAuthorizeAttribute]
         public async Task<IActionResult> AddToSchool(int disciplineId, int schoolId)
         {
             await this.disciplineService.AddDisciplineToSchoolAsync(disciplineId, schoolId);

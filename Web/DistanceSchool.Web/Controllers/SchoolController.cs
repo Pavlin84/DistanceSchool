@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using DistanceSchool.Common;
     using DistanceSchool.Services.Data;
+    using DistanceSchool.Web.Infrastructure.CustomAuthorizeAttribute;
     using DistanceSchool.Web.ViewModels.Candidacyes;
     using DistanceSchool.Web.ViewModels.Disciplines;
     using DistanceSchool.Web.ViewModels.Schools;
@@ -77,6 +78,7 @@
            return this.RedirectToAction(nameof(this.OneSchool), new { Id = schoolId });
         }
 
+        [AdminManagerAuthorizeAttribute]
         public async Task<IActionResult> AddTeacher(int id)
         {
             var teacherId = await this.schoolService.AddTeacherToSchool(id);

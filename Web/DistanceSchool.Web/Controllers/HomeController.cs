@@ -37,7 +37,7 @@
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (this.schoolService.IsUserManger(userId))
             {
-                return this.RedirectToAction(nameof(this.SchoolManager));
+                return this.Redirect("/Administration/Dashboard/SchoolManagerHome");
             }
 
             if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
@@ -51,17 +51,6 @@
         public IActionResult Privacy()
         {
             return this.View();
-        }
-
-        // TO DO Create constraints
-        [Authorize]
-        public IActionResult SchoolManager()
-        {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            var viewModel = this.schoolService.GetManagerHomePageData(userId);
-            this.ViewData["CreateActionName"] = nameof(SchoolController.AddTeacher);
-            return this.View(viewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

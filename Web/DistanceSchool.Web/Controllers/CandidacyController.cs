@@ -9,6 +9,7 @@
     using DistanceSchool.Common;
     using DistanceSchool.Data.Models;
     using DistanceSchool.Services.Data;
+    using DistanceSchool.Web.Infrastructure.CustomAuthorizeAttribute;
     using DistanceSchool.Web.ViewModels.Candidacyes;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,7 @@
             this.teacherServisce = teacherServisce;
         }
 
-        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [AdminManagerAuthorizeAttribute]
         public async Task<IActionResult> DelеteCandidacy(int id)
         {
             await this.candidacyServices.DeleteCandicayAsync(id);
