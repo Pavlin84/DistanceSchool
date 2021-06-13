@@ -30,5 +30,14 @@
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Вход</a>
         </li>
+        <li>
+            <form id="external-account" asp-area="Identity" asp-controller="Account" asp-action="ExternalLogin" method="post" class="form-horizontal">
+                <div>
+                    <p>
+                            <button type="submit" class="btn btn-primary" name="provider" value="Facebook" title="Log in using your Facebook account"><i class="fab fa-facebook-f"></i></button>
+                    </p>
+                </div>
+            </form>
+        </li>
     }
 </ul>

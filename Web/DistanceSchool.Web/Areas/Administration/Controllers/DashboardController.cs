@@ -45,23 +45,23 @@
             return this.View(viewModel);
         }
 
-        [Authorize]
-        public IActionResult SchoolManagerHome([FromForm]string id)
+        [AdminManagerAuthorizeAttribute]
+        public IActionResult SchoolManagerHome(int id)
         {
-            string userId;
+            this.ViewData["CreateActionName"] = nameof(SchoolController.AddTeacher);
 
-            if (id != null)
+            if (id != 0)
             {
-                userId = id;
+                var viewModel = this.schoolService.GetManagerHomePageBySchholId(id);
+                return this.View(viewModel);
             }
             else
             {
-                userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var viewModel = this.schoolService.GetManagerHomePageData(userId);
+                return this.View(viewModel);
             }
 
-            var viewModel = this.schoolService.GetManagerHomePageData(userId);
-            this.ViewData["CreateActionName"] = nameof(SchoolController.AddTeacher);
-            return this.View(viewModel);
         }
     }
 }

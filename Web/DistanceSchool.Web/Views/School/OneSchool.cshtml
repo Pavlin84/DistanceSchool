@@ -4,7 +4,20 @@
     ViewData["Title"] = "School";
 }
 <body style="background-color:aquamarine">
-    <h1 class="font-italic font-weight-bolder text-center mb-2"><i class="fas fa-school"></i>  @Model.Name</h1>
+    @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+    {
+        <a href="/Administration/Dashboard/SchoolManagerHome?Id=@Model.Id" class="btn btn-link btn-lg">
+            <h1 class="font-italic font-weight-bolder mb-2">
+                <i class="fas fa-school"></i> @Model.Name
+            </h1>
+        </a>
+    }
+    else
+    {
+        <h1 class="font-italic font-weight-bolder mb-2">
+            <i class="fas fa-school"></i> @Model.Name
+        </h1>
+    }
     @if (!string.IsNullOrWhiteSpace(Model.Manager.Name))
     {
         <h2 class="font-italic mb-4">Директор: @Model.Manager.Name</h2>

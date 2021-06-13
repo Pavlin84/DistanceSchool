@@ -192,17 +192,19 @@
         public SchoolManagerHomeViewModel GetManagerHomePageData(string managerId)
         {
             var schoolId = this.GetSchoolIdWithManager(managerId);
+            return this.GetManagerHomePageBySchholId(schoolId);
+        }
 
-            var viewModel = this.schoolRepository.All()
-                .Where(x => x.Id == schoolId)
-                .Select(x => new SchoolManagerHomeViewModel
-                {
-                    SchoolName = x.Name,
-                    SchoolManager = x.Manager.Teacher.FirstName + " " + x.Manager.Teacher.LastName,
-                    TeacherCandidacies = this.candidacyService.GetSchoolCandidacies(schoolId, CandidacyType.Teacher),
-                }).FirstOrDefault();
-
-            return viewModel;
+        public SchoolManagerHomeViewModel GetManagerHomePageBySchholId(int schoolId)
+        {
+            return this.schoolRepository.All()
+                            .Where(x => x.Id == schoolId)
+                            .Select(x => new SchoolManagerHomeViewModel
+                            {
+                                SchoolName = x.Name,
+                                SchoolManager = x.Manager.Teacher.FirstName + " " + x.Manager.Teacher.LastName,
+                                TeacherCandidacies = this.candidacyService.GetSchoolCandidacies(schoolId, CandidacyType.Teacher),
+                            }).FirstOrDefault();
         }
 
         public async Task<string> AddTeacherToSchool(int candidacyId)

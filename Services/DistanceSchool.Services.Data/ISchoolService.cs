@@ -35,5 +35,7 @@
         bool IsUserManger(string userId);
 
         Task<string> AddTeacherToSchool(int candidacyId);
+
+        SchoolManagerHomeViewModel GetManagerHomePageBySchholId(int schoolId);
     }
 }
