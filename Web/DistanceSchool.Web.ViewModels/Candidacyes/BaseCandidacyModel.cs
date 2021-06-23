@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using DistanceSchool.Common;
+    using DistanceSchool.Web.Infrastructure.ValidationAttributes;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -35,10 +36,12 @@
         public string SchoolName { get; set; }
 
         [Display(Name = "Профилна снимка")]
+        [FileValidation(7, "jpg", "jpeg", "png", "gif")]
         public IFormFile ProfileImage { get; set; }
 
         [Required(ErrorMessage = GlobalConstants.CyrillicRequiredFieldMessage)]
         [Display(Name = "Автобиография")]
+        [FileValidation(1, "pdf", "doc")]
         public IFormFile ApplicationDocuments { get; set; }
 
     }
