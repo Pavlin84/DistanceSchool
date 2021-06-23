@@ -12,6 +12,7 @@
     using DistanceSchool.Web.Infrastructure.CustomAuthorizeAttribute;
     using DistanceSchool.Web.ViewModels.Candidacyes;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
 
     public class CandidacyController : BaseController
@@ -19,16 +20,19 @@
     {
         private readonly ICandidacyServices candidacyServices;
         private readonly ISchoolService schoolService;
-        private readonly ITeacherServisce teacherServisce;
+        private readonly ITeacherService teacherServisce;
+        private readonly IWebHostEnvironment environment;
 
         public CandidacyController(
             ICandidacyServices candidacyServices,
             ISchoolService schoolService,
-            ITeacherServisce teacherServisce)
+            ITeacherService teacherServisce,
+            IWebHostEnvironment environment)
         {
             this.candidacyServices = candidacyServices;
             this.schoolService = schoolService;
             this.teacherServisce = teacherServisce;
+            this.environment = environment;
         }
 
         [AdminManagerAuthorizeAttribute]
@@ -67,7 +71,7 @@
             var schoolName = this.schoolService.GetSchoolName(inputModel.SchoolId);
 
             inputModel.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            await this.candidacyServices.AddCandidacyAsync(inputModel, CandidacyType.Teacher);
+            await this.candidacyServices.AddCandidacyAsync(inputModel, CandidacyType.Teacher, this.environment.WebRootPath);
             return this.RedirectToSucsessPage(string.Format(GlobalConstants.CyrillicSucssesTeacherCandidacy, schoolName, 0));
         }
 
@@ -99,7 +103,7 @@
             var schoolName = this.schoolService.GetSchoolName(inputModel.SchoolId);
 
             inputModel.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            await this.candidacyServices.AddCandidacyAsync(inputModel, CandidacyType.Manager);
+            await this.candidacyServices.AddCandidacyAsync(inputModel, CandidacyType.Manager, this.environment.WebRootPath);
             return this.RedirectToSucsessPage(string.Format(GlobalConstants.CyrillicSucssesMangerCandidacy, schoolName, 0));
         }
 
@@ -126,7 +130,7 @@
             if (this.teacherServisce.IsTeacher(userId))
             {
                 inputModel.UserId = userId;
-                await this.candidacyServices.AddCandidacyAsync(inputModel, candidacyType);
+                await this.candidacyServices.AddCandidacyAsync(inputModel, candidacyType, this.environment.WebRootPath);
                 inputModel.IsAlreadyTeacher = true;
                 return inputModel;
             }

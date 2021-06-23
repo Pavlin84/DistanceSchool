@@ -28,6 +28,10 @@ namespace DistanceSchool.Data.Models
 
         public virtual Teacher Teacher { get; set; }
 
+        public string ApplicationDocumentsExtension { get; set; }
+
+        public string ProfileImageExtension { get; set; }
+
         // Audit info
         public DateTime CreatedOn { get; set; }
 

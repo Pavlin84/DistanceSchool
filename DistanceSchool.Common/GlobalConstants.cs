@@ -9,9 +9,6 @@
         public const string AdministratorPassword = "AdminC#123";
         public const string AdministratorEmail = "pvs.k.brod@abv.bg";
 
-
-        public const string TeacherApplicationDocumentsPath = "";
-
         // Cyrillic text
         public const string CyrillicProjectName = "Дистанционно училище";
 

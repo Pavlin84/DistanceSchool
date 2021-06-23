@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using DistanceSchool.Common;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
 
     public abstract class BaseCandidacyModel
@@ -32,5 +33,13 @@
 
         [BindNever]
         public string SchoolName { get; set; }
+
+        [Display(Name = "Профилна снимка")]
+        public IFormFile ProfileImage { get; set; }
+
+        [Required(ErrorMessage = GlobalConstants.CyrillicRequiredFieldMessage)]
+        [Display(Name = "Автобиография")]
+        public IFormFile ApplicationDocuments { get; set; }
+
     }
 }

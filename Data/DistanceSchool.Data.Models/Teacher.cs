@@ -31,8 +31,6 @@
         [Required]
         public DateTime BirthDate { get; set; }
 
-        public string ApplicationDocumentsPath { get; set; }
-
         [ForeignKey(nameof(School))]
         public int SchoolId { get; set; }
 

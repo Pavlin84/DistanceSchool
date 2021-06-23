@@ -31,8 +31,6 @@
         [Required]
         public DateTime BirthDate { get; set; }
 
-        public string ApplicationDocumentsPath { get; set; }
-
         public int TeamId { get; set; }
 
         public Team Team { get; set; }

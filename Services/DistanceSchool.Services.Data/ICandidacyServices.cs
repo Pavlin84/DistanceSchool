@@ -9,7 +9,7 @@
 
     public interface ICandidacyServices
     {
-        Task AddCandidacyAsync(CandidacyInputModel inputModel, CandidacyType candidacyType);
+        Task AddCandidacyAsync(CandidacyInputModel inputModel, CandidacyType candidacyType, string directoyPath);
 
         ICollection<CandidacyViewModel> GetAllManagerCandidacy();
 

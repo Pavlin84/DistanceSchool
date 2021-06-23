@@ -10,7 +10,7 @@
     using DistanceSchool.Data.Models;
     using DistanceSchool.Web.ViewModels.Teachers;
 
-    public class TeacherService : ITeacherServisce
+    public class TeacherService : ITeacherService
     {
         private readonly IDeletableEntityRepository<Teacher> teacherRepository;
         private readonly IDeletableEntityRepository<Candidacy> candidacyRepository;

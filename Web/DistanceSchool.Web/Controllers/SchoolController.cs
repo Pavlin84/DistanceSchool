@@ -21,12 +21,12 @@
     {
         private readonly ISchoolService schoolService;
         private readonly ICandidacyServices candidacyServices;
-        private readonly ITeacherServisce teacherServisce;
+        private readonly ITeacherService teacherServisce;
 
         public SchoolController(
             ISchoolService schoolService,
             ICandidacyServices candidacyServices,
-            ITeacherServisce teacherServisce)
+            ITeacherService teacherServisce)
         {
             this.schoolService = schoolService;
             this.candidacyServices = candidacyServices;

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -11,19 +12,28 @@
     using DistanceSchool.Data.Models;
     using DistanceSchool.Web.ViewModels.Administration.Dashboard;
     using DistanceSchool.Web.ViewModels.Candidacyes;
+    using Microsoft.AspNetCore.Http;
 
     public class CandidacyServices : ICandidacyServices
     {
         private readonly IDeletableEntityRepository<Candidacy> candidacyRepository;
         private readonly IDeletableEntityRepository<School> schoolRepository;
+        private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
+        private readonly IFileHandlerService fileHandlerService;
 
-        public CandidacyServices(IDeletableEntityRepository<Candidacy> candidacyRepository, IDeletableEntityRepository<School> schoolRepository)
+        public CandidacyServices(
+            IDeletableEntityRepository<Candidacy> candidacyRepository,
+            IDeletableEntityRepository<School> schoolRepository,
+            IDeletableEntityRepository<ApplicationUser> userRepository,
+            IFileHandlerService fileHandlerService)
         {
             this.candidacyRepository = candidacyRepository;
             this.schoolRepository = schoolRepository;
+            this.userRepository = userRepository;
+            this.fileHandlerService = fileHandlerService;
         }
 
-        public async Task AddCandidacyAsync(CandidacyInputModel inputModel, CandidacyType candidacyType)
+        public async Task AddCandidacyAsync(CandidacyInputModel inputModel, CandidacyType candidacyType, string directoyPath)
         {
             if (candidacyType == CandidacyType.Manager)
             {
@@ -46,12 +56,39 @@
                 LastName = inputModel.LastName,
                 BirthDate = inputModel.BirthDate,
                 SchoolId = inputModel.SchoolId,
-                ApplicationDocumentsPath = GlobalConstants.TeacherApplicationDocumentsPath + inputModel.UserId,
                 Type = candidacyType,
             };
 
+            var user = this.userRepository.All().FirstOrDefault(x => x.Id == inputModel.UserId);
+
+
+            if (inputModel.ProfileImage != null)
+            {
+                var imageDirectoryPath = $"{directoyPath}/images/PrifileImage";
+                var imageExtension = Path.GetExtension(inputModel.ProfileImage.FileName);
+                user.ProfileImageExtension = imageExtension;
+
+                await this.fileHandlerService.SaveFile(inputModel.ProfileImage, imageDirectoryPath, inputModel.UserId + imageExtension);
+            }
+
+            var applicationDocumentsPath = $"{directoyPath}/applicationDocuments";
+
+            var applicationDocumentExtension = Path.GetExtension(inputModel.ApplicationDocuments.FileName);
+            user.ApplicationDocumentsExtension = applicationDocumentExtension;
+
+            await this.fileHandlerService.SaveFile(inputModel.ApplicationDocuments, applicationDocumentsPath, inputModel.UserId + applicationDocumentExtension);
+
             await this.candidacyRepository.AddAsync(candidacy);
+            await this.userRepository.SaveChangesAsync();
             await this.candidacyRepository.SaveChangesAsync();
+        }
+
+        private async Task SaveFile(IFormFile sourseFile, string directoyPath, string fileName)
+        {
+            Directory.CreateDirectory(directoyPath);
+
+            using Stream imageStream = new FileStream($"{directoyPath}/{fileName}", FileMode.Create);
+            await sourseFile.CopyToAsync(imageStream);
         }
 
         public ICollection<CandidacyViewModel> GetAllManagerCandidacy()

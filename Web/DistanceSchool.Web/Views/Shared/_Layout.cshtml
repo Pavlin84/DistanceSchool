@@ -5,10 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@this.ViewData["Title"] - @GlobalConstants.SystemName</title>
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-custom.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    <script src="https://kit.fontawesome.com/b7cb216a75.js" crossorigin="anonymous"></script>
+    <link href="~/lib/fontawesome/css/all.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -66,7 +65,7 @@
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
-    <script src="~/lib/customJs/facebookLogin.js" asp-append-version="true"></script>
+    <script src="~/js/customJs/facebookLogin.js" asp-append-version="true"></script>
 
 
     @await this.RenderSectionAsync("Scripts", required: false)

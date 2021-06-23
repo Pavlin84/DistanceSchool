@@ -17,13 +17,13 @@
     public class SchoolService : ISchoolService
     {
         private readonly IDeletableEntityRepository<School> schoolRepository;
-        private readonly ITeacherServisce teacherService;
+        private readonly ITeacherService teacherService;
         private readonly ICandidacyServices candidacyService;
         private readonly IDisciplineService disciplineService;
 
         public SchoolService(
             IDeletableEntityRepository<School> schoolRepository,
-            ITeacherServisce teacherServisce,
+            ITeacherService teacherServisce,
             ICandidacyServices candidacyService,
             IDisciplineService disciplineService)
         {
