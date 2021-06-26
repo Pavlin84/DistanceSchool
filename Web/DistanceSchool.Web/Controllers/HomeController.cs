@@ -37,7 +37,7 @@
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (this.schoolService.IsUserManger(userId))
             {
-                return this.Redirect("/Administration/Dashboard/SchoolManagerHome");
+                return this.Redirect($"/Administration/Dashboard/SchoolManagerHome");
             }
 
             if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))

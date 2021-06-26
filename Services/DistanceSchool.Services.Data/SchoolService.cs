@@ -203,7 +203,7 @@
                             {
                                 SchoolName = x.Name,
                                 SchoolManager = x.Manager.Teacher.FirstName + " " + x.Manager.Teacher.LastName,
-                                TeacherCandidacies = this.candidacyService.GetSchoolCandidacies(schoolId, CandidacyType.Teacher),
+                                Candidacies = this.candidacyService.GetSchoolCandidacies(schoolId, CandidacyType.Teacher),
                             }).FirstOrDefault();
         }
 

@@ -6,16 +6,14 @@
 
     using DistanceSchool.Web.ViewModels.Candidacyes;
 
-    public class AdministrationHomeViewModel
+    public class AdministrationHomeViewModel : BaseHomePageViewModel
     {
         public AdministrationHomeViewModel()
         {
             this.Disciplines = new HashSet<string>();
-            this.Candidacyes = new HashSet<CandidacyViewModel>();
         }
 
         public ICollection<string> Disciplines { get; set; }
 
-        public ICollection<CandidacyViewModel> Candidacyes { get; set; }
     }
 }

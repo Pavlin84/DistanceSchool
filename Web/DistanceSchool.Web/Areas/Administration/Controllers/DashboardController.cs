@@ -40,7 +40,7 @@
         {
             var viewModel = new AdministrationHomeViewModel();
             viewModel.Disciplines = this.disciplineService.GetAllDiscpline();
-            viewModel.Candidacyes = this.candidacyService.GetAllManagerCandidacy();
+            viewModel.Candidacies = this.candidacyService.GetAllManagerCandidacy();
             this.ViewData["CreateActionName"] = nameof(SchoolController.AddManager);
             return this.View(viewModel);
         }
