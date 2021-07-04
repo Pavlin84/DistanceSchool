@@ -189,13 +189,13 @@
             return schoolId;
         }
 
-        public SchoolManagerHomeViewModel GetManagerHomePageData(string managerId)
+        public SchoolManagerHomeViewModel GetManagerHomePageData(string managerId, string directoryPath)
         {
             var schoolId = this.GetSchoolIdWithManager(managerId);
-            return this.GetManagerHomePageBySchholId(schoolId);
+            return this.GetManagerHomePageBySchholId(schoolId, directoryPath);
         }
 
-        public SchoolManagerHomeViewModel GetManagerHomePageBySchholId(int schoolId)
+        public SchoolManagerHomeViewModel GetManagerHomePageBySchholId(int schoolId, string directoryPath)
         {
             return this.schoolRepository.All()
                             .Where(x => x.Id == schoolId)
@@ -203,7 +203,7 @@
                             {
                                 SchoolName = x.Name,
                                 SchoolManager = x.Manager.Teacher.FirstName + " " + x.Manager.Teacher.LastName,
-                                Candidacies = this.candidacyService.GetSchoolCandidacies(schoolId, CandidacyType.Teacher),
+                                Candidacies = this.candidacyService.GetSchoolCandidacies(schoolId, directoryPath, CandidacyType.Teacher),
                             }).FirstOrDefault();
         }
 

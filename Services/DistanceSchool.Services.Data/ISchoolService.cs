@@ -30,12 +30,12 @@
 
         int GetSchoolIdWithManager(string managerId);
 
-        SchoolManagerHomeViewModel GetManagerHomePageData(string managerId);
+        SchoolManagerHomeViewModel GetManagerHomePageData(string managerId, string directoryPath);
 
         bool IsUserManger(string userId);
 
         Task<string> AddTeacherToSchool(int candidacyId);
 
-        SchoolManagerHomeViewModel GetManagerHomePageBySchholId(int schoolId);
+        SchoolManagerHomeViewModel GetManagerHomePageBySchholId(int schoolId, string directoryPath);
     }
 }

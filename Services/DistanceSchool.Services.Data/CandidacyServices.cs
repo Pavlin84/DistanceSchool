@@ -61,7 +61,6 @@
 
             var user = this.userRepository.All().FirstOrDefault(x => x.Id == inputModel.UserId);
 
-
             if (inputModel.ProfileImage != null)
             {
                 var imageDirectoryPath = $"{directoyPath}/images/PrifileImage";
@@ -83,17 +82,9 @@
             await this.candidacyRepository.SaveChangesAsync();
         }
 
-        private async Task SaveFile(IFormFile sourseFile, string directoyPath, string fileName)
+        public ICollection<CandidacyViewModel> GetAllManagerCandidacy(string directoryPath)
         {
-            Directory.CreateDirectory(directoyPath);
-
-            using Stream imageStream = new FileStream($"{directoyPath}/{fileName}", FileMode.Create);
-            await sourseFile.CopyToAsync(imageStream);
-        }
-
-        public ICollection<CandidacyViewModel> GetAllManagerCandidacy()
-        {
-            return this.GetCandidacies(null, CandidacyType.Manager);
+            return this.GetCandidacies(null, directoryPath, CandidacyType.Manager);
         }
 
         public async Task DeleteAllSchoolMangerCandidacyAsync(int schoolId)
@@ -120,13 +111,12 @@
             await this.candidacyRepository.SaveChangesAsync();
         }
 
-        public ICollection<CandidacyViewModel> GetSchoolCandidacies(int schoolId, CandidacyType candidacyType)
+        public ICollection<CandidacyViewModel> GetSchoolCandidacies(int schoolId, string directoryPath, CandidacyType candidacyType)
         {
-
-            return this.GetCandidacies(schoolId, candidacyType);
+            return this.GetCandidacies(schoolId, directoryPath, candidacyType);
         }
 
-        private ICollection<CandidacyViewModel> GetCandidacies(int? schoolId, CandidacyType candidacyType)
+        private ICollection<CandidacyViewModel> GetCandidacies(int? schoolId, string directoryPath ,CandidacyType candidacyType)
         {
             var result = this.candidacyRepository
             .All()
@@ -139,6 +129,8 @@
                 LastName = x.LastName,
                 SchoolName = x.School.Name,
                 Year = DateTime.UtcNow.Year - ((DateTime)x.BirthDate).Year,
+                ApplicationDocumenstUrl = $"/applicationDocuments/{x.ApplicationUserId}{x.ApplicationUser.ApplicationDocumentsExtension}",
+                ProfilPictutreUrl = x.ApplicationUser.ProfileImageExtension == null ? null : $"/Images/PrifileImage/{x.ApplicationUserId}{x.ApplicationUser.ProfileImageExtension}",
             }).ToList();
 
             var teacherCandidacy = this.candidacyRepository.All()
@@ -151,6 +143,8 @@
                     LastName = x.ApplicationUser.Teacher.LastName,
                     SchoolName = x.School.Name,
                     Year = DateTime.UtcNow.Year - x.ApplicationUser.Teacher.BirthDate.Year,
+                    ApplicationDocumenstUrl = $"/applicationDocuments/{x.ApplicationUserId}{x.ApplicationUser.ApplicationDocumentsExtension}",
+                    ProfilPictutreUrl = $"/Images/PrifileImage/{x.ApplicationUserId}{x.ApplicationUser.ProfileImageExtension}",
                 }).ToList();
 
             result.AddRange(teacherCandidacy);

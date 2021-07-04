@@ -35,14 +35,9 @@
         [BindNever]
         public string SchoolName { get; set; }
 
-        [Display(Name = "Профилна снимка")]
-        [FileValidation(7, "jpg", "jpeg", "png", "gif")]
-        public IFormFile ProfileImage { get; set; }
-
         [Required(ErrorMessage = GlobalConstants.CyrillicRequiredFieldMessage)]
         [Display(Name = "Автобиография")]
         [FileValidation(1, "pdf", "doc")]
         public IFormFile ApplicationDocuments { get; set; }
-
     }
 }
