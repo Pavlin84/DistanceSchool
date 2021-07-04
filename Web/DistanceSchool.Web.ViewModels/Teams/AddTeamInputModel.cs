@@ -2,12 +2,14 @@
 {
 
     using DistanceSchool.Data.Models;
+    using System.ComponentModel.DataAnnotations;
 
     public class AddTeamInputModel : TeamBaseViewModel
     {
 
-        public string SchoolId { get; set; }
+        public int SchoolId { get; set; }
 
+        [Required]
         public TeamLevel TeamLevel { get; set; }
     }
 }

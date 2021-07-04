@@ -1,14 +1,23 @@
 ﻿namespace DistanceSchool.Web.Controllers
 {
-
+    using DistanceSchool.Services.Data;
+    using DistanceSchool.Web.Infrastructure.CustomAuthorizeAttribute;
     using DistanceSchool.Web.ViewModels.Disciplines;
     using DistanceSchool.Web.ViewModels.Students;
     using DistanceSchool.Web.ViewModels.Teams;
     using Microsoft.AspNetCore.Mvc;
+    using System.Threading.Tasks;
 
     public class TeamController : BaseController
     {
-        public IActionResult OneTeam(string Id)
+        private readonly ITeamService teamService;
+
+        public TeamController(ITeamService teamService)
+        {
+            this.teamService = teamService;
+        }
+
+        public IActionResult OneTeam(string id)
         {
             var team = new OneTeamViewModel
             {
@@ -43,26 +52,30 @@
             return this.View(team);
         }
 
-        public IActionResult AddTeam(string id)
+        [AdminManagerAuthorizeAttribute]
+        public IActionResult AddTeam(int id)
         {
             var viewModel = new AddTeamInputModel
             {
-                TeamName = "9",
+                TeamName = "Име на класа",
                 SchoolId = id,
             };
 
             return this.View(viewModel);
         }
 
+        [AdminManagerAuthorizeAttribute]
         [HttpPost]
-        public IActionResult AddTeam(string teamName, string teamLevel)
+        public async Task<IActionResult> AddTeam(AddTeamInputModel team)
         {
-            var inputModel = new AddTeamInputModel
+            if (!this.ModelState.IsValid)
             {
-                TeamName = teamName,
-            };
+                return this.View();
+            }
 
-            return this.RedirectToAction("OneTeam", new { Id = "newTeamId" });
+            var teamId = await this.teamService.AddTeam(team);
+
+            return this.RedirectToAction("OneTeam", new { Id = teamId });
         }
 
         public IActionResult AddDiscipline(string id)

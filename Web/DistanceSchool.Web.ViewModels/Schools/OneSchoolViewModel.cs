@@ -21,6 +21,8 @@
 
         public bool IsUserManager { get; set; }
 
+        public bool IsTeacherInSchool { get; set; }
+
         public ICollection<TeamForOneSchoolViewModel> Teams { get; set; }
 
         public ICollection<TeacherForOneSchoolViewModel> Teachers { get; set; }

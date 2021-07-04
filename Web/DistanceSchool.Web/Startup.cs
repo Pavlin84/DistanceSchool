@@ -78,6 +78,7 @@
             services.AddTransient<IDisciplineAttributeService, DisciplineAttributeService>();
             services.AddTransient<ICheckRoleAttributeService, CheckRoleAttributeService>();
             services.AddTransient<IFileHandlerService, FileHandlerService>();
+            services.AddTransient<ITeamService, TeamService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

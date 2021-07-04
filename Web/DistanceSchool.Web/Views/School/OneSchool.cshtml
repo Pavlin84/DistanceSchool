@@ -33,7 +33,7 @@
         }
     }
     <div class="row" style="">
-        <div class="col-lg-3 rounded" style="background-color:whitesmoke">
+        <div class="col-lg-3 rounded">
             <h3 class="font-weight-bold text-md-center">Класове :</h3>
             <div class="row">
                 @foreach (var team in Model.Teams)
@@ -41,21 +41,27 @@
 
                     <div class="col-md-12 container-fluid rounded mb-2">
                         <a href="/Team/OneTeam/?Id=@team.Id" class="btn btn-light mb-2  container-fluid border-dark">
-                            <h5 class="text-md-center">@team.TeamName</h5>
-                            <p>
-                                Дисциплини:
-                                @foreach (var discipilne in team.TecherWhithDisciplines)
-                                {
-                                <p class="text-left">- @discipilne </p>
-                            }
+                            <div>
+                                <h5 class="text-md-center">@team.TeamName</h5>
+                                <p>
+                                    Дисциплини:
+                                    @foreach (var discipilne in team.TecherWhithDisciplines)
+                                    {
+                                    <p class="text-left">- @discipilne </p>
+                                }
+                                </div>
                             </a>
                         </div>
                     }
-                <div class="col-md-12 container-fluid rounded mb-2">
-                    <a href="/Team/AddTeam/@Model.Id" class="btn btn-outline-primary mb-2  container-fluid border-dark">
-                        Нов Клас
-                    </a>
-                </div>
+                @if (Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName)
+)
+                {
+                    <div class="col-md-12 container-fluid rounded mb-2">
+                        <a href="/Team/AddTeam/@Model.Id" class="btn btn-outline-primary mb-2  container-fluid border-dark">
+                            Нов Клас
+                        </a>
+                    </div>
+                }
             </div>
         </div>
 
@@ -110,7 +116,7 @@
                     </div>
                 }
             </div>
-            @if (!this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+            @if (!this.User.IsInRole(GlobalConstants.AdministratorRoleName) && !Model.IsTeacherInSchool)
             {
                 <div class="col-md-12 container-fluid rounded mb-2">
                     <a class="container-fluid btn btn-outline-success" style="background-color:navy" href="/Candidacy/TeacherCandidacy/@Model.Id">

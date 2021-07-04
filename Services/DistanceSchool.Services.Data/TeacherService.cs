@@ -91,5 +91,10 @@
 
             return viewModel;
         }
+
+        public bool IsUserTeacherToSchool(string userId, int schoolId)
+        {
+            return this.teacherRepository.All().Any(x => x.SchoolId == schoolId && x.ApplicationUserId == userId);
+        }
     }
 }

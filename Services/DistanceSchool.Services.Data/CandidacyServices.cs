@@ -116,7 +116,7 @@
             return this.GetCandidacies(schoolId, directoryPath, candidacyType);
         }
 
-        private ICollection<CandidacyViewModel> GetCandidacies(int? schoolId, string directoryPath ,CandidacyType candidacyType)
+        private ICollection<CandidacyViewModel> GetCandidacies(int? schoolId, string directoryPath, CandidacyType candidacyType)
         {
             var result = this.candidacyRepository
             .All()

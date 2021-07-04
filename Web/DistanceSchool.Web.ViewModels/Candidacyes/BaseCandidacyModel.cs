@@ -37,7 +37,7 @@
 
         [Required(ErrorMessage = GlobalConstants.CyrillicRequiredFieldMessage)]
         [Display(Name = "Автобиография")]
-        [FileValidation(1, "pdf", "doc")]
+        [FileValidation(8, "pdf", "doc")]
         public IFormFile ApplicationDocuments { get; set; }
     }
 }

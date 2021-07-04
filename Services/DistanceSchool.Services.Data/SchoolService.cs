@@ -95,17 +95,14 @@
         {
             var techers = this.teacherService.GetAllTeacherFromSchool(schoolId);
 
-            var team = new TeamForOneSchoolViewModel
-            {
-                Id = "TeamId",
-                TeamName = "TeamName",
-                TecherWhithDisciplines = new List<string>
+            var teams = this.schoolRepository.All()
+                .Where(x => x.Id == schoolId)
+                .Select(x => x.Teams.Select(y => new TeamForOneSchoolViewModel
                 {
-                    "Discipine1 - Iwan Ivanow",
-                    "Discipine2 - Peatar Petrow",
-                    "Discipine3 - TestName",
-                },
-            };
+                    Id = y.Id,
+                    TeamName = y.Name + " " + y.Level,
+                    TecherWhithDisciplines = y.TeacherTeams.Select(z => z.Discipline.Name + " " + z.Teacher.FirstName + " " + z.Teacher.LastName).ToList(),
+                })).FirstOrDefault().ToList();
 
             var school = this.schoolRepository.All()
                 .Where(x => x.Id == schoolId)
@@ -135,10 +132,7 @@
                 school.Teachers.Add(teacher);
             }
 
-            for (int i = 0; i < 5; i++)
-            {
-                school.Teams.Add(team);
-            }
+            school.Teams = teams;
 
             return school;
         }
@@ -169,7 +163,6 @@
 
             return isManager;
         }
-
 
         public async Task RemoveManagerAsync(int schoolId)
         {

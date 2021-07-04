@@ -37,5 +37,7 @@
         Task<string> AddTeacherToSchool(int candidacyId);
 
         SchoolManagerHomeViewModel GetManagerHomePageBySchholId(int schoolId, string directoryPath);
+
+       
     }
 }

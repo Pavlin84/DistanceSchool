@@ -24,7 +24,7 @@
 
         public virtual School School { get; set; }
 
-        public int MyProperty { get; set; }
+        //public int MyProperty { get; set; }
 
         public virtual ICollection<Student> Students { get; set; }
 
