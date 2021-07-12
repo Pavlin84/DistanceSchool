@@ -9,6 +9,8 @@
             this.Disciplines = new List<string>();
         }
 
+        public string UserId { get; set; }
+
         public string Id { get; set; }
 
         public string Name { get; set; }

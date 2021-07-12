@@ -6,15 +6,20 @@
     using DistanceSchool.Web.ViewModels.Students;
     using DistanceSchool.Web.ViewModels.Teams;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class TeamController : BaseController
     {
         private readonly ITeamService teamService;
+        private readonly IDisciplineService disciplineService;
 
-        public TeamController(ITeamService teamService)
+        public TeamController(ITeamService teamService, IDisciplineService disciplineService)
         {
             this.teamService = teamService;
+            this.disciplineService = disciplineService;
         }
 
         public IActionResult OneTeam(string id)
@@ -60,6 +65,15 @@
                 TeamName = "Име на класа",
                 SchoolId = id,
             };
+
+            var disciplines = this.disciplineService.GetSchoolDisciplines(id);
+
+            this.ViewBag.Disciplines = this.disciplineService.GetSchoolDisciplines(id).Select(x => new SelectListItem
+            {
+                Text = x.Key,
+                Value = x.Value.ToString(),
+            });
+
 
             return this.View(viewModel);
         }

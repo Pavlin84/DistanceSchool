@@ -20,5 +20,7 @@
         Task AddDisciplineToSchoolAsync(int disciplineId, int schoolId);
 
         Task RemoveDisciplineFromSchoolAsync(int disciplineId, int schoolId);
+
+        Dictionary<string, int> GetSchoolDisciplines(int schoolId);
     }
 }

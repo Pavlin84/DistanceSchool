@@ -98,5 +98,25 @@
             await this.schoolDisciplineRepository.SaveChangesAsync();
             await this.disciplineTeacherRepository.SaveChangesAsync();
         }
+
+        public Dictionary<string, int> GetSchoolDisciplines(int schoolId)
+        {
+            var disciplines = this.disciplineRepository.All()
+                .Where(x => x.SchoolDisciplines.Any(y => y.SchoolId == schoolId))
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                }).ToList();
+
+            var result = new Dictionary<string, int>();
+
+            foreach (var discipline in disciplines)
+            {
+                result[discipline.Name] = discipline.Id;
+            }
+
+            return result;
+        }
     }
 }

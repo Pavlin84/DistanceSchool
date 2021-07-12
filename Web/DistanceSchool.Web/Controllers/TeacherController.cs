@@ -1,7 +1,8 @@
 ﻿namespace DistanceSchool.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
-
+    using DistanceSchool.Web.Infrastructure.CustomAuthorizeAttribute;
     using DistanceSchool.Web.ViewModels.Disciplines;
     using DistanceSchool.Web.ViewModels.Teachers;
     using DistanceSchool.Web.ViewModels.Teams;
@@ -9,6 +10,7 @@
 
     public class TeacherController : BaseController
     {
+        [TeacherProfilAccess]
         public IActionResult OneTeacher(string id)
         {
 

@@ -1,8 +1,10 @@
-﻿namespace DistanceSchool.Web.ViewModels.Teams
+﻿
+namespace DistanceSchool.Web.ViewModels.Teams
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     using DistanceSchool.Data.Models;
-    using System.ComponentModel.DataAnnotations;
 
     public class AddTeamInputModel : TeamBaseViewModel
     {
@@ -11,5 +13,7 @@
 
         [Required]
         public TeamLevel TeamLevel { get; set; }
+
+        public ICollection<int> DisciplinesId { get; set; }
     }
 }

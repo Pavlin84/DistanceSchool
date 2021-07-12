@@ -85,6 +85,7 @@
                 .Select(x => new TeacherForOneSchoolViewModel
                 {
                     Id = x.Id,
+                    UserId = x.ApplicationUserId,
                     Name = x.FirstName + " " + x.LastName,
                     Disciplines = x.DisciplineTeachers.Select(x => x.Discipline.Name).ToList(),
                 }).ToList();
