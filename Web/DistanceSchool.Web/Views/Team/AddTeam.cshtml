@@ -19,10 +19,16 @@
             <select asp-for="TeamLevel" class="form-control" asp-items="@Html.GetEnumSelectList<TeamLevel>()"></select>
             <span asp-validation-for="TeamLevel" class="text-danger"></span>
         </div>
-        <div class="m-md-2">
+        @*<div class="m-md-2">
             <label asp-for="DisciplinesId"></label>
             <select asp-for="DisciplinesId" class="form-control" asp-items="ViewBag.Disciplines"></select>
-        </div>
+            <span asp-validation-for="DisciplinesId" class="text-danger"></span>
+        </div>*@
+
+        <vc:add-disciplines id="@Model.SchoolId"></vc:add-disciplines>
+
+        @await Component.InvokeAsync("AddDisciplines", new {id = Model.SchoolId })
+
         <div class="col-md-6 m-md-2">
             <input type="submit" value="Приложи" class="btn btn-light form-control m-md-2" />
         </div>
