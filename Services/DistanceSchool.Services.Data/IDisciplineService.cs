@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     using DistanceSchool.Web.ViewModels.Disciplines;
+    using DistanceSchool.Web.ViewModels.Teams;
 
     public interface IDisciplineService
     {
@@ -22,5 +23,9 @@
         Task RemoveDisciplineFromSchoolAsync(int disciplineId, int schoolId);
 
         Dictionary<string, int> GetSchoolDisciplines(int schoolId);
+
+        ICollection<DisciplineForOneTeamViewModel> GetTeamDisciplines(int id);
+
+        AddDisciplineToTeamViewModel GetAllDisciplineForTeam(int id);
     }
 }

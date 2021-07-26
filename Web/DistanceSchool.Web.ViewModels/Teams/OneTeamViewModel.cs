@@ -18,5 +18,7 @@
         public ICollection<StudentForOneTeamViewModel> Students { get; set; }
 
         public ICollection<DisciplineForOneTeamViewModel> Disciplines { get; set; }
+
+        public bool IsUserManager { get; set; }
     }
 }

@@ -1,15 +1,18 @@
 ﻿namespace DistanceSchool.Web.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+
     using DistanceSchool.Services.Data;
     using DistanceSchool.Web.Infrastructure.CustomAuthorizeAttribute;
     using DistanceSchool.Web.ViewModels.Disciplines;
     using DistanceSchool.Web.ViewModels.Students;
     using DistanceSchool.Web.ViewModels.Teams;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public class TeamController : BaseController
     {
@@ -22,14 +25,12 @@
             this.disciplineService = disciplineService;
         }
 
-        public IActionResult OneTeam(string id)
+        [Authorize]
+        public IActionResult OneTeam(int id)
         {
-            var team = new OneTeamViewModel
-            {
-                Id = "teamId",
-                TeamName = "11 A",
-                SchoolName = " I ОУ Васил Левски",
-            };
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var team = this.teamService.GetTeamData(id, userId);
 
             var student = new StudentForOneTeamViewModel
             {
@@ -37,21 +38,9 @@
                 SudentNames = "Pavlin Valeriew",
             };
 
-            var discipline = new DisciplineForOneTeamViewModel
-            {
-                Id = "123",
-                DisciplineName = "Математика",
-                TeacherNames = "Галя Манева",
-            };
-
             for (int i = 0; i < 15; i++)
             {
                 team.Students.Add(student);
-            }
-
-            for (int i = 0; i < 5; i++)
-            {
-                team.Disciplines.Add(discipline);
             }
 
             return this.View(team);
@@ -92,9 +81,18 @@
             return this.RedirectToAction("OneTeam", new { Id = teamId });
         }
 
-        public IActionResult AddDiscipline(string id)
+        [AdminManagerAuthorize]
+        public IActionResult AddDiscipline(int id)
         {
-            return this.View();
+            var viewModel = this.disciplineService.GetAllDisciplineForTeam(id);
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        [AdminManagerAuthorize]
+        public IActionResult AddDiscipline(AddDisciplinesToTeamInputModel inputModel)
+        {
+            return this.RedirectToAction(nameof(this.OneTeam), new { id = inputModel.TeamId });
         }
     }
 }

@@ -6,7 +6,7 @@
     public class TeamBaseViewModel
     {
         [BindNever]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(15)]

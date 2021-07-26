@@ -25,7 +25,7 @@
             <span asp-validation-for="DisciplinesId" class="text-danger"></span>
         </div>*@
 
-        <vc:add-disciplines id="@Model.SchoolId"></vc:add-disciplines>
+        @*<vc:add-disciplines id="@Model.SchoolId"></vc:add-disciplines>*@
 
         @await Component.InvokeAsync("AddDisciplines", new {id = Model.SchoolId })
 

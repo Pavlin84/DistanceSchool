@@ -9,21 +9,25 @@
     using DistanceSchool.Data.Common.Repositories;
     using DistanceSchool.Data.Models;
     using DistanceSchool.Web.ViewModels.Disciplines;
+    using DistanceSchool.Web.ViewModels.Teams;
 
     public class DisciplineService : IDisciplineService
     {
         private readonly IDeletableEntityRepository<Discipline> disciplineRepository;
         private readonly IRepository<SchoolDiscipline> schoolDisciplineRepository;
         private readonly IRepository<DisciplineTeacher> disciplineTeacherRepository;
+        private readonly IDeletableEntityRepository<School> schoolRepository;
 
         public DisciplineService(
             IDeletableEntityRepository<Discipline> disciplineRepository,
             IRepository<SchoolDiscipline> schoolDisciplineRepository,
-            IRepository<DisciplineTeacher> disciplineTeacherRepository)
+            IRepository<DisciplineTeacher> disciplineTeacherRepository,
+            IDeletableEntityRepository<School> schoolRepository)
         {
             this.disciplineRepository = disciplineRepository;
             this.schoolDisciplineRepository = schoolDisciplineRepository;
             this.disciplineTeacherRepository = disciplineTeacherRepository;
+            this.schoolRepository = schoolRepository;
         }
 
         public async Task CreateDisciplineAsync(CreateDisciplineInputModel inputModel)
@@ -115,6 +119,41 @@
             {
                 result[discipline.Name] = discipline.Id;
             }
+
+            return result;
+        }
+
+        public ICollection<DisciplineForOneTeamViewModel> GetTeamDisciplines(int id)
+        {
+            var disciplines = this.disciplineRepository.All()
+                .Where(x => x.TeacherTeams.Any(y => y.TeamId == id))
+                .Select(x => new DisciplineForOneTeamViewModel
+                {
+                    Id = x.Id,
+                    DisciplineName = x.Name,
+                    TeacherNames = x.TeacherTeams
+                        .Where(y => y.TeamId == id)
+                        .Select(x => x.Teacher.FirstName + " " + x.Teacher.LastName)
+                        .FirstOrDefault(),
+                }).ToList();
+
+            return disciplines;
+        }
+
+        public AddDisciplineToTeamViewModel GetAllDisciplineForTeam(int id)
+        {
+            var result = this.schoolRepository.All()
+                .Where(x => x.Teams.Any(y => y.Id == id))
+                .Select(x => new AddDisciplineToTeamViewModel
+                {
+                    Id = id,
+                    Displines = x.SchoolDisciplines.Select(y => new DisciplineForTeamViewModel
+                    {
+                        Id = y.DisciplineId,
+                        Name = y.Discipline.Name,
+                        IsStudied = y.Discipline.TeacherTeams.Any(z => z.TeamId == id),
+                    }).ToList(),
+                }).FirstOrDefault();
 
             return result;
         }

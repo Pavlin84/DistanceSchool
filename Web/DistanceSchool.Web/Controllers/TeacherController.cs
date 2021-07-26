@@ -26,9 +26,9 @@
                         Name = "Geography",
                         Teams = new List<TeamBaseViewModel>
                         {
-                            new TeamBaseViewModel { Id = "TeamId1", TeamName = "7a", },
-                            new TeamBaseViewModel { Id = "TeamId56", TeamName = "8a", },
-                            new TeamBaseViewModel { Id = "TeamId98", TeamName = "12l", },
+                            new TeamBaseViewModel { Id = 1 , TeamName = "7a", },
+                            new TeamBaseViewModel { Id = 56, TeamName = "8a", },
+                            new TeamBaseViewModel { Id = 98, TeamName = "12l", },
                         },
                     },
                     new DisciplinesForOneTeacherViewModel
@@ -36,9 +36,9 @@
                         Name = "Music",
                         Teams = new List<TeamBaseViewModel>
                         {
-                            new TeamBaseViewModel { Id = "TeamId1", TeamName = "6a", },
-                            new TeamBaseViewModel { Id = "TeamId56", TeamName = "8c", },
-                            new TeamBaseViewModel { Id = "TeamId98", TeamName = "12x", },
+                            new TeamBaseViewModel { Id = 1, TeamName = "6a", },
+                            new TeamBaseViewModel { Id = 56, TeamName = "8c", },
+                            new TeamBaseViewModel { Id = 98, TeamName = "12x", },
                         },
                     },
                 },

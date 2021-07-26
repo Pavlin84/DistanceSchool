@@ -2,7 +2,7 @@
 {
     public class DisciplineForOneTeamViewModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public string DisciplineName { get; set; }
 
