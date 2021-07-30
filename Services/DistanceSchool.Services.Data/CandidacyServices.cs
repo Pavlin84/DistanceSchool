@@ -76,12 +76,15 @@
                 await this.fileHandlerService.SaveFile(inputModel.ProfileImage, imageDirectoryPath, inputModel.UserId + imageExtension);
             }
 
-            var applicationDocumentsPath = $"{directoyPath}/applicationDocuments";
+            if (inputModel.ApplicationDocuments != null)
+            {
+                var applicationDocumentsPath = $"{directoyPath}/applicationDocuments";
 
-            var applicationDocumentExtension = Path.GetExtension(inputModel.ApplicationDocuments.FileName);
-            user.ApplicationDocumentsExtension = applicationDocumentExtension;
+                var applicationDocumentExtension = Path.GetExtension(inputModel.ApplicationDocuments.FileName);
+                user.ApplicationDocumentsExtension = applicationDocumentExtension;
 
-            await this.fileHandlerService.SaveFile(inputModel.ApplicationDocuments, applicationDocumentsPath, inputModel.UserId + applicationDocumentExtension);
+                await this.fileHandlerService.SaveFile(inputModel.ApplicationDocuments, applicationDocumentsPath, inputModel.UserId + applicationDocumentExtension);
+            }
 
             await this.candidacyRepository.AddAsync(candidacy);
             await this.userRepository.SaveChangesAsync();
