@@ -20,17 +20,23 @@
         private readonly IDeletableEntityRepository<School> schoolRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IFileHandlerService fileHandlerService;
+        private readonly IStudentService studentService;
+        private readonly IDeletableEntityRepository<Student> studentRepository;
 
         public CandidacyServices(
             IDeletableEntityRepository<Candidacy> candidacyRepository,
             IDeletableEntityRepository<School> schoolRepository,
             IDeletableEntityRepository<ApplicationUser> userRepository,
-            IFileHandlerService fileHandlerService)
+            IFileHandlerService fileHandlerService,
+            IStudentService studentService,
+            IDeletableEntityRepository<Student> studentRepository)
         {
             this.candidacyRepository = candidacyRepository;
             this.schoolRepository = schoolRepository;
             this.userRepository = userRepository;
             this.fileHandlerService = fileHandlerService;
+            this.studentService = studentService;
+            this.studentRepository = studentRepository;
         }
 
         public async Task AddCandidacyAsync(CandidacyInputModel inputModel, CandidacyType candidacyType, string directoyPath)
@@ -111,9 +117,67 @@
             await this.candidacyRepository.SaveChangesAsync();
         }
 
-        public ICollection<CandidacyViewModel> GetSchoolCandidacies(int schoolId, string directoryPath, CandidacyType candidacyType)
+        public ICollection<CandidacyViewModel> GetSchoolCandidaciesAsync(int schoolId, string directoryPath, CandidacyType candidacyType)
         {
             return this.GetCandidacies(schoolId, directoryPath, candidacyType);
+        }
+
+        public async Task AddStudentCandidacyAsync(StudentCandidacyInputModel inputModel, string directoyPath)
+        {
+            var candidacy = new Candidacy
+            {
+                ApplicationUserId = inputModel.UserId,
+                FirstName = inputModel.FirstName,
+                SecondName = inputModel.SecondName,
+                LastName = inputModel.LastName,
+                BirthDate = inputModel.BirthDate,
+                TeamId = inputModel.TeamId,
+                Type = CandidacyType.Student,
+            };
+
+            var user = this.userRepository.All().FirstOrDefault(x => x.Id == inputModel.UserId);
+
+            if (inputModel.ProfileImage != null)
+            {
+                var imageDirectoryPath = $"{directoyPath}/images/PrifileImage";
+                var imageExtension = Path.GetExtension(inputModel.ProfileImage.FileName);
+                user.ProfileImageExtension = imageExtension;
+
+                await this.fileHandlerService.SaveFile(inputModel.ProfileImage, imageDirectoryPath, inputModel.UserId + imageExtension);
+            }
+
+            var applicationDocumentsPath = $"{directoyPath}/studentApplicationDocuments";
+
+            var applicationDocumentExtension = Path.GetExtension(inputModel.ApplicationDocuments.FileName);
+            user.ApplicationDocumentsExtension = applicationDocumentExtension;
+
+            await this.fileHandlerService.SaveFile(inputModel.ApplicationDocuments, applicationDocumentsPath, inputModel.UserId + applicationDocumentExtension);
+
+            await this.candidacyRepository.AddAsync(candidacy);
+            await this.userRepository.SaveChangesAsync();
+            await this.candidacyRepository.SaveChangesAsync();
+        }
+
+        public async Task<bool> AddAllreadyStudentCandidacyAsync(StudentCandidacyInputModel inputModel)
+        {
+            var isUserStudent = this.studentService.CheckUserIsStudent(inputModel.UserId);
+            if (isUserStudent)
+            {
+                var candidacy = this.studentRepository.All().Where(x => x.ApplicationUserId == inputModel.UserId)
+                     .Select(x => new Candidacy
+                     {
+                         TeamId = inputModel.TeamId,
+                         FirstName = x.FirstName,
+                         SecondName = x.SecondName,
+                         LastName = x.LastName,
+                         BirthDate = x.BirthDate,
+                     }).FirstOrDefault();
+
+                await this.candidacyRepository.AddAsync(candidacy);
+                await this.candidacyRepository.SaveChangesAsync();
+            }
+
+            return isUserStudent;
         }
 
         private ICollection<CandidacyViewModel> GetCandidacies(int? schoolId, string directoryPath, CandidacyType candidacyType)

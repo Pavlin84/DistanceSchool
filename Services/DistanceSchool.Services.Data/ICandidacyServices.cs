@@ -17,6 +17,10 @@
 
         Task DeleteAllSchoolMangerCandidacyAsync(int schoolId);
 
-        ICollection<CandidacyViewModel> GetSchoolCandidacies(int schoolId, string directoryPath, CandidacyType candidacyType);
+        ICollection<CandidacyViewModel> GetSchoolCandidaciesAsync(int schoolId, string directoryPath, CandidacyType candidacyType);
+
+        Task AddStudentCandidacyAsync(StudentCandidacyInputModel inputModel, string directoyPath);
+
+        Task<bool> AddAllreadyStudentCandidacyAsync(StudentCandidacyInputModel inputModel);
     }
 }

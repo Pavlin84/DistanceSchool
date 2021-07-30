@@ -90,8 +90,10 @@
 
         [HttpPost]
         [AdminManagerAuthorize]
-        public IActionResult AddDiscipline(AddDisciplinesToTeamInputModel inputModel)
+        public async Task<IActionResult> AddDiscipline(AddDisciplinesToTeamInputModel inputModel)
         {
+           await this.teamService.AddDiscipineToTeam(inputModel);
+
             return this.RedirectToAction(nameof(this.OneTeam), new { id = inputModel.TeamId });
         }
     }

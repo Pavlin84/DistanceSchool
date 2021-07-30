@@ -19,11 +19,6 @@
             <select asp-for="TeamLevel" class="form-control" asp-items="@Html.GetEnumSelectList<TeamLevel>()"></select>
             <span asp-validation-for="TeamLevel" class="text-danger"></span>
         </div>
-        @*<div class="m-md-2">
-            <label asp-for="DisciplinesId"></label>
-            <select asp-for="DisciplinesId" class="form-control" asp-items="ViewBag.Disciplines"></select>
-            <span asp-validation-for="DisciplinesId" class="text-danger"></span>
-        </div>*@
 
         @*<vc:add-disciplines id="@Model.SchoolId"></vc:add-disciplines>*@
 

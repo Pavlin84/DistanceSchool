@@ -196,7 +196,7 @@
                             {
                                 SchoolName = x.Name,
                                 SchoolManager = x.Manager.Teacher.FirstName + " " + x.Manager.Teacher.LastName,
-                                Candidacies = this.candidacyService.GetSchoolCandidacies(schoolId, directoryPath, CandidacyType.Teacher),
+                                Candidacies = this.candidacyService.GetSchoolCandidaciesAsync(schoolId, directoryPath, CandidacyType.Teacher),
                             }).FirstOrDefault();
         }
 
@@ -208,6 +208,13 @@
             await this.candidacyService.DeleteCandicayAsync(candidacyId);
 
             return teacherDto.TeacherId;
+        }
+
+        public string GetSchoolNameByTeamId(int id)
+        {
+            var schoolName = this.schoolRepository.All().FirstOrDefault(x => x.Teams.Any(x => x.Id == id)).Name;
+
+            return schoolName;
         }
     }
 }

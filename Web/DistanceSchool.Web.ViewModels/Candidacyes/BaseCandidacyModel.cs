@@ -36,8 +36,7 @@
         public string SchoolName { get; set; }
 
         [Required(ErrorMessage = GlobalConstants.CyrillicRequiredFieldMessage)]
-        [Display(Name = "Автобиография")]
         [FileValidation(8, "pdf", "doc")]
-        public IFormFile ApplicationDocuments { get; set; }
+        public virtual IFormFile ApplicationDocuments { get; set; }
     }
 }

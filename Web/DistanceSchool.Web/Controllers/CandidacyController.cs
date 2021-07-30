@@ -50,7 +50,7 @@
 
             if (inputModel.IsAlreadyTeacher)
             {
-                return this.RedirectToSucsessPage(string.Format(GlobalConstants.CyrillicSucssesTeacherCandidacy, inputModel.SchoolName, 0));
+                return this.RedirectToSucsessPage(string.Format(GlobalConstants.CyrillicSucssesTeacherCandidacy, inputModel.SchoolName));
             }
 
             inputModel.CandidacyTypeMessage = GlobalConstants.CyrillicTeachererCandicdacyHedarMessage;
@@ -72,7 +72,7 @@
 
             inputModel.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             await this.candidacyServices.AddCandidacyAsync(inputModel, CandidacyType.Teacher, this.environment.WebRootPath);
-            return this.RedirectToSucsessPage(string.Format(GlobalConstants.CyrillicSucssesTeacherCandidacy, schoolName, 0));
+            return this.RedirectToSucsessPage(string.Format(GlobalConstants.CyrillicSucssesTeacherCandidacy, schoolName));
         }
 
         [Authorize]
@@ -82,7 +82,7 @@
 
             if (inputModel.IsAlreadyTeacher)
             {
-                return this.RedirectToSucsessPage(string.Format(GlobalConstants.CyrillicSucssesMangerCandidacy, inputModel.SchoolName, 0));
+                return this.RedirectToSucsessPage(string.Format(GlobalConstants.CyrillicSucssesMangerCandidacy, inputModel.SchoolName));
             }
 
             inputModel.CandidacyTypeMessage = GlobalConstants.CyrillicMangerCandicdacyHedarMessage;
@@ -104,7 +104,49 @@
 
             inputModel.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             await this.candidacyServices.AddCandidacyAsync(inputModel, CandidacyType.Manager, this.environment.WebRootPath);
-            return this.RedirectToSucsessPage(string.Format(GlobalConstants.CyrillicSucssesMangerCandidacy, schoolName, 0));
+            return this.RedirectToSucsessPage(string.Format(GlobalConstants.CyrillicSucssesMangerCandidacy, schoolName));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> StudentCandidacy(int id)
+        {
+            var inputModel = new StudentCandidacyInputModel
+            {
+                TeamId = id,
+                CandidacyTypeMessage = GlobalConstants.CyrillicStudentCandicdacyHedarMessage,
+                SchoolName = this.schoolService.GetSchoolNameByTeamId(id),
+                BirthDate = DateTime.UtcNow.AddYears(-7),
+                UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value,
+            };
+
+            if (await this.candidacyServices.AddAllreadyStudentCandidacyAsync(inputModel))
+            {
+                return this.RedirectToSucsessPage(string.Format(
+                GlobalConstants.CyrillicSucssesStudentCandidacy,
+                this.schoolService.GetSchoolNameByTeamId(inputModel.TeamId)));
+            }
+
+            return this.View(inputModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> StudentCandidacy(StudentCandidacyInputModel inputModel)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                inputModel.CandidacyTypeMessage = GlobalConstants.CyrillicStudentCandicdacyHedarMessage;
+                inputModel.SchoolName = this.schoolService.GetSchoolNameByTeamId(inputModel.TeamId);
+                return this.View(inputModel);
+            }
+
+            inputModel.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            await this.candidacyServices.AddStudentCandidacyAsync(inputModel, this.environment.WebRootPath);
+
+            return this.RedirectToSucsessPage(string.Format(
+                GlobalConstants.CyrillicSucssesStudentCandidacy,
+                this.schoolService.GetSchoolNameByTeamId(inputModel.TeamId)));
         }
 
         private IActionResult RedirectToSucsessPage(string message)

@@ -38,6 +38,6 @@
 
         SchoolManagerHomeViewModel GetManagerHomePageBySchholId(int schoolId, string directoryPath);
 
-       
+        string GetSchoolNameByTeamId(int id);
     }
 }
