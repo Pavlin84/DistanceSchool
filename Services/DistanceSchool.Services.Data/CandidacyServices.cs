@@ -138,6 +138,7 @@
                 FirstName = inputModel.FirstName,
                 SecondName = inputModel.SecondName,
                 LastName = inputModel.LastName,
+                SchoolId = this.schoolRepository.All().FirstOrDefault(x => x.Teams.Any(y => y.Id == inputModel.TeamId)).Id,
                 BirthDate = inputModel.BirthDate,
                 TeamId = inputModel.TeamId,
                 Type = CandidacyType.Student,
@@ -175,9 +176,11 @@
                      .Select(x => new Candidacy
                      {
                          TeamId = inputModel.TeamId,
+                         ApplicationUserId = inputModel.UserId,
                          FirstName = x.FirstName,
                          SecondName = x.SecondName,
                          LastName = x.LastName,
+                         SchoolId = this.schoolRepository.All().FirstOrDefault(x => x.Teams.Any(y => y.Id == inputModel.TeamId)).Id,
                          BirthDate = x.BirthDate,
                      }).FirstOrDefault();
 

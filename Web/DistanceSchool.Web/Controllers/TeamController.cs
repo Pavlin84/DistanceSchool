@@ -92,9 +92,16 @@
         [AdminManagerAuthorize]
         public async Task<IActionResult> AddDiscipline(AddDisciplinesToTeamInputModel inputModel)
         {
-           await this.teamService.AddDiscipineToTeam(inputModel);
+            await this.teamService.AddDiscipineToTeam(inputModel);
 
             return this.RedirectToAction(nameof(this.OneTeam), new { id = inputModel.TeamId });
+        }
+
+        public async Task<IActionResult> AddStudentToTeam(int id)
+        {
+           var schoolId = await this.teamService.AddStudentToTeamAsync(id);
+
+           return this.Redirect("/");
         }
     }
 }

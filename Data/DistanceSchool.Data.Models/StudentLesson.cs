@@ -2,10 +2,10 @@
 {
     using System;
 
-    public class StudentLesson
-    {
-        public int Id { get; set; }
+    using DistanceSchool.Data.Common.Models;
 
+    public class StudentLesson : BaseDeletableModel<int>
+    {
         public string StudentId { get; set; }
 
         public virtual Student Student { get; set; }

@@ -2,9 +2,10 @@
 {
     using System;
 
-    public class StudentExam
+    using DistanceSchool.Data.Common.Models;
+
+    public class StudentExam : BaseDeletableModel<int>
     {
-        public int Id { get; set; }
 
         public string StudentId { get; set; }
 

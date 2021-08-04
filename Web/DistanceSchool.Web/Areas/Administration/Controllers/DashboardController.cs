@@ -48,14 +48,14 @@
             var viewModel = new AdministrationHomeViewModel();
             viewModel.Disciplines = this.disciplineService.GetAllDiscpline();
             viewModel.Candidacies = this.candidacyService.GetAllManagerCandidacy();
-            this.ViewData["CreateActionName"] = nameof(SchoolController.AddManager);
+            this.ViewData["CreateActionName"] = nameof(SchoolController).Replace("Controller", string.Empty) + "/" + nameof(SchoolController.AddManager);
             return this.View(viewModel);
         }
 
         [AdminManagerAuthorizeAttribute]
         public IActionResult SchoolManagerHome(int id)
         {
-            this.ViewData["CreateActionName"] = nameof(SchoolController.AddTeacher);
+            this.ViewData["CreateActionName"] = nameof(SchoolController).Replace("Controller", string.Empty) + "/" + nameof(SchoolController.AddTeacher);
 
             if (id != 0)
             {
@@ -83,6 +83,8 @@
                 var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 schoolId = this.teacherService.GetSchoolId(userId);
             }
+
+            this.ViewData["CreateActionName"] = nameof(TeamController).Replace("Controller", string.Empty) + "/" + nameof(TeamController.AddStudentToTeam);
 
             var viewModel = this.candidacyService.GetAllStudetnCandidacies(schoolId);
             return this.View(viewModel);

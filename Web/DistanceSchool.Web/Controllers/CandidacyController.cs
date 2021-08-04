@@ -36,7 +36,7 @@
         }
 
         [AdminManagerAuthorizeAttribute]
-        public async Task<IActionResult> DelеteCandidacy(int id)
+        public async Task<IActionResult> DeleteCandidacy(int id)
         {
             await this.candidacyServices.DeleteCandicayAsync(id);
 
