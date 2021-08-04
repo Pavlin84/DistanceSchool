@@ -12,6 +12,8 @@
     using DistanceSchool.Data.Models;
     using DistanceSchool.Web.ViewModels.Administration.Dashboard;
     using DistanceSchool.Web.ViewModels.Candidacyes;
+    using DistanceSchool.Web.ViewModels.Managers;
+    using DistanceSchool.Web.ViewModels.Teams;
     using Microsoft.AspNetCore.Http;
 
     public class CandidacyServices : ICandidacyServices
@@ -22,6 +24,7 @@
         private readonly IFileHandlerService fileHandlerService;
         private readonly IStudentService studentService;
         private readonly IDeletableEntityRepository<Student> studentRepository;
+        private readonly IDeletableEntityRepository<Team> teamsRepository;
 
         public CandidacyServices(
             IDeletableEntityRepository<Candidacy> candidacyRepository,
@@ -29,7 +32,8 @@
             IDeletableEntityRepository<ApplicationUser> userRepository,
             IFileHandlerService fileHandlerService,
             IStudentService studentService,
-            IDeletableEntityRepository<Student> studentRepository)
+            IDeletableEntityRepository<Student> studentRepository,
+            IDeletableEntityRepository<Team> teamsRepository)
         {
             this.candidacyRepository = candidacyRepository;
             this.schoolRepository = schoolRepository;
@@ -37,6 +41,7 @@
             this.fileHandlerService = fileHandlerService;
             this.studentService = studentService;
             this.studentRepository = studentRepository;
+            this.teamsRepository = teamsRepository;
         }
 
         public async Task AddCandidacyAsync(CandidacyInputModel inputModel, CandidacyType candidacyType, string directoyPath)
@@ -91,9 +96,9 @@
             await this.candidacyRepository.SaveChangesAsync();
         }
 
-        public ICollection<CandidacyViewModel> GetAllManagerCandidacy(string directoryPath)
+        public ICollection<CandidacyViewModel> GetAllManagerCandidacy()
         {
-            return this.GetCandidacies(null, directoryPath, CandidacyType.Manager);
+            return this.GetTeacherCandidacies(null, CandidacyType.Manager);
         }
 
         public async Task DeleteAllSchoolMangerCandidacyAsync(int schoolId)
@@ -120,9 +125,9 @@
             await this.candidacyRepository.SaveChangesAsync();
         }
 
-        public ICollection<CandidacyViewModel> GetSchoolCandidaciesAsync(int schoolId, string directoryPath, CandidacyType candidacyType)
+        public ICollection<CandidacyViewModel> GetSchoolCandidaciesAsync(int schoolId, CandidacyType candidacyType)
         {
-            return this.GetCandidacies(schoolId, directoryPath, candidacyType);
+            return this.GetTeacherCandidacies(schoolId, candidacyType);
         }
 
         public async Task AddStudentCandidacyAsync(StudentCandidacyInputModel inputModel, string directoyPath)
@@ -183,7 +188,22 @@
             return isUserStudent;
         }
 
-        private ICollection<CandidacyViewModel> GetCandidacies(int? schoolId, string directoryPath, CandidacyType candidacyType)
+        public StudentCandidacyViewModel GetAllStudetnCandidacies(int schoolId)
+        {
+            var viewModel = this.schoolRepository.All()
+                .Where(x => x.Id == schoolId)
+                .Select(x => new StudentCandidacyViewModel
+                {
+                    SchoolId = x.Id,
+                    SchoolName = x.Name,
+                    SchoolManager = x.Manager.Teacher.FirstName + " " + x.Manager.Teacher.LastName,
+                    Teams = this.GetAllTeamsCandidacies(schoolId),
+                }).FirstOrDefault();
+
+            return viewModel;
+        }
+
+        private ICollection<CandidacyViewModel> GetTeacherCandidacies(int? schoolId, CandidacyType candidacyType)
         {
             var result = this.candidacyRepository
             .All()
@@ -218,6 +238,34 @@
             var orderedReuslt = result.OrderBy(x => x.SchoolName).ThenBy(x => x.FirstName).ToList();
 
             return result;
+        }
+
+        private ICollection<TeamsCandidacyViewModel> GetAllTeamsCandidacies(int schoolId)
+        {
+            var viewModel = this.teamsRepository.All()
+                .Where(x => x.SchoolId == schoolId)
+                .Select(t => new TeamsCandidacyViewModel
+                {
+                    Id = t.Id,
+                    TeamName = t.Name + " " + t.Level,
+                    Candidacies = this.candidacyRepository
+                        .All()
+                        .Where(x => x.TeamId == t.Id)
+                         .Select(x => new CandidacyViewModel
+                         {
+                             Id = x.Id,
+                             FirstName = x.FirstName,
+                             SecondName = x.SecondName,
+                             LastName = x.LastName,
+                             Year = DateTime.UtcNow.Year - ((DateTime)x.BirthDate).Year,
+                             ApplicationDocumenstUrl = $"/studentApplicationDocuments/{x.ApplicationUserId}{x.ApplicationUser.ApplicationDocumentsExtension}",
+                             ProfilPictutreUrl = x.ApplicationUser.ProfileImageExtension == null ? null : $"/Images/PrifileImage/{x.ApplicationUserId}{x.ApplicationUser.ProfileImageExtension}",
+                         }).ToList(),
+                })
+                .OrderByDescending(y => y.Candidacies.Count)
+                .ToList();
+
+            return viewModel;
         }
     }
 }

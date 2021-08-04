@@ -17,6 +17,7 @@
         private readonly IDisciplineService disciplineService;
         private readonly ICandidacyServices candidacyService;
         private readonly ISchoolService schoolService;
+        private readonly ITeacherService teacherService;
         private readonly IWebHostEnvironment environment;
 
         public DashboardController(
@@ -24,12 +25,14 @@
             IDisciplineService disciplineService,
             ICandidacyServices candidacyService,
             ISchoolService schoolService,
+            ITeacherService teacherService,
             IWebHostEnvironment environment)
         {
             this.settingsService = settingsService;
             this.disciplineService = disciplineService;
             this.candidacyService = candidacyService;
             this.schoolService = schoolService;
+            this.teacherService = teacherService;
             this.environment = environment;
         }
 
@@ -44,7 +47,7 @@
         {
             var viewModel = new AdministrationHomeViewModel();
             viewModel.Disciplines = this.disciplineService.GetAllDiscpline();
-            viewModel.Candidacies = this.candidacyService.GetAllManagerCandidacy(this.environment.WebRootPath);
+            viewModel.Candidacies = this.candidacyService.GetAllManagerCandidacy();
             this.ViewData["CreateActionName"] = nameof(SchoolController.AddManager);
             return this.View(viewModel);
         }
@@ -69,7 +72,20 @@
 
         public IActionResult ShowCv(string id)
         {
-            return this.PhysicalFile(this.environment.WebRootPath + $"/applicationDocuments/16463d1c-fba7-47c7-bf13-43cefa2aa619.pdf", "application/pdf");
+            return this.PhysicalFile(this.environment.WebRootPath + $"/applicationDocuments/{id}.pdf", "application/pdf");
+        }
+
+        [AdminManagerAuthorize]
+        public IActionResult StudentCandidacies(int schoolId)
+        {
+            if (schoolId == 0)
+            {
+                var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                schoolId = this.teacherService.GetSchoolId(userId);
+            }
+
+            var viewModel = this.candidacyService.GetAllStudetnCandidacies(schoolId);
+            return this.View(viewModel);
         }
     }
 }

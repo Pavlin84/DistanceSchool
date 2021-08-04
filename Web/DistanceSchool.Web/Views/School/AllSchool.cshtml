@@ -37,8 +37,12 @@
     }
 
 </div>
-@section PrivateSideBar{ 
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="School" asp-action="AddSchool">Ново училище</a>
-    </li>
+@if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+{
+    @section PrivateSideBar{
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="School" asp-action="AddSchool">Ново училище</a>
+        </li>
+    }
 }
+

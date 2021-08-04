@@ -97,5 +97,14 @@
         {
             return this.teacherRepository.All().Any(x => x.SchoolId == schoolId && x.ApplicationUserId == userId);
         }
+
+        public int GetSchoolId(string userId)
+        {
+            var schoolId = this.teacherRepository.All()
+                 .Where(x => x.ApplicationUserId == userId)
+                 .Select(x => x.SchoolId)
+                 .FirstOrDefault();
+            return schoolId;
+        }
     }
 }

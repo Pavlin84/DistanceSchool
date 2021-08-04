@@ -196,7 +196,7 @@
                             {
                                 SchoolName = x.Name,
                                 SchoolManager = x.Manager.Teacher.FirstName + " " + x.Manager.Teacher.LastName,
-                                Candidacies = this.candidacyService.GetSchoolCandidaciesAsync(schoolId, directoryPath, CandidacyType.Teacher),
+                                Candidacies = this.candidacyService.GetSchoolCandidaciesAsync(schoolId, CandidacyType.Teacher),
                             }).FirstOrDefault();
         }
 
