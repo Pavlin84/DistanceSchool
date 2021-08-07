@@ -25,10 +25,14 @@
     {
         public static int Main(string[] args)
         {
-            var test = "klkfj-fsfsas-fasfs";
+            double result = (13 / 4.0);
+            var test = Math.Ceiling(result);
 
-            var result = test.Split("-", 2, StringSplitOptions.RemoveEmptyEntries);
-            Console.WriteLine(result[0] + " * " + result[1]);
+            Console.WriteLine(result);
+            Console.WriteLine(test);
+
+            //var result = test.Split("-", 2, StringSplitOptions.RemoveEmptyEntries);
+            //Console.WriteLine(result[0] + " * " + result[1]);
 
             Console.WriteLine($"{typeof(Program).Namespace} ({string.Join(" ", args)}) starts working...");
             var serviceCollection = new ServiceCollection();

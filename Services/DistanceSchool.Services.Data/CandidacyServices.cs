@@ -202,7 +202,7 @@
                     SchoolManager = x.Manager.Teacher.FirstName + " " + x.Manager.Teacher.LastName,
                     Teams = this.GetAllTeamsCandidacies(schoolId, page),
                     CurentPage = page,
-                    LastPage = x.Teams.Count / 4,
+                    LastPage = (int)Math.Ceiling((x.Teams.Count / 4.0) - 1),
                 }).FirstOrDefault();
 
             return viewModel;
