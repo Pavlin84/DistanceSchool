@@ -25,6 +25,6 @@
 
         Task<bool> AddAllreadyStudentCandidacyAsync(StudentCandidacyInputModel inputModel);
 
-        StudentCandidacyViewModel GetAllStudetnCandidacies(int schoolId);
+        StudentCandidacyViewModel GetAllStudetnCandidacies(int schoolId, int page);
     }
 }

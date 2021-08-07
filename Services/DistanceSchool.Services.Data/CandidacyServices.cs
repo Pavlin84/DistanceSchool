@@ -191,7 +191,7 @@
             return isUserStudent;
         }
 
-        public StudentCandidacyViewModel GetAllStudetnCandidacies(int schoolId)
+        public StudentCandidacyViewModel GetAllStudetnCandidacies(int schoolId, int page)
         {
             var viewModel = this.schoolRepository.All()
                 .Where(x => x.Id == schoolId)
@@ -200,7 +200,9 @@
                     SchoolId = x.Id,
                     SchoolName = x.Name,
                     SchoolManager = x.Manager.Teacher.FirstName + " " + x.Manager.Teacher.LastName,
-                    Teams = this.GetAllTeamsCandidacies(schoolId),
+                    Teams = this.GetAllTeamsCandidacies(schoolId, page),
+                    CurentPage = page,
+                    LastPage = x.Teams.Count / 4,
                 }).FirstOrDefault();
 
             return viewModel;
@@ -243,7 +245,7 @@
             return result;
         }
 
-        private ICollection<TeamsCandidacyViewModel> GetAllTeamsCandidacies(int schoolId)
+        private ICollection<TeamsCandidacyViewModel> GetAllTeamsCandidacies(int schoolId, int page)
         {
             var viewModel = this.teamsRepository.All()
                 .Where(x => x.SchoolId == schoolId)
@@ -268,7 +270,17 @@
                 .OrderByDescending(y => y.Candidacies.Count)
                 .ToList();
 
-            return viewModel;
+            var result = new List<TeamsCandidacyViewModel>();
+            var curentLastIndex = (page + 1) * 4;
+            var lastIndex = viewModel.Count;
+            var endPage = curentLastIndex < lastIndex ? curentLastIndex : lastIndex;
+
+            for (int i = page * 4; i < endPage; i++)
+            {
+                result.Add(viewModel[i]);
+            }
+
+            return result;
         }
     }
 }

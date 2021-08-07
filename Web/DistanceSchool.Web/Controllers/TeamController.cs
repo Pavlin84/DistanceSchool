@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     using DistanceSchool.Services.Data;
+    using DistanceSchool.Web.Areas.Administration.Controllers;
     using DistanceSchool.Web.Infrastructure.CustomAuthorizeAttribute;
     using DistanceSchool.Web.ViewModels.Disciplines;
     using DistanceSchool.Web.ViewModels.Students;
@@ -97,11 +98,14 @@
             return this.RedirectToAction(nameof(this.OneTeam), new { id = inputModel.TeamId });
         }
 
+        [AdminManagerAuthorize]
         public async Task<IActionResult> AddStudentToTeam(int id)
         {
-           var schoolId = await this.teamService.AddStudentToTeamAsync(id);
+            var schoolId = await this.teamService.AddStudentToTeamAsync(id);
+            var urlPatern = $"/Administration/{nameof(DashboardController).Replace("Controller", string.Empty)}/" +
+                $"{nameof(DashboardController.StudentCandidacies)}?SchoolId={schoolId}";
 
-           return this.Redirect("/");
+            return this.Redirect(urlPatern);
         }
     }
 }

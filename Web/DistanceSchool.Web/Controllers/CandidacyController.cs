@@ -36,11 +36,16 @@
         }
 
         [AdminManagerAuthorizeAttribute]
-        public async Task<IActionResult> DeleteCandidacy(int id)
+        public async Task<IActionResult> DeleteCandidacy(int id, string redirectUrl)
         {
             await this.candidacyServices.DeleteCandicayAsync(id);
 
-            return this.Redirect("/");
+            if (string.IsNullOrWhiteSpace(redirectUrl))
+            {
+                return this.Redirect("/");
+            }
+
+            return this.Redirect(redirectUrl);
         }
 
         [Authorize]

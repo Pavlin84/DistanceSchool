@@ -194,6 +194,7 @@
                             .Where(x => x.Id == schoolId)
                             .Select(x => new SchoolManagerHomeViewModel
                             {
+                                SchoolId = x.Id,
                                 SchoolName = x.Name,
                                 SchoolManager = x.Manager.Teacher.FirstName + " " + x.Manager.Teacher.LastName,
                                 Candidacies = this.candidacyService.GetSchoolCandidaciesAsync(schoolId, CandidacyType.Teacher),

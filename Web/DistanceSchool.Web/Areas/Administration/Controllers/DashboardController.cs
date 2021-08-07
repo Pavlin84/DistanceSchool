@@ -56,6 +56,8 @@
         public IActionResult SchoolManagerHome(int id)
         {
             this.ViewData["CreateActionName"] = nameof(SchoolController).Replace("Controller", string.Empty) + "/" + nameof(SchoolController.AddTeacher);
+            this.ViewData["redirectUrl"] = id != 0 ? $"&redirectUrl=/Administration/Dashboard/{nameof(this.SchoolManagerHome)}?Id={id}"
+                : $"&redirectUrl=/Administration/Dashboard/{nameof(this.SchoolManagerHome)}";
 
             if (id != 0)
             {
@@ -76,8 +78,11 @@
         }
 
         [AdminManagerAuthorize]
-        public IActionResult StudentCandidacies(int schoolId)
+        public IActionResult StudentCandidacies(int schoolId, int page)
         {
+            this.ViewData["redirectUrl"] = schoolId != 0 ? $"&redirectUrl=/Administration/Dashboard/{nameof(this.StudentCandidacies)}?SchoolId={schoolId}"
+                : $"&redirectUrl=/Administration/Dashboard/{nameof(this.StudentCandidacies)}";
+
             if (schoolId == 0)
             {
                 var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -86,7 +91,7 @@
 
             this.ViewData["CreateActionName"] = nameof(TeamController).Replace("Controller", string.Empty) + "/" + nameof(TeamController.AddStudentToTeam);
 
-            var viewModel = this.candidacyService.GetAllStudetnCandidacies(schoolId);
+            var viewModel = this.candidacyService.GetAllStudetnCandidacies(schoolId, page);
             return this.View(viewModel);
         }
     }
