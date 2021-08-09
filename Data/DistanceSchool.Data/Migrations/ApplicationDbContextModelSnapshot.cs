@@ -823,7 +823,7 @@ namespace DistanceSchool.Data.Migrations
             modelBuilder.Entity("DistanceSchool.Data.Models.Candidacy", b =>
                 {
                     b.HasOne("DistanceSchool.Data.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
+                        .WithMany("Candidacies")
                         .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("DistanceSchool.Data.Models.School", "School")
@@ -1051,6 +1051,8 @@ namespace DistanceSchool.Data.Migrations
 
             modelBuilder.Entity("DistanceSchool.Data.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("Candidacies");
+
                     b.Navigation("Claims");
 
                     b.Navigation("Logins");
