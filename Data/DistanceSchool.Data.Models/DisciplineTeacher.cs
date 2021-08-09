@@ -1,8 +1,9 @@
 ﻿namespace DistanceSchool.Data.Models
 {
-    public class DisciplineTeacher
+    using DistanceSchool.Data.Common.Models;
+
+    public class DisciplineTeacher : BaseDeletableModel<int>
     {
-        public int Id { get; set; }
 
         public int DisciplineId { get; set; }
 

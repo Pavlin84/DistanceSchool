@@ -33,17 +33,6 @@
 
             var team = this.teamService.GetTeamData(id, userId);
 
-            var student = new StudentForOneTeamViewModel
-            {
-                Id = "studentId",
-                SudentNames = "Pavlin Valeriew",
-            };
-
-            for (int i = 0; i < 15; i++)
-            {
-                team.Students.Add(student);
-            }
-
             return this.View(team);
         }
 
@@ -83,9 +72,9 @@
         }
 
         [AdminManagerAuthorize]
-        public IActionResult AddDiscipline(int id)
+        public IActionResult AddDiscipline(int teamId)
         {
-            var viewModel = this.disciplineService.GetAllDisciplineForTeam(id);
+            var viewModel = this.disciplineService.GetAllDisciplineForTeam(teamId);
             return this.View(viewModel);
         }
 

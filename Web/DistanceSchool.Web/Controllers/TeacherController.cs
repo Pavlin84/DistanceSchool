@@ -2,6 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+    using DistanceSchool.Services.Data;
     using DistanceSchool.Web.Infrastructure.CustomAuthorizeAttribute;
     using DistanceSchool.Web.ViewModels.Disciplines;
     using DistanceSchool.Web.ViewModels.Teachers;
@@ -10,13 +13,23 @@
 
     public class TeacherController : BaseController
     {
-        [TeacherProfilAccess]
-        public IActionResult OneTeacher(string id)
-        {
+        private readonly ITeacherService teacherService;
 
-            var inputModel = new OneTeachetViewModel
+        public TeacherController(ITeacherService teacherService)
+        {
+            this.teacherService = teacherService;
+        }
+
+        [TeacherProfilAccess]
+        public IActionResult OneTeacher(string teacherId)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var inputModel = this.teacherService.GetTeacherData(teacherId);
+
+            var inputModelTest = new OneTeacherViewModel
             {
-                Id = id,
+                Id = teacherId,
                 TeacherNames = "Ivan Spasov",
                 SchoolName = "ОУ Васил Левски",
                 Disciplines = new List<DisciplinesForOneTeacherViewModel>
@@ -44,7 +57,22 @@
                 },
             };
 
-            return this.View(inputModel);
+            return this.View(inputModelTest);
+        }
+
+        public IActionResult AddDiscipline(string teacherId)
+        {
+            var viewModel = this.teacherService.GetTeacherDisciplines(teacherId);
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddDiscipline(AddDisciplineToTeacherInputModel inputModel)
+        {
+            await this.teacherService.AddDisciplinesToTeacherAsync(inputModel);
+
+            return this.Redirect($"/{this.GetType().Name.Replace("Controller", string.Empty)}" +
+                $"/{nameof(TeacherController.OneTeacher)}?TeacherId={inputModel.TeacherId}");
         }
     }
 }

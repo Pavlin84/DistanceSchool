@@ -140,14 +140,14 @@
             return disciplines;
         }
 
-        public AddDisciplineToTeamViewModel GetAllDisciplineForTeam(int id)
+        public DisciplineHandlerViewModel GetAllDisciplineForTeam(int id)
         {
             var result = this.schoolRepository.All()
                 .Where(x => x.Teams.Any(y => y.Id == id))
-                .Select(x => new AddDisciplineToTeamViewModel
+                .Select(x => new DisciplineHandlerViewModel
                 {
-                    Id = id,
-                    Displines = x.SchoolDisciplines.Select(y => new DisciplineForTeamViewModel
+                    Id = id.ToString(),
+                    Displines = x.SchoolDisciplines.Select(y => new DisciplineViewModel
                     {
                         Id = y.DisciplineId,
                         Name = y.Discipline.Name,

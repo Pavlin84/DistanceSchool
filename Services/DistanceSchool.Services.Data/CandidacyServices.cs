@@ -193,6 +193,11 @@
 
         public StudentCandidacyViewModel GetAllStudetnCandidacies(int schoolId, int page)
         {
+            if (page == 0)
+            {
+                page++;
+            }
+
             var viewModel = this.schoolRepository.All()
                 .Where(x => x.Id == schoolId)
                 .Select(x => new StudentCandidacyViewModel
@@ -202,7 +207,7 @@
                     SchoolManager = x.Manager.Teacher.FirstName + " " + x.Manager.Teacher.LastName,
                     Teams = this.GetAllTeamsCandidacies(schoolId, page),
                     CurentPage = page,
-                    LastPage = (int)Math.Ceiling((x.Teams.Count / 4.0) - 1),
+                    LastPage = (int)Math.Ceiling(x.Teams.Count / 4.0),
                 }).FirstOrDefault();
 
             return viewModel;
@@ -271,11 +276,11 @@
                 .ToList();
 
             var result = new List<TeamsCandidacyViewModel>();
-            var curentLastIndex = (page + 1) * 4;
+            var curentLastIndex = page * 4;
             var lastIndex = viewModel.Count;
             var endPage = curentLastIndex < lastIndex ? curentLastIndex : lastIndex;
 
-            for (int i = page * 4; i < endPage; i++)
+            for (int i = (page - 1) * 4; i < endPage; i++)
             {
                 result.Add(viewModel[i]);
             }

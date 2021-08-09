@@ -31,7 +31,6 @@
         [Required]
         public DateTime BirthDate { get; set; }
 
-        [ForeignKey(nameof(School))]
         public int SchoolId { get; set; }
 
         public virtual School School { get; set; }

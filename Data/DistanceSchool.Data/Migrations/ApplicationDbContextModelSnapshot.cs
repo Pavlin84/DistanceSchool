@@ -256,8 +256,20 @@ namespace DistanceSchool.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("DisciplineId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("TeacherId")
                         .HasColumnType("nvarchar(450)");
@@ -265,6 +277,8 @@ namespace DistanceSchool.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DisciplineId");
+
+                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("TeacherId");
 

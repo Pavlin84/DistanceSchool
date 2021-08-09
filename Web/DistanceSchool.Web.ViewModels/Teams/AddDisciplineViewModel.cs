@@ -5,7 +5,7 @@
     public class AddDisciplineViewModel : TeamBaseViewModel
     {
         public ICollection<string> StudyDisciplines { get; set; }
-        public ICollection<string> NotStudyDisciplines { get; set; }
 
+        public ICollection<string> NotStudyDisciplines { get; set; }
     }
 }

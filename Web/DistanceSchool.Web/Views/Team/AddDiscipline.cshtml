@@ -1,32 +1,6 @@
-﻿@model DistanceSchool.Web.ViewModels.Teams.AddDisciplineToTeamViewModel
+﻿@model DistanceSchool.Web.ViewModels.Disciplines.DisciplineHandlerViewModel
 @{
     ViewData["Title"] = "AddDisciplines";
 }
-<h3>Управление на дисциплините</h3>
-<form method="post" class="col-md-6 offset-3 rounded">
-    <input type="hidden" name="TeamId" value="@Model.Id" />
-    <div class="form-group rounded" style="background-color:aquamarine">
-        @foreach (var discipline in Model.Displines)
-        {
-            if (discipline.IsStudied)
-            {
-                <div class="form-check offset-1">
-                    <input class="form-check-input form-group" type="checkbox" value="@discipline.Id" name="DisciplinesId" id="flexCheckChecked" checked>
-                    <label class="form-check-label" for="flexCheckChecked">
-                        @discipline.Name
-                    </label>
-                </div>
-            }
-            else
-            {
-                <div class="form-check offset-1">
-                    <input class="form-check-input form-group" type="checkbox" name="DisciplinesId" value="@discipline.Id" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
-                        @discipline.Name
-                    </label>
-                </div>
-            }
-        }
-        <input type="submit" value="Промени" class="btn btn-success m-md-2 text-md-center" />
-    </div>
-</form>
+
+<partial name="_DisciplineHandlerPartial" model="@Model" />

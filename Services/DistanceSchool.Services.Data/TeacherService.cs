@@ -8,19 +8,26 @@
 
     using DistanceSchool.Data.Common.Repositories;
     using DistanceSchool.Data.Models;
+    using DistanceSchool.Web.ViewModels.Disciplines;
     using DistanceSchool.Web.ViewModels.Teachers;
 
     public class TeacherService : ITeacherService
     {
         private readonly IDeletableEntityRepository<Teacher> teacherRepository;
         private readonly IDeletableEntityRepository<Candidacy> candidacyRepository;
+        private readonly IDeletableEntityRepository<School> schoolRepository;
+        private readonly IDeletableEntityRepository<DisciplineTeacher> disciplineTeacherRepository;
 
         public TeacherService(
             IDeletableEntityRepository<Teacher> teacherRepository,
-            IDeletableEntityRepository<Candidacy> candidacyRepository)
+            IDeletableEntityRepository<Candidacy> candidacyRepository,
+            IDeletableEntityRepository<School> schoolRepository,
+            IDeletableEntityRepository<DisciplineTeacher> disciplineTeacherRepository)
         {
             this.teacherRepository = teacherRepository;
             this.candidacyRepository = candidacyRepository;
+            this.schoolRepository = schoolRepository;
+            this.disciplineTeacherRepository = disciplineTeacherRepository;
         }
 
         public bool IsTeacher(string userId)
@@ -105,6 +112,54 @@
                  .Select(x => x.SchoolId)
                  .FirstOrDefault();
             return schoolId;
+        }
+
+        public OneTeacherViewModel GetTeacherData(string id)
+        {
+            return new OneTeacherViewModel();
+        }
+
+        public DisciplineHandlerViewModel GetTeacherDisciplines(string teacherId)
+        {
+            var disciplinies = this.schoolRepository.All()
+                .Where(x => x.Teachers.Any(y => y.Id == teacherId))
+                .Select(x => new DisciplineHandlerViewModel
+                {
+                    Id = teacherId,
+                    Displines = x.SchoolDisciplines.Select(y => new DisciplineViewModel
+                    {
+                        Id = y.DisciplineId,
+                        Name = y.Discipline.Name,
+                        IsStudied = y.Discipline.DisciplineTeachers.Any(z => z.TeacherId == teacherId),
+                    }).ToList(),
+
+                }).FirstOrDefault();
+
+            return disciplinies;
+        }
+
+        public async Task AddDisciplinesToTeacherAsync(AddDisciplineToTeacherInputModel inputModel)
+        {
+
+            var disciplines = this.disciplineTeacherRepository.All().Where(x => x.TeacherId == inputModel.TeacherId).ToList();
+
+            foreach (var discipline in disciplines)
+            {
+                if (!inputModel.DisciplinesId.Contains(discipline.DisciplineId))
+                {
+                    discipline.IsDeleted = true;
+                }
+            }
+
+            foreach (var disciplineId in inputModel.DisciplinesId)
+            {
+                if (!disciplines.Any(x => x.DisciplineId == disciplineId))
+                {
+                    await this.disciplineTeacherRepository.AddAsync(new DisciplineTeacher { DisciplineId = disciplineId, TeacherId = inputModel.TeacherId });
+                }
+            }
+
+            await this.disciplineTeacherRepository.SaveChangesAsync();
         }
     }
 }

@@ -27,7 +27,7 @@
             }
             @if (Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName))
             {
-                <a href="/Team/AddDiscipline/@Model.Id" class="btn btn-outline-primary col-md-3 rounded m-1 container-fluid text-md-center" style="background-color:aqua">
+                <a href="/Team/AddDiscipline/?TeamId=@Model.Id" class="btn btn-outline-primary col-md-3 rounded m-1 container-fluid text-md-center" style="background-color:aqua">
                     <h5 class="text-md-center">Управлявай дисциплините</h5>
                 </a>
             }

@@ -26,6 +26,6 @@
 
         ICollection<DisciplineForOneTeamViewModel> GetTeamDisciplines(int id);
 
-        AddDisciplineToTeamViewModel GetAllDisciplineForTeam(int id);
+        DisciplineHandlerViewModel GetAllDisciplineForTeam(int id);
     }
 }
