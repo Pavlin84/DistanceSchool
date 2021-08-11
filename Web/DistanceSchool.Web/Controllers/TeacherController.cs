@@ -25,41 +25,12 @@
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var inputModel = this.teacherService.GetTeacherData(teacherId);
+            var inputModel = this.teacherService.GetTeacherData(teacherId, userId);
 
-            var inputModelTest = new OneTeacherViewModel
-            {
-                Id = teacherId,
-                TeacherNames = "Ivan Spasov",
-                SchoolName = "ОУ Васил Левски",
-                Disciplines = new List<DisciplinesForOneTeacherViewModel>
-                {
-                    new DisciplinesForOneTeacherViewModel
-                    {
-                        Name = "Geography",
-                        Teams = new List<TeamBaseViewModel>
-                        {
-                            new TeamBaseViewModel { Id = 1 , TeamName = "7a", },
-                            new TeamBaseViewModel { Id = 56, TeamName = "8a", },
-                            new TeamBaseViewModel { Id = 98, TeamName = "12l", },
-                        },
-                    },
-                    new DisciplinesForOneTeacherViewModel
-                    {
-                        Name = "Music",
-                        Teams = new List<TeamBaseViewModel>
-                        {
-                            new TeamBaseViewModel { Id = 1, TeamName = "6a", },
-                            new TeamBaseViewModel { Id = 56, TeamName = "8c", },
-                            new TeamBaseViewModel { Id = 98, TeamName = "12x", },
-                        },
-                    },
-                },
-            };
-
-            return this.View(inputModelTest);
+            return this.View(inputModel);
         }
 
+        [AdminManagerAuthorize]
         public IActionResult AddDiscipline(string teacherId)
         {
             var viewModel = this.teacherService.GetTeacherDisciplines(teacherId);
@@ -67,6 +38,7 @@
         }
 
         [HttpPost]
+        [AdminManagerAuthorize]
         public async Task<IActionResult> AddDiscipline(AddDisciplineToTeacherInputModel inputModel)
         {
             await this.teacherService.AddDisciplinesToTeacherAsync(inputModel);

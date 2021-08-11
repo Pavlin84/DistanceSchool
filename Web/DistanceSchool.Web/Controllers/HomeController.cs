@@ -16,15 +16,18 @@
         private readonly IDisciplineService disciplineService;
         private readonly ICandidacyServices candidacyServices;
         private readonly ISchoolService schoolService;
+        private readonly ITeacherService teacherService;
 
         public HomeController(
             IDisciplineService disciplineService,
             ICandidacyServices candidacyServices,
-            ISchoolService schoolService)
+            ISchoolService schoolService,
+            ITeacherService teacherService)
         {
             this.disciplineService = disciplineService;
             this.candidacyServices = candidacyServices;
             this.schoolService = schoolService;
+            this.teacherService = teacherService;
         }
 
         public IActionResult Index()
@@ -43,6 +46,13 @@
             if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
             {
                 return this.Redirect("/Administration/Dashboard/AdminHome");
+            }
+
+            var teacherId = this.teacherService.GetTeacherId(userId);
+
+            if (teacherId != null)
+            {
+                return this.Redirect($"/Teacher/OneTeacher?TeacherId={teacherId}");
             }
 
             return this.View();

@@ -1,12 +1,13 @@
 ﻿@model DistanceSchool.Web.ViewModels.Teachers.OneTeacherViewModel
+@using DistanceSchool.Common
 
 @{
     ViewData["Title"] = "Teacher " + Model.TeacherNames;
 }
 
 <div class="row mb-2" style="background-color:azure">
-    <h1 class="col-md-8 rounded"><i class="fas fa-school"> @Model.SchoolName</i></h1>
-    <h1 class="col-md-4 text-center rounded"><i class="fas fa-chalkboard-teacher"></i> @Model.TeacherNames</h1>
+    <h1 class="col-md-6 rounded"><i class="fas fa-school"> @Model.SchoolName</i></h1>
+    <h1 class="col-md-6 text-center rounded"><i class="fas fa-chalkboard-teacher"></i> @Model.TeacherNames</h1>
 </div>
 <div class="row" style="background-color:aquamarine">
     @foreach (var discipline in Model.Disciplines)
@@ -21,9 +22,9 @@
             </ul>
         </div>
     }
-    @if (true)
+    @if(Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName))
     {
-        <div class="col-md-10 container-fluid rounded mb-2">
+    <div class="col-md-10 container-fluid rounded mb-2">
         <a href="/Teacher/AddDiscipline?TeacherId=@Model.Id" class="btn btn-light mb-2  container-fluid border-dark">
             <div>
                 <h5 class="text-md-center">Добави Дисциплина</h5>
@@ -31,5 +32,5 @@
         </a>
     </div>
     }
-   
+
 </div>

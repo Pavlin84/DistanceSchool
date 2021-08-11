@@ -10,6 +10,7 @@
     using DistanceSchool.Data.Models;
     using DistanceSchool.Web.ViewModels.Disciplines;
     using DistanceSchool.Web.ViewModels.Teachers;
+    using DistanceSchool.Web.ViewModels.Teams;
 
     public class TeacherService : ITeacherService
     {
@@ -114,9 +115,28 @@
             return schoolId;
         }
 
-        public OneTeacherViewModel GetTeacherData(string id)
+        public OneTeacherViewModel GetTeacherData(string id, string userId)
         {
-            return new OneTeacherViewModel();
+            var viewModel = this.teacherRepository.All()
+                .Where(x => x.Id == id)
+                .Select(x => new OneTeacherViewModel
+                {
+                    Id = id,
+                    TeacherNames = x.FirstName + " " + x.SecondName.Remove(1) + "." + " " + x.LastName,
+                    SchoolName = x.School.Name,
+                    IsUserManager = x.School.ManagerId == userId,
+                    Disciplines = x.DisciplineTeachers.Select(y => new DisciplinesForOneTeacherViewModel
+                    {
+                        Name = y.Discipline.Name,
+                        Teams = y.Discipline.TeacherTeams.Where(z => z.TeacherId == id).Select(z => new TeamBaseViewModel
+                        {
+                            Id = z.Team.Id,
+                            TeamName = z.Team.Name,
+                        }).ToList(),
+                    }).ToList(),
+                }).FirstOrDefault();
+
+            return viewModel;
         }
 
         public DisciplineHandlerViewModel GetTeacherDisciplines(string teacherId)
@@ -160,6 +180,12 @@
             }
 
             await this.disciplineTeacherRepository.SaveChangesAsync();
+        }
+
+        public string GetTeacherId(string userId)
+        {
+            var teacher = this.teacherRepository.All().FirstOrDefault(x => x.ApplicationUserId == userId);
+            return teacher.Id;
         }
     }
 }
