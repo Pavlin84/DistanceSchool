@@ -18,17 +18,20 @@
         private readonly IDeletableEntityRepository<Candidacy> candidacyRepository;
         private readonly IDeletableEntityRepository<School> schoolRepository;
         private readonly IDeletableEntityRepository<DisciplineTeacher> disciplineTeacherRepository;
+        private readonly IDeletableEntityRepository<TeacherTeam> teacherTeamRepository;
 
         public TeacherService(
             IDeletableEntityRepository<Teacher> teacherRepository,
             IDeletableEntityRepository<Candidacy> candidacyRepository,
             IDeletableEntityRepository<School> schoolRepository,
-            IDeletableEntityRepository<DisciplineTeacher> disciplineTeacherRepository)
+            IDeletableEntityRepository<DisciplineTeacher> disciplineTeacherRepository,
+            IDeletableEntityRepository<TeacherTeam> teacherTeamRepository)
         {
             this.teacherRepository = teacherRepository;
             this.candidacyRepository = candidacyRepository;
             this.schoolRepository = schoolRepository;
             this.disciplineTeacherRepository = disciplineTeacherRepository;
+            this.teacherTeamRepository = teacherTeamRepository;
         }
 
         public bool IsTeacher(string userId)
@@ -185,7 +188,34 @@
         public string GetTeacherId(string userId)
         {
             var teacher = this.teacherRepository.All().FirstOrDefault(x => x.ApplicationUserId == userId);
-            return teacher.Id;
+
+            var id = teacher == null ? null : teacher.Id;
+
+            return id;
+        }
+
+        public ShiftsTecherViewModel ShiftsTecher(int teacherTeamId)
+        {
+            var teacherTeam = this.teacherTeamRepository.All().FirstOrDefault(x => x.Id == teacherTeamId);
+
+            var schoolId = this.schoolRepository.AllAsNoTracking()
+                .FirstOrDefault(x => x.Teams.Any(y => y.TeacherTeams.Any(z => z.Id == teacherTeamId))).Id;
+
+            var viewModel = new ShiftsTecherViewModel
+            {
+                TeacherTeamId = teacherTeamId,
+                Teachers = this.teacherRepository.AllAsNoTracking()
+                .Where(x => x.SchoolId == schoolId
+                        && x.DisciplineTeachers.Any(y => y.DisciplineId == teacherTeam.DisciplineId)
+                        )
+                .Select(x => new TeacherViewModel
+                {
+                    Names = $"{x.FirstName} {x.SecondName} {x.LastName}",
+                    Id = x.Id,
+                }).ToList(),
+            };
+
+            return viewModel;
         }
     }
 }

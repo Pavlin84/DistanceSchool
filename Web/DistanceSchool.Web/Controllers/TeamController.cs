@@ -18,11 +18,13 @@
     public class TeamController : BaseController
     {
         private readonly ITeamService teamService;
+        private readonly ITeacherService teacherService;
         private readonly IDisciplineService disciplineService;
 
-        public TeamController(ITeamService teamService, IDisciplineService disciplineService)
+        public TeamController(ITeamService teamService, ITeacherService teacherService, IDisciplineService disciplineService)
         {
             this.teamService = teamService;
+            this.teacherService = teacherService;
             this.disciplineService = disciplineService;
         }
 
@@ -95,6 +97,26 @@
                 $"{nameof(DashboardController.StudentCandidacies)}?SchoolId={schoolId}";
 
             return this.Redirect(urlPatern);
+        }
+
+        public IActionResult ShiftsTecher(int teacherTeamId)
+        {
+            var viewModel = this.teacherService.ShiftsTecher(teacherTeamId);
+
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ShiftsTecher(int teacherTeamId, string teacherId)
+        {
+            if (teacherId == null)
+            {
+                return this.Redirect($"/Team/ShiftsTecher?TeacherTeamId={teacherTeamId}");
+            }
+
+            await this.teamService.ChangeTeacher(teacherTeamId, teacherId);
+
+            return this.Redirect($"/Teacher/OneTeacher?TeacherId={teacherId}");
         }
     }
 }

@@ -129,7 +129,7 @@
                 .Where(x => x.TeacherTeams.Any(y => y.TeamId == id))
                 .Select(x => new DisciplineForOneTeamViewModel
                 {
-                    Id = x.Id,
+                    Id = x.TeacherTeams.FirstOrDefault(y => y.TeamId == id).Id,
                     DisciplineName = x.Name,
                     TeacherNames = x.TeacherTeams
                         .Where(y => y.TeamId == id)
