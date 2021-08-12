@@ -69,7 +69,7 @@
 
                 teacherDto = new AddTeacherDtoModel
                 {
-                    UserId = teacher.ApplicationUserId,
+                    UserId = teacher.Id,
                     SchoolId = teacher.SchoolId,
                 };
 
@@ -83,6 +83,20 @@
         public async Task ChangeSchoolIdAsync(string id, int schoolId)
         {
             var teacher = this.teacherRepository.All().FirstOrDefault(x => x.ApplicationUserId == id);
+
+            if (teacher.SchoolId != 0)
+            {
+                var teacherTeams = this.teacherTeamRepository.All()
+                    .Where(x => x.Teacher.ApplicationUserId == id).ToList();
+
+                foreach (var teacherTeam in teacherTeams)
+                {
+                    teacherTeam.TeacherId = null;
+                }
+
+                await this.teacherTeamRepository.SaveChangesAsync();
+            }
+
             teacher.SchoolId = schoolId;
 
             await this.teacherRepository.SaveChangesAsync();
@@ -98,7 +112,9 @@
                     Id = x.Id,
                     UserId = x.ApplicationUserId,
                     Name = x.FirstName + " " + x.LastName,
-                    Disciplines = x.DisciplineTeachers.Select(x => x.Discipline.Name).ToList(),
+                    Disciplines = x.DisciplineTeachers
+                        .Where(y => y.Discipline.SchoolDisciplines.Any(z => z.SchoolId == schoolId))
+                        .Select(x => x.Discipline.Name).ToList(),
                 }).ToList();
 
             return viewModel;
@@ -128,15 +144,17 @@
                     TeacherNames = x.FirstName + " " + x.SecondName.Remove(1) + "." + " " + x.LastName,
                     SchoolName = x.School.Name,
                     IsUserManager = x.School.ManagerId == userId,
-                    Disciplines = x.DisciplineTeachers.Select(y => new DisciplinesForOneTeacherViewModel
-                    {
-                        Name = y.Discipline.Name,
-                        Teams = y.Discipline.TeacherTeams.Where(z => z.TeacherId == id).Select(z => new TeamBaseViewModel
+                    Disciplines = x.DisciplineTeachers
+                        .Where(d => d.Discipline.SchoolDisciplines.Any(s => s.SchoolId == x.SchoolId))
+                        .Select(y => new DisciplinesForOneTeacherViewModel
                         {
-                            Id = z.Team.Id,
-                            TeamName = z.Team.Name,
+                            Name = y.Discipline.Name,
+                            Teams = y.Discipline.TeacherTeams.Where(z => z.TeacherId == id).Select(z => new TeamBaseViewModel
+                            {
+                                Id = z.Team.Id,
+                                TeamName = z.Team.Name + " " + z.Team.Level,
+                            }).ToList(),
                         }).ToList(),
-                    }).ToList(),
                 }).FirstOrDefault();
 
             return viewModel;
@@ -165,11 +183,17 @@
         {
 
             var disciplines = this.disciplineTeacherRepository.All().Where(x => x.TeacherId == inputModel.TeacherId).ToList();
+            var teacherTeams = this.teacherTeamRepository.All().Where(x => x.TeacherId == inputModel.TeacherId).ToList();
 
             foreach (var discipline in disciplines)
             {
                 if (!inputModel.DisciplinesId.Contains(discipline.DisciplineId))
                 {
+                    foreach (var teacherTeam in teacherTeams.Where(x => x.DisciplineId == discipline.DisciplineId))
+                    {
+                        teacherTeam.TeacherId = null;
+                    }
+
                     discipline.IsDeleted = true;
                 }
             }

@@ -20,5 +20,7 @@
         public ICollection<DisciplineForOneTeamViewModel> Disciplines { get; set; }
 
         public bool IsUserManager { get; set; }
+
+        public bool IsTeachesToTeam { get; set; }
     }
 }

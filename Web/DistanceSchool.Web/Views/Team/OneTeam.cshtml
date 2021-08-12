@@ -9,7 +9,7 @@
     <h1 class="col-md-4 text-center rounded"><i class="fas fa-book-open"></i>@Model.TeamName</h1>
 </div>
 <div>
-    @if (!(Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName)))
+    @if (!(Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName) || Model.IsTeachesToTeam))
     {
         <a href="/Candidacy/StudentCandidacy/@Model.Id" class="btn btn-success mb-md-2" style="background-color:mediumaquamarine">Кандидатствaй</a>
     }
@@ -20,22 +20,30 @@
         <div class="row">
             @foreach (var discipline in Model.Disciplines)
             {
-            <div class="col-md-5 rounded m-1 offset-1 container-fluid" style="background-color:aqua">
-                <h5 class="text-md-center">@discipline.DisciplineName</h5>
-                @if (!string.IsNullOrWhiteSpace(discipline.TeacherNames))
-                {
-                    <p class="text-md-center">
-                         @discipline.TeacherNames-
-                        <a href="/Team/ShiftsTecher?TeacherTeamId=@discipline.Id" class="btn btn-outline-danger btn-sm">Промени</a>
-                    </p>
-                }
-                else
-                {
-                    <p class="text-md-center">
-                        <a href="/Team/ShiftsTecher?TeacherTeamId=@discipline.Id" class="btn btn-outline-primary btn-sm">Добави преподавател</a>
-                    </p>
-                }
-            </div>
+                <div class="col-md-5 rounded m-1 offset-1 container-fluid" style="background-color:aqua">
+                    <h5 class="text-md-center">@discipline.DisciplineName</h5>
+                    @if (!string.IsNullOrWhiteSpace(discipline.TeacherNames))
+                    {
+                        <p class="text-md-center">
+                            @discipline.TeacherNames
+
+                            @if (Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                            {
+                                <a href="/Team/ShiftsTecher?TeacherTeamId=@discipline.Id" class="btn btn-outline-danger btn-sm">Промени</a>
+                            }
+                        </p>
+                    }
+                    else
+                    {
+
+                        @if (Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                        {
+                            <p class="text-md-center">
+                                <a href="/Team/ShiftsTecher?TeacherTeamId=@discipline.Id" class="btn btn-outline-primary btn-sm">Добави преподавател</a>
+                            </p>
+                        }
+                    }
+                </div>
             }
             @if (Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName))
             {

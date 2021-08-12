@@ -84,7 +84,7 @@
         {
             var teacherId = await this.schoolService.AddTeacherToSchool(id);
 
-            return this.RedirectToAction(nameof(TeacherController.OneTeacher), nameof(TeacherController).Replace("Controller", string.Empty), new { Id = teacherId });
+            return this.RedirectToAction(nameof(TeacherController.OneTeacher), nameof(TeacherController).Replace("Controller", string.Empty), new { teacherId = teacherId });
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]

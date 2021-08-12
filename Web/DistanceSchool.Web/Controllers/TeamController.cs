@@ -99,6 +99,7 @@
             return this.Redirect(urlPatern);
         }
 
+        [AdminManagerAuthorize]
         public IActionResult ShiftsTecher(int teacherTeamId)
         {
             var viewModel = this.teacherService.ShiftsTecher(teacherTeamId);
@@ -107,6 +108,7 @@
         }
 
         [HttpPost]
+        [AdminManagerAuthorize]
         public async Task<IActionResult> ShiftsTecher(int teacherTeamId, string teacherId)
         {
             if (teacherId == null)

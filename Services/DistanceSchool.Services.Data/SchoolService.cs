@@ -101,7 +101,7 @@
                 {
                     Id = y.Id,
                     TeamName = y.Name + " " + y.Level,
-                    TecherWhithDisciplines = y.TeacherTeams.Select(z => z.Discipline.Name + " " + z.Teacher.FirstName + " " + z.Teacher.LastName).ToList(),
+                    TecherWhithDisciplines = y.TeacherTeams.Select(z => z.Discipline.Name + " - " + z.Teacher.FirstName + " " + z.Teacher.LastName).ToList(),
                 })).FirstOrDefault().ToList();
 
             var school = this.schoolRepository.All()
