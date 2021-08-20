@@ -68,7 +68,6 @@
                 {
                     Id = x.Id.ToString(),
                     Name = x.Name,
-
                 }).ToList();
 
             return disciplines;
@@ -87,11 +86,12 @@
 
         public async Task RemoveDisciplineFromSchoolAsync(int disciplineId, int schoolId)
         {
-            var disciplineSchool = this.schoolDisciplineRepository.All().FirstOrDefault(x => x.DisciplineId == disciplineId && x.SchoolId == schoolId);
+            var disciplineSchool = this.schoolDisciplineRepository.All()
+                    .FirstOrDefault(x => x.DisciplineId == disciplineId && x.SchoolId == schoolId);
 
             var disciplineTeachers = this.disciplineTeacherRepository.All()
-                .Where(x => x.DisciplineId == disciplineId && x.Teacher.SchoolId == schoolId)
-                .ToList();
+                    .Where(x => x.DisciplineId == disciplineId && x.Teacher.SchoolId == schoolId)
+                    .ToList();
 
             foreach (var disciplineTeacher in disciplineTeachers)
             {
