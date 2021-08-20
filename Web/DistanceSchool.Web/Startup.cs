@@ -73,7 +73,7 @@
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ISchoolService, SchoolService>();
             services.AddTransient<IDisciplineService, DisciplineService>();
-            services.AddTransient<ICandidacyServices, CandidacyServices>();
+            services.AddTransient<ICandidacyServices, CandidacyService>();
             services.AddTransient<ITeacherService, TeacherService>();
             services.AddTransient<IDisciplineAttributeService, DisciplineAttributeService>();
             services.AddTransient<ICheckRoleAttributeService, CheckRoleAttributeService>();
