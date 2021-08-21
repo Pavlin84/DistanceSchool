@@ -69,7 +69,7 @@
 
                 teacherDto = new AddTeacherDtoModel
                 {
-                    UserId = teacher.Id,
+                    UserId = teacher.ApplicationUserId,
                     SchoolId = teacher.SchoolId,
                 };
 
@@ -80,7 +80,7 @@
             return teacherDto;
         }
 
-        public async Task ChangeSchoolIdAsync(string id, int schoolId)
+        public async Task<string> ChangeSchoolIdAsync(string id, int schoolId)
         {
             var teacher = this.teacherRepository.All().FirstOrDefault(x => x.ApplicationUserId == id);
 
@@ -100,6 +100,8 @@
             teacher.SchoolId = schoolId;
 
             await this.teacherRepository.SaveChangesAsync();
+
+            return teacher.Id;
         }
 
         public ICollection<TeacherForOneSchoolViewModel> GetAllTeacherFromSchool(int schoolId)
@@ -202,7 +204,8 @@
             {
                 if (!disciplines.Any(x => x.DisciplineId == disciplineId))
                 {
-                    await this.disciplineTeacherRepository.AddAsync(new DisciplineTeacher { DisciplineId = disciplineId, TeacherId = inputModel.TeacherId });
+                    await this.disciplineTeacherRepository
+                        .AddAsync(new DisciplineTeacher { DisciplineId = disciplineId, TeacherId = inputModel.TeacherId });
                 }
             }
 
@@ -218,7 +221,7 @@
             return id;
         }
 
-        public ShiftsTecherViewModel ShiftsTecher(int teacherTeamId)
+        public ShiftsTecherViewModel ShiftsTeacher(int teacherTeamId)
         {
             var teacherTeam = this.teacherTeamRepository.All().FirstOrDefault(x => x.Id == teacherTeamId);
 
@@ -230,8 +233,7 @@
                 TeacherTeamId = teacherTeamId,
                 Teachers = this.teacherRepository.AllAsNoTracking()
                 .Where(x => x.SchoolId == schoolId
-                        && x.DisciplineTeachers.Any(y => y.DisciplineId == teacherTeam.DisciplineId)
-                        )
+                        && x.DisciplineTeachers.Any(y => y.DisciplineId == teacherTeam.DisciplineId))
                 .Select(x => new TeacherViewModel
                 {
                     Names = $"{x.FirstName} {x.SecondName} {x.LastName}",

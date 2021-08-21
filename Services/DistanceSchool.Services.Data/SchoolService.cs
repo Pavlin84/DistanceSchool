@@ -205,7 +205,7 @@
         {
             var teacherDto = await this.teacherService.CreateTeacherAsync(candidacyId);
             await this.CheckAndDeleteOldSchoolManager(teacherDto.UserId);
-            await this.teacherService.ChangeSchoolIdAsync(teacherDto.UserId, teacherDto.SchoolId);
+            teacherDto.TeacherId = await this.teacherService.ChangeSchoolIdAsync(teacherDto.UserId, teacherDto.SchoolId);
             await this.candidacyService.DeleteCandicayAsync(candidacyId);
 
             return teacherDto.TeacherId;

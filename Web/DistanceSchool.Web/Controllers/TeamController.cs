@@ -84,7 +84,7 @@
         [AdminManagerAuthorize]
         public async Task<IActionResult> AddDiscipline(AddDisciplinesToTeamInputModel inputModel)
         {
-            await this.teamService.AddDiscipineToTeam(inputModel);
+            await this.teamService.AddDiscipineToTeamAsync(inputModel);
 
             return this.RedirectToAction(nameof(this.OneTeam), new { id = inputModel.TeamId });
         }
@@ -102,7 +102,7 @@
         [AdminManagerAuthorize]
         public IActionResult ShiftsTecher(int teacherTeamId)
         {
-            var viewModel = this.teacherService.ShiftsTecher(teacherTeamId);
+            var viewModel = this.teacherService.ShiftsTeacher(teacherTeamId);
 
             return this.View(viewModel);
         }

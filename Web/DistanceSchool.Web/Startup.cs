@@ -70,7 +70,6 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ISchoolService, SchoolService>();
             services.AddTransient<IDisciplineService, DisciplineService>();
             services.AddTransient<ICandidacyServices, CandidacyService>();

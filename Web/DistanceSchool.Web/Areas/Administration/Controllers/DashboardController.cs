@@ -13,7 +13,6 @@
 
     public class DashboardController : AdministrationController
     {
-        private readonly ISettingsService settingsService;
         private readonly IDisciplineService disciplineService;
         private readonly ICandidacyServices candidacyService;
         private readonly ISchoolService schoolService;
@@ -21,14 +20,12 @@
         private readonly IWebHostEnvironment environment;
 
         public DashboardController(
-            ISettingsService settingsService,
             IDisciplineService disciplineService,
             ICandidacyServices candidacyService,
             ISchoolService schoolService,
             ITeacherService teacherService,
             IWebHostEnvironment environment)
         {
-            this.settingsService = settingsService;
             this.disciplineService = disciplineService;
             this.candidacyService = candidacyService;
             this.schoolService = schoolService;
@@ -38,8 +35,7 @@
 
         public IActionResult Index()
         {
-            var viewModel = new IndexViewModel { SettingsCount = this.settingsService.GetCount(), };
-            return this.View(viewModel);
+            return this.View();
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
