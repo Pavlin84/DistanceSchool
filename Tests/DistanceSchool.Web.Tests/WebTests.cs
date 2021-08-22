@@ -16,22 +16,30 @@
             this.server = server;
         }
 
-        [Fact(Skip = "Example test. Disabled for CI.")]
-        public async Task IndexPageShouldReturnStatusCode200WithTitle()
-        {
-            var client = this.server.CreateClient();
-            var response = await client.GetAsync("/");
-            response.EnsureSuccessStatusCode();
-            var responseContent = await response.Content.ReadAsStringAsync();
-            Assert.Contains("<title>", responseContent);
-        }
-
-        [Fact(Skip = "Example test. Disabled for CI.")]
-        public async Task AccountManagePageRequiresAuthorization()
+        [Theory]
+        [InlineData("/School/OneSchool")]
+        [InlineData("/Team/AddTeam")]
+        [InlineData("/Administration/Dashboard/StudentCandidacies")]
+        [InlineData("/Administration/Dashboard/SchoolManagerHome")]
+        [InlineData("/Teacher/OneTeacher")]
+        [InlineData("/Team/AddDiscipline")]
+        [InlineData("/Team/ShiftsTecher")]
+        [InlineData("/Teacher/AddDiscipline")]
+        public async Task ChecAuthorizatioPagesReurnRedirectStatusCode(string url)
         {
             var client = this.server.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-            var response = await client.GetAsync("Identity/Account/Manage");
+            var response = await client.GetAsync(url);
             Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task AllSchoolPageContainHOneSchooList()
+        {
+            var client = this.server.CreateClient();
+            var response = await client.GetAsync("School/AllSchool");
+            response.EnsureSuccessStatusCode();
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Assert.Contains("Списък с училища :", responseContent);
         }
     }
 }
