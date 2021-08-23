@@ -132,8 +132,12 @@
     </div>
 </body>
 
-@section PrivateSideBar{
-    <li class="nav-item">
-        <a href="/Team/AddTeam/@Model.Id" class="nav-link text-dark">Нов Клас</a>
-    </li>
+@if (Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+{
+    @section PrivateSideBar{
+        <li class="nav-item">
+            <a href="/Team/AddTeam/@Model.Id" class="nav-link text-dark">Нов Клас</a>
+        </li>
+    }
 }
+

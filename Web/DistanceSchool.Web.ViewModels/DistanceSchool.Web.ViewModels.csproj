@@ -26,4 +26,8 @@
     <ProjectReference Include="..\DistanceSchool.Web.Infrastructure\DistanceSchool.Web.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewComponents\" />
+  </ItemGroup>
+
 </Project>

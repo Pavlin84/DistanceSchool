@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
+
     using DistanceSchool.Data.Models;
     using DistanceSchool.Web.ViewModels.Candidacyes;
     using DistanceSchool.Web.ViewModels.Managers;

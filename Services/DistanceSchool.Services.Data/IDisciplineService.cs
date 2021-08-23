@@ -1,12 +1,9 @@
 ﻿namespace DistanceSchool.Services.Data
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
 
     using DistanceSchool.Web.ViewModels.Disciplines;
-    using DistanceSchool.Web.ViewModels.Teams;
 
     public interface IDisciplineService
     {

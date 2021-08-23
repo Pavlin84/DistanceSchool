@@ -18,7 +18,7 @@
             this.server = server;
             server.CreateClient();
             var opts = new ChromeOptions();
-            opts.AddArguments("--headless");
+           // opts.AddArguments("--headless");
             opts.AcceptInsecureCertificates = true;
             this.browser = new ChromeDriver(opts);
         }
@@ -30,6 +30,19 @@
             Assert.EndsWith(
                 "/Home/Privacy",
                 this.browser.FindElements(By.CssSelector("footer a")).First().GetAttribute("href"));
+        }
+
+        [Fact]
+        public void ChecAcssesAttributes()
+        {
+            this.browser.Navigate().GoToUrl(this.server.RootUri + "/Team/AddTeam");
+
+            var test = By.TagName("h1");
+            var result = browser.FindElement(test);
+
+            Assert.EndsWith(
+                "",
+                this.browser.FindElements(By.CssSelector("header")).First().GetAttribute("href"));
         }
 
         public void Dispose()

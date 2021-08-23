@@ -1,4 +1,5 @@
 ﻿@using DistanceSchool.Common
+@using System.Security.Claims;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,6 +33,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="School" asp-action="AllSchool">Училища</a>
                         </li>
+                        @if (this.User.Identity.IsAuthenticated)
+                        {
+                            @await Component.InvokeAsync("NavigateToMySchool",
+                                new { Id = this.User.FindFirst(ClaimTypes.NameIdentifier).Value });
+                        }
+
                         @if (!this.User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">

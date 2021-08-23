@@ -1,9 +1,7 @@
 ﻿namespace DistanceSchool.Services.Data
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
 
     using DistanceSchool.Data.Common.Repositories;
@@ -216,6 +214,19 @@
             var schoolName = this.schoolRepository.All().FirstOrDefault(x => x.Teams.Any(x => x.Id == id)).Name;
 
             return schoolName;
+        }
+
+        public int GetSchoolIdByUserId(string userId)
+        {
+            var school = this.schoolRepository.AllAsNoTracking().FirstOrDefault(x => x.Teachers.Any(t => t.ApplicationUserId == userId));
+
+            if (school == null)
+            {
+                school = this.schoolRepository.AllAsNoTracking()
+                    .FirstOrDefault(x => x.Teams.Any(t => t.Students.Any(s => s.ApplicationUserId == userId)));
+            }
+
+            return school.Id;
         }
     }
 }

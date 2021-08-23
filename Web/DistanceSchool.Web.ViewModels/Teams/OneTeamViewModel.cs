@@ -22,5 +22,7 @@
         public bool IsUserManager { get; set; }
 
         public bool IsTeachesToTeam { get; set; }
+
+        public bool IsStudiesToTeam { get; set; }
     }
 }
