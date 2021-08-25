@@ -1,9 +1,6 @@
 ﻿namespace DistanceSchool.Web.ViewModels.Students
 {
-    public class StudentForOneTeamViewModel
+    public class StudentForOneTeamViewModel : StudentBaseViewModel
     {
-        public string Id { get; set; }
-
-        public string SudentNames { get; set; }
     }
 }

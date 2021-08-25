@@ -154,6 +154,7 @@
                             {
                                 Id = z.Team.Id,
                                 TeamName = z.Team.Name + " " + z.Team.Level,
+                                TeacherTheamId = z.Id,
                             }).ToList(),
                         }).ToList(),
                 }).FirstOrDefault();

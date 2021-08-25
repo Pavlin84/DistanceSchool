@@ -2,7 +2,7 @@
 @using DistanceSchool.Common
 
 @{
-    ViewData["Title"] = "Teacher " + Model.TeacherNames;
+    ViewData["Title"] = "Teacher" + Model.TeacherNames;
 }
 
 <div class="row mb-2" style="background-color:azure">
@@ -17,7 +17,7 @@
             <ul>
                 @foreach (var team in discipline.Teams)
                 {
-                    <li class="font-italic">@team.TeamName <a href="/Team/Passport/@team.Id?DisciplineName=@discipline.Name" class="btn-link font-italic"> - Подробности</a></li>
+                    <li class="font-italic">@team.TeamName <a href="/Team/Passport/?TeacherTheamId=@team.TeacherTheamId" class="btn-link font-italic"> - Подробности</a></li>
                 }
             </ul>
         </div>

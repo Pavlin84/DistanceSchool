@@ -10,6 +10,8 @@
         [BindNever]
         public int Id { get; set; }
 
+        public int TeacherTheamId { get; set; }
+
         [Required(ErrorMessage = GlobalConstants.CyrillicRequiredFieldMessage)]
         [MaxLength(8, ErrorMessage = GlobalConstants.CyrillicMaxLenghtTeamNameErrorMessage)]
         [MinLength(2, ErrorMessage = GlobalConstants.CyrillicMinLenghtTeamNameErrorMessage)]

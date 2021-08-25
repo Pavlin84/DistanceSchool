@@ -517,7 +517,7 @@ namespace DistanceSchool.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Evaluation")
+                    b.Property<int?>("Evaluation")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ExamDate")

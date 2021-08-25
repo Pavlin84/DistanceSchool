@@ -33,7 +33,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="School" asp-action="AllSchool">Училища</a>
                         </li>
-                        @if (this.User.Identity.IsAuthenticated)
+                        @if (this.User.Identity.IsAuthenticated && !this.User.IsInRole(GlobalConstants.AdministratorRoleName))
                         {
                             @await Component.InvokeAsync("NavigateToMySchool",
                                 new { Id = this.User.FindFirst(ClaimTypes.NameIdentifier).Value });

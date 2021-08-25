@@ -17,6 +17,6 @@
 
         public DateTime ExamDate { get; set; }
 
-        public Evaluation Evaluation { get; set; }
+        public Evaluation? Evaluation { get; set; }
     }
 }
