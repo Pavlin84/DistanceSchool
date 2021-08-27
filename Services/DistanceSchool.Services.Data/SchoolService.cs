@@ -226,6 +226,11 @@
                     .FirstOrDefault(x => x.Teams.Any(t => t.Students.Any(s => s.ApplicationUserId == userId)));
             }
 
+            if (school == null)
+            {
+                return 0;
+            }
+
             return school.Id;
         }
     }
