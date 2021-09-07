@@ -79,6 +79,7 @@
             services.AddTransient<IFileHandlerService, FileHandlerService>();
             services.AddTransient<ITeamService, TeamService>();
             services.AddTransient<IStudentService, StudentService>();
+            services.AddTransient<ILessonService, LessonService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

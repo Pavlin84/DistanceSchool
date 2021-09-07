@@ -18,12 +18,12 @@
             this.server = server;
             server.CreateClient();
             var opts = new ChromeOptions();
-           // opts.AddArguments("--headless");
+            //opts.AddArguments("--headless");
             opts.AcceptInsecureCertificates = true;
             this.browser = new ChromeDriver(opts);
         }
 
-        [Fact(Skip = "Example test. Disabled for CI.")]
+        [Fact]
         public void FooterOfThePageContainsPrivacyLink()
         {
             this.browser.Navigate().GoToUrl(this.server.RootUri);
@@ -35,10 +35,11 @@
         [Fact]
         public void ChecAcssesAttributes()
         {
-            this.browser.Navigate().GoToUrl(this.server.RootUri + "/Team/AddTeam");
+            this.browser.Navigate().GoToUrl(this.server.RootUri);
+
 
             var test = By.TagName("h1");
-            var result = browser.FindElement(test);
+            var result = this.browser.FindElement(test);
 
             Assert.EndsWith(
                 "",
