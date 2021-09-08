@@ -129,7 +129,6 @@
             var viewModel = this.teamService.GetTeamPassportData(teacherTheamId);
 
             //viewModel.Exam = new ViewModels.Exams.ExamViewModel { StartDateTime = DateTime.UtcNow };
-            viewModel.Lessons = new List<string> { "lesso1", "leson2" };
 
             return this.View(viewModel);
         }
