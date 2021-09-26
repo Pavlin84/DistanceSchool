@@ -125,10 +125,7 @@
         [TeamPassportAcsses]
         public IActionResult Passport(int teacherTheamId)
         {
-
             var viewModel = this.teamService.GetTeamPassportData(teacherTheamId);
-
-            //viewModel.Exam = new ViewModels.Exams.ExamViewModel { StartDateTime = DateTime.UtcNow };
 
             return this.View(viewModel);
         }
