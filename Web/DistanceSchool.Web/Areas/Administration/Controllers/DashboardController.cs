@@ -1,7 +1,8 @@
 ﻿namespace DistanceSchool.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Security.Claims;
-
+    using System.Threading.Tasks;
     using DistanceSchool.Common;
     using DistanceSchool.Services.Data;
     using DistanceSchool.Web.Controllers;
@@ -10,6 +11,8 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Distributed;
+    using Newtonsoft.Json;
 
     public class DashboardController : AdministrationController
     {
@@ -18,19 +21,22 @@
         private readonly ISchoolService schoolService;
         private readonly ITeacherService teacherService;
         private readonly IWebHostEnvironment environment;
+        private readonly IDistributedCache distributedCache;
 
         public DashboardController(
             IDisciplineService disciplineService,
             ICandidacyServices candidacyService,
             ISchoolService schoolService,
             ITeacherService teacherService,
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment,
+            IDistributedCache distributedCache)
         {
             this.disciplineService = disciplineService;
             this.candidacyService = candidacyService;
             this.schoolService = schoolService;
             this.teacherService = teacherService;
             this.environment = environment;
+            this.distributedCache = distributedCache;
         }
 
         public IActionResult Index()
@@ -39,11 +45,28 @@
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-        public IActionResult AdminHome()
+        public async Task<IActionResult> AdminHome()
         {
-            var viewModel = new AdministrationHomeViewModel();
-            viewModel.Disciplines = this.disciplineService.GetAllDiscpline();
-            viewModel.Candidacies = this.candidacyService.GetAllManagerCandidacy();
+            AdministrationHomeViewModel viewModel;
+
+            var stringCacheInfo = await this.distributedCache.GetStringAsync("MemoryData");
+
+            if (stringCacheInfo == null)
+            {
+                viewModel = new AdministrationHomeViewModel();
+                viewModel.Disciplines = this.disciplineService.GetAllDiscpline();
+                viewModel.Candidacies = this.candidacyService.GetAllManagerCandidacy();
+
+                await this.distributedCache.SetStringAsync("MemoryData", JsonConvert.SerializeObject(viewModel), new DistributedCacheEntryOptions
+                {
+                    SlidingExpiration = TimeSpan.FromSeconds(1 * 60),
+                });
+            }
+            else
+            {
+                viewModel = JsonConvert.DeserializeObject<AdministrationHomeViewModel>(stringCacheInfo);
+            }
+
             this.ViewData["CreateActionName"] = nameof(SchoolController).Replace("Controller", string.Empty) + "/" + nameof(SchoolController.AddManager);
             return this.View(viewModel);
         }

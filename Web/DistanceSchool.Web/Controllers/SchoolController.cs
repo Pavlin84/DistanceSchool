@@ -15,28 +15,47 @@
     using DistanceSchool.Web.ViewModels.Teams;
 
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Memory;
+    using Newtonsoft.Json;
 
     public class SchoolController : BaseController
     {
         private readonly ISchoolService schoolService;
         private readonly ICandidacyServices candidacyServices;
         private readonly ITeacherService teacherServisce;
+        private readonly IMemoryCache cache;
 
         public SchoolController(
             ISchoolService schoolService,
             ICandidacyServices candidacyServices,
-            ITeacherService teacherServisce)
+            ITeacherService teacherServisce,
+            IMemoryCache cache)
         {
             this.schoolService = schoolService;
             this.candidacyServices = candidacyServices;
             this.teacherServisce = teacherServisce;
+            this.cache = cache;
         }
 
         public IActionResult AllSchool()
         {
-            var viewModel = this.schoolService.AllSchool();
+            List<AllScholsViewModel> viewModel;
+
+            if (!this.cache.TryGetValue<List<AllScholsViewModel>>("Data", out viewModel))
+            {
+                viewModel = this.schoolService.AllSchool();
+
+                var cacheOption = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(1));
+                this.cache.Set("Data", viewModel, cacheOption);
+            }
+
+            this.ViewData["LookPrivacy"] = this.HttpContext.Session.GetString("LookPrivacy") == null
+                ? null
+                : JsonConvert.DeserializeObject<bool>(this.HttpContext.Session.GetString("LookPrivacy"));
 
             return this.View(viewModel);
         }
@@ -75,9 +94,9 @@
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> AddManager(int id)
         {
-           var schoolId = await this.schoolService.AddManagerAsync(id);
+            var schoolId = await this.schoolService.AddManagerAsync(id);
 
-           return this.RedirectToAction(nameof(this.OneSchool), new { Id = schoolId });
+            return this.RedirectToAction(nameof(this.OneSchool), new { Id = schoolId });
         }
 
         [AdminManagerAuthorizeAttribute]

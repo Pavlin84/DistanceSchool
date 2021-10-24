@@ -1,5 +1,6 @@
 ﻿namespace DistanceSchool.Web
 {
+    using System;
     using System.Reflection;
 
     using DistanceSchool.Data;
@@ -52,6 +53,20 @@
                         options.CheckConsentNeeded = context => true;
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
+            services.AddMemoryCache();
+            services.AddDistributedSqlServerCache(
+                options =>
+                {
+                    options.ConnectionString = this.configuration.GetConnectionString("DefaultConnection");
+                    options.SchemaName = "dbo";
+                    options.TableName = "DistanceSchoolCache";
+                });
+            services.AddSession(option =>
+            {
+                option.IdleTimeout = new TimeSpan(7, 0, 0, 0);
+                option.Cookie.HttpOnly = true;
+                option.Cookie.IsEssential = true;
+            });
 
             services.AddControllersWithViews(
                 options =>
@@ -111,6 +126,7 @@
             app.UseCookiePolicy();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();

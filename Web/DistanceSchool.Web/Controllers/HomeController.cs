@@ -9,7 +9,9 @@
     using DistanceSchool.Web.ViewModels.Administration.Dashboard;
     using DistanceSchool.Web.ViewModels.Managers;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
 
     public class HomeController : BaseController
     {
@@ -60,6 +62,11 @@
 
         public IActionResult Privacy()
         {
+            if (this.HttpContext.Session.Get("LookPrivacy") == null )
+            {
+                this.HttpContext.Session.SetString("LookPrivacy", JsonConvert.SerializeObject(true));
+            }
+
             return this.View();
         }
 
