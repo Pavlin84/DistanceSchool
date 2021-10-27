@@ -2,6 +2,7 @@
 {
     using System.Diagnostics;
     using System.Security.Claims;
+
     using DistanceSchool.Common;
     using DistanceSchool.Services.Data;
     using DistanceSchool.Web.Areas.Administration.Controllers;
@@ -62,7 +63,7 @@
 
         public IActionResult Privacy()
         {
-            if (this.HttpContext.Session.Get("LookPrivacy") == null )
+            if (this.HttpContext.Session.Get("LookPrivacy") == null)
             {
                 this.HttpContext.Session.SetString("LookPrivacy", JsonConvert.SerializeObject(true));
             }

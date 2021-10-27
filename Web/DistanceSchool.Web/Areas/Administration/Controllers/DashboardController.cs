@@ -54,7 +54,7 @@
             if (stringCacheInfo == null)
             {
                 viewModel = new AdministrationHomeViewModel();
-                viewModel.Disciplines = this.disciplineService.GetAllDiscpline();
+                viewModel.Disciplines = this.disciplineService.GetAllDiscplineName();
                 viewModel.Candidacies = this.candidacyService.GetAllManagerCandidacy();
 
                 await this.distributedCache.SetStringAsync("MemoryData", JsonConvert.SerializeObject(viewModel), new DistributedCacheEntryOptions

@@ -54,7 +54,7 @@
             }
 
             this.ViewData["LookPrivacy"] = this.HttpContext.Session.GetString("LookPrivacy") == null
-                ? null
+                ? false
                 : JsonConvert.DeserializeObject<bool>(this.HttpContext.Session.GetString("LookPrivacy"));
 
             return this.View(viewModel);

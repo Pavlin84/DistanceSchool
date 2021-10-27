@@ -56,7 +56,6 @@
                 Value = x.Value.ToString(),
             });
 
-
             return this.View(viewModel);
         }
 
@@ -126,6 +125,22 @@
         public IActionResult Passport(int teacherTheamId)
         {
             var viewModel = this.teamService.GetTeamPassportData(teacherTheamId);
+
+            return this.View(viewModel);
+        }
+
+        public IActionResult Search(List<int> disciplinesId, bool isAllMached)
+        {
+            var viewModel = new ListMatchedTeamsViewModel();
+
+            if (!isAllMached)
+            {
+                viewModel.MatchedTeams = this.teamService.GetMatchedTeams(disciplinesId);
+            }
+            else
+            {
+                viewModel.MatchedTeams = this.teamService.GetAllMatchedTeams(disciplinesId);
+            }
 
             return this.View(viewModel);
         }

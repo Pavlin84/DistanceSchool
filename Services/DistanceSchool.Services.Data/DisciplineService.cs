@@ -48,7 +48,7 @@
             await this.disciplineRepository.SaveChangesAsync();
         }
 
-        public ICollection<string> GetAllDiscpline()
+        public ICollection<string> GetAllDiscplineName()
         {
             var result = this.disciplineRepository.All().OrderBy(x => x.Name).Select(x => x.Name).ToList();
 
@@ -156,6 +156,21 @@
                 }).FirstOrDefault();
 
             return result;
+        }
+
+        public AllDisciplinesViewModel GetAllDisciplines()
+        {
+            var disciplines = this.disciplineRepository.All()
+              .OrderByDescending(x => x.Name)
+              .Select(x => new DisciplineViewModel
+              {
+                  Id = x.Id,
+                  Name = x.Name,
+              }).ToList();
+            var viewModel = new AllDisciplinesViewModel();
+            viewModel.Disciplines = disciplines;
+
+            return viewModel;
         }
     }
 }

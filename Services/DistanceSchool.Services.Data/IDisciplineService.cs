@@ -9,7 +9,9 @@
     {
         Task CreateDisciplineAsync(CreateDisciplineInputModel input);
 
-        ICollection<string> GetAllDiscpline();
+        ICollection<string> GetAllDiscplineName();
+
+        AllDisciplinesViewModel GetAllDisciplines();
 
         bool IsExsist(string discipline);
 
