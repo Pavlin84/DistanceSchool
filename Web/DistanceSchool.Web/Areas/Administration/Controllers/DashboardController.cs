@@ -59,7 +59,7 @@
 
                 await this.distributedCache.SetStringAsync("MemoryData", JsonConvert.SerializeObject(viewModel), new DistributedCacheEntryOptions
                 {
-                    SlidingExpiration = TimeSpan.FromSeconds(1 * 60),
+                    SlidingExpiration = TimeSpan.FromSeconds(2),
                 });
             }
             else

@@ -27,17 +27,20 @@
         private readonly ICandidacyServices candidacyServices;
         private readonly ITeacherService teacherServisce;
         private readonly IMemoryCache cache;
+        private readonly ICustomEmailSenderService emailSender;
 
         public SchoolController(
             ISchoolService schoolService,
             ICandidacyServices candidacyServices,
             ITeacherService teacherServisce,
-            IMemoryCache cache)
+            IMemoryCache cache,
+            ICustomEmailSenderService emailSender)
         {
             this.schoolService = schoolService;
             this.candidacyServices = candidacyServices;
             this.teacherServisce = teacherServisce;
             this.cache = cache;
+            this.emailSender = emailSender;
         }
 
         public IActionResult AllSchool()
@@ -96,6 +99,9 @@
         {
             var schoolId = await this.schoolService.AddManagerAsync(id);
 
+            await this.emailSender.ApprovedUserSend(id);
+
+
             return this.RedirectToAction(nameof(this.OneSchool), new { Id = schoolId });
         }
 
@@ -103,6 +109,8 @@
         public async Task<IActionResult> AddTeacher(int id)
         {
             var teacherId = await this.schoolService.AddTeacherToSchool(id);
+
+            await this.emailSender.ApprovedUserSend(id);
 
             return this.RedirectToAction(nameof(TeacherController.OneTeacher), nameof(TeacherController).Replace("Controller", string.Empty), new { teacherId = teacherId });
         }

@@ -16,6 +16,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7A731632-6714-44E2-A9E4-069EBA9E666C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistanceSchool.Services", "Services\DistanceSchool.Services\DistanceSchool.Services.csproj", "{8522212F-F01E-4E20-9975-FCF5E10D71DB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{43FDC0C4-F250-45DE-93F8-3CA8A9247CC9} = {43FDC0C4-F250-45DE-93F8-3CA8A9247CC9}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistanceSchool.Services.Messaging", "Services\DistanceSchool.Services.Messaging\DistanceSchool.Services.Messaging.csproj", "{43FDC0C4-F250-45DE-93F8-3CA8A9247CC9}"
 EndProject

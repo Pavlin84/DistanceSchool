@@ -4,11 +4,13 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using System.Text;
     using System.Threading.Tasks;
 
     using DistanceSchool.Common;
     using DistanceSchool.Data.Models;
     using DistanceSchool.Services.Data;
+    using DistanceSchool.Services.Messaging;
     using DistanceSchool.Web.Infrastructure.CustomAuthorizeAttribute;
     using DistanceSchool.Web.ViewModels.Candidacyes;
     using Microsoft.AspNetCore.Authorization;
@@ -22,17 +24,20 @@
         private readonly ISchoolService schoolService;
         private readonly ITeacherService teacherServisce;
         private readonly IWebHostEnvironment environment;
+        private readonly ICustomEmailSenderService emailSender;
 
         public CandidacyController(
             ICandidacyServices candidacyServices,
             ISchoolService schoolService,
             ITeacherService teacherServisce,
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment,
+            ICustomEmailSenderService emailSender)
         {
             this.candidacyServices = candidacyServices;
             this.schoolService = schoolService;
             this.teacherServisce = teacherServisce;
             this.environment = environment;
+            this.emailSender = emailSender;
         }
 
         [AdminManagerAuthorizeAttribute]
@@ -40,6 +45,8 @@
         {
             await this.candidacyServices.DeleteCandicayAsync(id);
 
+            this.emailSender.DiapprovedUserSend(id);
+            
             if (string.IsNullOrWhiteSpace(redirectUrl))
             {
                 return this.Redirect("/");

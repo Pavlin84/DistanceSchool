@@ -21,12 +21,14 @@
         private readonly ITeamService teamService;
         private readonly ITeacherService teacherService;
         private readonly IDisciplineService disciplineService;
+        private readonly ICustomEmailSenderService emailSenderService;
 
-        public TeamController(ITeamService teamService, ITeacherService teacherService, IDisciplineService disciplineService)
+        public TeamController(ITeamService teamService, ITeacherService teacherService, IDisciplineService disciplineService, ICustomEmailSenderService emailSenderService)
         {
             this.teamService = teamService;
             this.teacherService = teacherService;
             this.disciplineService = disciplineService;
+            this.emailSenderService = emailSenderService;
         }
 
         [Authorize]
@@ -95,6 +97,8 @@
             var schoolId = await this.teamService.AddStudentToTeamAsync(id);
             var urlPatern = $"/Administration/{nameof(DashboardController).Replace("Controller", string.Empty)}/" +
                 $"{nameof(DashboardController.StudentCandidacies)}?SchoolId={schoolId}";
+
+            await this.emailSenderService.ApprovedUserSend(id);
 
             return this.Redirect(urlPatern);
         }
