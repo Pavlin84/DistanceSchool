@@ -1,0 +1,51 @@
+﻿@model DistanceSchool.Web.ViewModels.Lessons.AddLessonViewModel;
+
+@{
+    ViewData["Title"] = "AddLesson";
+    var lessons = new List<SelectListItem>();
+    for (int i = 0; i < Model.LessonsId.Count; i++)
+    {
+        lessons.Add(new SelectListItem(Model.LessonsName[i], Model.LessonsId[i].ToString()));
+    }
+}
+<div class="row">
+    <h1 class="col-md-6">
+        <i class="fas fa-users text-left"></i> - @Model.TeamName @Model.TeamLevel
+    </h1>
+    <h1 class="col-md-6 text-right">
+        <i class="fas fa-book"></i> - @Model.DisciplineName
+    </h1>
+</div>
+<div class="row">
+    @if (lessons.Count > 0)
+    {
+        <div class="col-md-4 text-left" style="background-color:aquamarine">
+            <h3 class="text-center">Добавид дисциплина :</h3>
+            <form method="post" class="text-center">
+                <div class="text-danger" asp-validation-summary="All"></div>
+                <input type="hidden" name="TeamId" value="@Model.TeamId" />
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <div class="form-group">
+                    <div class="m-md-2">
+                        <label asp-for="Lesson"></label>
+                        <select asp-for="Lesson" class="form-control" asp-items="lessons"></select>
+                    </div>
+                    <div class="m-md-2">
+                        <label asp-for="DateOfStudy"></label>
+                        <input asp-for="DateOfStudy" class="form-control" />
+                        <span asp-validation-for="DateOfStudy" class="text-danger"></span>
+                    </div>
+                    <input type="submit" value="Добави" class="btn btn-light m-md-2" />
+                </div>
+            </form>
+        </div>
+        <div class="text-center col-md-1 m-md-5"><h5> ИЛИ </h5></div>
+    }
+
+    <div class="col-md-4 text-center" style="background-color:aquamarine">
+        <h3 class="text-center">Създай дисциплина :</h3>
+        <a href="/Lesson/CreateLesson/?TeacherTheamId=@Model.Id" class="btn btn-light text-center m-md-2">Създай нов</a>
+    </div>
+
+</div>
+

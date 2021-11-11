@@ -1,0 +1,27 @@
+﻿@model DistanceSchool.Web.ViewModels.Teachers.ShiftsTecherViewModel
+@{
+    ViewData["Title"] = "Shift Teacher";
+}
+
+<form class="col-md-6 offset-3" method="post">
+    <input type="hidden" name="TeacherTeamId" value="@Model.TeacherTeamId" />
+    <div class="form-group" style="background-color:aquamarine">
+        <h3 class="text-center">Избор на учител</h3>
+        <div class="text-md-center">
+            @if (Model.Teachers.Count > 0)
+            {
+                <select class="form-select" name="TeacherId" multiple aria-label="multiple select example">
+                    @foreach (var teacher in Model.Teachers)
+                    {
+                        <option value="@teacher.Id">@teacher.Names</option>
+                    }
+                </select>
+            }
+            else
+            {
+                <h4 class="text-danger">Няма преподаватели по този предмет !</h4>
+            }
+        </div>
+        <input type="submit" value="Приложи" class="btn btn-outline-success m-md-2 text-center" />
+    </div>
+</form>

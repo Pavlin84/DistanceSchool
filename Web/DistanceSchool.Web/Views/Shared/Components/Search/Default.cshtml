@@ -1,0 +1,47 @@
+﻿@model DistanceSchool.Web.ViewModels.Disciplines.AllDisciplinesViewModel
+
+@{
+    var disciplines = Model.Disciplines.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+}
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModalCenter">
+    Търси клас
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Намери подходящия за теб клас</h4>
+                <button type="button" class="close text-right" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="modal-body my-2 my-lg-0" method="get">
+                    <div class="form-group">
+                        <div>
+                            <input class="form-check-input" type="checkbox" value="true" name="IsAllMached" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Да съдържа всички дисциплини
+                            </label>
+                        </div>
+                        <hr />
+                        <div>
+                            <select asp-for="DisciplinesId" asp-items="disciplines"
+                                    class="form-control"
+                                    type="search"
+                                    placeholder="Search"
+                                    aria-label="Search">
+                            </select>
+                        </div>
+                        <hr />
+                        <button asp-area="" asp-controller="Team" asp-action="Search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Търси</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

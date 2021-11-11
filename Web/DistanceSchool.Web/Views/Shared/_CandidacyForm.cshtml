@@ -1,0 +1,43 @@
+﻿@model DistanceSchool.Web.ViewModels.Candidacyes.CandidacyInputModel
+
+<h1 class="text-center"><i class="fas fa-school"></i></h1>
+<h3 class="text-md-center">@Model.CandidacyTypeMessage</h3>
+<h3 class="text-md-center">@Model.SchoolName</h3>
+<form method="post" class="col-md-6 offset-3" enctype="multipart/form-data">
+    <div class="text-danger" asp-validation-summary="All"></div>
+    <input type="hidden" name="SchoolId" value="@Model.SchoolId" />
+    <input type="hidden" name="TeamId" value="@Model.TeamId" />
+    <div class="form-group" style="background-color:aquamarine">
+        <div class="m-md-2">
+            <label asp-for="FirstName"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="m-md-2">
+            <label asp-for="SecondName"></label>
+            <input asp-for="SecondName" class="form-control" />
+            <span asp-validation-for="SecondName" class="text-danger"></span>
+        </div>
+        <div class="m-md-2">
+            <label asp-for="LastName"></label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="m-md-2">
+            <label asp-for="BirthDate"></label>
+            <input asp-for="BirthDate" class="form-control" />
+            <span asp-validation-for="BirthDate" class="text-danger"></span>
+        </div>
+        <div class="m-md-2">
+            <label asp-for="ProfileImage"></label>
+            <input asp-for="ProfileImage" class="form-control-file" style="background-color:white" />
+            <span asp-validation-for="ProfileImage" class="text-danger"></span>
+        </div>
+        <div class="m-md-2">
+            <label asp-for="ApplicationDocuments"></label>
+            <input class="form-control-file" asp-for="ApplicationDocuments" style="background-color:white" />
+            <span asp-validation-for="ApplicationDocuments" class="text-danger"></span>
+        </div>
+        <input type="submit" value="Кандидатствай" class="btn btn-light m-md-2" />
+    </div>
+</form>

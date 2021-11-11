@@ -1,0 +1,26 @@
+﻿@model DistanceSchool.Web.ViewModels.Teams.ListMatchedTeamsViewModel
+
+@{
+    ViewData["Title"] = "Search Team";
+
+}
+
+@foreach (var team in Model.MatchedTeams)
+{
+    <ul>
+        <h5><a class="text-md-left" asp-area="" asp-controller="Team" asp-action="OneTeam" asp-route-id="@team.TeamId">
+            @team.TeamName
+            </a> - @team.SchoolName
+        </h5>
+        <p>
+            @foreach (var discipline in team.MatchedDisciplines)
+            {
+                <b style="text-decoration-style:initial">@discipline, </b>
+            }
+            @foreach (var discipline in team.NotMatchedDisciplines)
+            {
+                <b class="text-dark" style="text-decoration-style:initial">@discipline, </b>
+            }
+        </p>
+    </ul>
+}

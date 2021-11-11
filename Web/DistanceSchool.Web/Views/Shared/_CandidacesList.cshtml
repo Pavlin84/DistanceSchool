@@ -1,0 +1,26 @@
+﻿@foreach (var candidacye in Model)
+{
+    <div class="col-md-10 container-md rounded offset-md-1 mb-2 media" style="background-color:white">
+        <div>
+            @if (candidacye.ProfilPictutreUrl == null)
+            {
+                <img src="https://image.flaticon.com/icons/png/512/21/21104.png" class=" my-md-2 mx-md-2 rounded-circle" height="100" width="100"  alt="Profile picture">
+            }
+            else
+            {
+                <img src="@candidacye.ProfilPictutreUrl" class=" my-md-3 mx-md-1 rounded-circle" height="100" width="100" alt="Profile picture">
+            }
+            <p><a href="@candidacye.ApplicationDocumenstUrl" class="btn btn-outline-info my-md-2 mx-md-2 border-dark" target="_blank">Документи</a></p>
+        </div>
+        <div class="media-body">
+            <h5 class="mt-0"><i class="fas fa-school text-md-center"> @candidacye.SchoolName</i></h5>
+            <p>@candidacye.FirstName @candidacye.SecondName @candidacye.LastName</p>
+            <p>@candidacye.Year години</p>
+            <p class="my-md-4">
+                <a href="/@ViewData["CreateActionName"]?id=@candidacye.Id" class="btn btn-outline-success mb-2 border-dark">Одобри</a>
+                <a href="/Candidacy/DeleteCandidacy?id=@candidacye.Id@ViewData["redirectUrl"]" class="btn btn-outline-danger mb-2 border-dark offset-md-2 text-dark">Откажи</a>
+            </p>
+        </div>
+    </div>
+
+}

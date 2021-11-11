@@ -21,22 +21,22 @@
         private readonly ISchoolService schoolService;
         private readonly ITeacherService teacherService;
         private readonly IWebHostEnvironment environment;
-        private readonly IDistributedCache distributedCache;
+        // private readonly IDistributedCache distributedCache;
 
         public DashboardController(
             IDisciplineService disciplineService,
             ICandidacyServices candidacyService,
             ISchoolService schoolService,
             ITeacherService teacherService,
-            IWebHostEnvironment environment,
-            IDistributedCache distributedCache)
+            IWebHostEnvironment environment/*,
+            *IDistributedCache distributedCache*/)
         {
             this.disciplineService = disciplineService;
             this.candidacyService = candidacyService;
             this.schoolService = schoolService;
             this.teacherService = teacherService;
             this.environment = environment;
-            this.distributedCache = distributedCache;
+            // this.distributedCache = distributedCache;
         }
 
         public IActionResult Index()
@@ -49,23 +49,23 @@
         {
             AdministrationHomeViewModel viewModel;
 
-            var stringCacheInfo = await this.distributedCache.GetStringAsync("MemoryData");
+            //var stringCacheInfo = await this.distributedCache.GetStringAsync("MemoryData");
 
-            if (stringCacheInfo == null)
-            {
+            //if (stringCacheInfo == null)
+            //{
                 viewModel = new AdministrationHomeViewModel();
                 viewModel.Disciplines = this.disciplineService.GetAllDiscplineName();
                 viewModel.Candidacies = this.candidacyService.GetAllManagerCandidacy();
 
-                await this.distributedCache.SetStringAsync("MemoryData", JsonConvert.SerializeObject(viewModel), new DistributedCacheEntryOptions
-                {
-                    SlidingExpiration = TimeSpan.FromSeconds(2),
-                });
-            }
-            else
-            {
-                viewModel = JsonConvert.DeserializeObject<AdministrationHomeViewModel>(stringCacheInfo);
-            }
+            //    await this.distributedCache.SetStringAsync("MemoryData", JsonConvert.SerializeObject(viewModel), new DistributedCacheEntryOptions
+            //    {
+            //        SlidingExpiration = TimeSpan.FromSeconds(2),
+            //    });
+            //}
+            //else
+            //{
+            //    viewModel = JsonConvert.DeserializeObject<AdministrationHomeViewModel>(stringCacheInfo);
+            //}
 
             this.ViewData["CreateActionName"] = nameof(SchoolController).Replace("Controller", string.Empty) + "/" + nameof(SchoolController.AddManager);
             return this.View(viewModel);

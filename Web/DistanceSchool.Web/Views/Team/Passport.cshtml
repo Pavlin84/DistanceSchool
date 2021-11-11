@@ -1,0 +1,88 @@
+﻿@model DistanceSchool.Web.ViewModels.Teams.TeamPassportVewModel
+
+@{
+    ViewData["Title"] = "Team-Passport";
+}
+
+<div class="row mb-2" style="background-color:azure">
+    <h1 class="col-md-8 rounded"><i class="fas fa-graduation-cap"></i>@Model.TeamName</h1>
+    <h1 class="col-md-4 text-center rounded"><i class="fas fa-book-open"></i>@Model.Discipline</h1>
+</div>
+<div class="row mb-2" style="background-color:azure">
+    <div class="col-md-9 m-md-2 rounded">
+        @if (Model.Exam == null)
+        {
+            <p class="m-md-2">
+                Няма насрочен изпит
+                <a href="/Exam/CreateExam/@Model.Id" class="btn btn-success m-md-2" style="color:azure">
+                    Създай изпит
+                </a>
+            </p>
+        }
+        else
+        {
+            <p class="m-md-2">
+                Начало на изпита : @Model.Exam.StartDateTime.ToString("F")
+                <a href="/Exam/ChangeStartTime/@Model.Id" class="btn btn-danger m-md-2" style="color:azure">
+                    Промени началото
+                </a>
+            </p>
+        }
+    </div>
+    <div class="col-md-2 rounded m-md-3 text-right">
+        <a href="/Lesson/AddLessonToTeam/?TeacherTheamId=@Model.TeacherTheamId" class="btn btn-success m-md-2" style="color:azure">
+            Добави урок
+        </a>
+    </div>
+</div>
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-center" scope="col">Ученик</th>
+                @foreach (var lesson in Model.Lessons)
+                {
+                    <th class="text-center" scope="col">@lesson</th>
+                }
+                <th scope="col">Оценка от изпита</th>
+            </tr>
+        </thead>
+        @foreach (var student in Model.Students)
+        {
+            <tbody>
+                <tr>
+                    <td class="text-center">@student.SudentNames</td>
+                    @foreach (var lessson in student.Lessons)
+                    {
+                        if (lessson.DateOfStudy >= DateTime.UtcNow.Date)
+                        {
+                            <td class="text-center">@lessson.DateOfStudy.ToString("d")</td>
+                        }
+                        else if (lessson.IsStudied)
+                        {
+                            <td class="text-center"><i class="fas fa-check" style="color:green"></i></td>
+                        }
+                        else
+                        {
+                            <td class="text-center"><i class="fas fa-times" style="color:red"></i></td>
+
+                        }
+                    }
+                    @if (student.Exam != null)
+                    {
+                        @if (student.Exam.Evaluation != null)
+                        {
+                            <td>student.Exam.Evaluation</td>
+                        }
+                        else
+                        {
+                            <td>@Model.Exam.StartDateTime.ToString("F")</td>
+                        }
+                    }
+                </tr>
+            </tbody>
+        }
+
+
+    </table>
+</div>

@@ -1,0 +1,49 @@
+﻿@model DistanceSchool.Web.ViewModels.Candidacyes.StudentCandidacyViewModel
+@{
+    this.ViewData["Title"] = "StudentCandidacies";
+}
+
+<h1 class="text-md-center border-dark">Училище : @Model.SchoolName</h1>
+<h3 class="text-md-center border-dark">Директор : @Model.SchoolManager</h3>
+<h4 class="text-md-center">Кандидати за обучение :</h4>
+<div class="row">
+    @foreach (var team in Model.Teams)
+    {
+        <div class="col-lg-5 rounded mb-2 offset-md-1" style="background-color:aquamarine">
+            <h5>@team.TeamName</h5>
+            <partial name="_CandidacesList" model="@team.Candidacies" />
+        </div>
+    }
+
+</div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        @if (Model.CurentPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" href="?SchoolId=@Model.SchoolId&Page=1" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="?SchoolId=@Model.SchoolId&Page=@Model.PreviusPage">@Model.PreviusPage</a></li>
+        }
+        <li class="page-item"><a class="page-link" style="background-color:aqua" href="#">@Model.CurentPage</a></li>
+        @if (Model.CurentPage < Model.LastPage)
+        {
+            <li class="page-item"><a class="page-link" href="?SchoolId=@Model.SchoolId&Page=@Model.SecondPage">@Model.SecondPage</a></li>
+            <li class="page-item">
+                <a class="page-link" href="?SchoolId=@Model.SchoolId&Page=@Model.LastPage" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        }
+    </ul>
+</nav>
+
+@section PrivateSideBar{
+    <li class="nav-item">
+        <a href="/Administration/Dashboard/SchoolManagerHome/@Model.SchoolId" class="nav-link text-dark">Заявления за учители</a>
+    </li>
+}
