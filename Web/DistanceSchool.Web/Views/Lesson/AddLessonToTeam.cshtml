@@ -20,7 +20,7 @@
     @if (lessons.Count > 0)
     {
         <div class="col-md-4 text-left" style="background-color:aquamarine">
-            <h3 class="text-center">Добавид дисциплина :</h3>
+            <h3 class="text-center">Добави урок:</h3>
             <form method="post" class="text-center">
                 <div class="text-danger" asp-validation-summary="All"></div>
                 <input type="hidden" name="TeamId" value="@Model.TeamId" />
@@ -43,7 +43,7 @@
     }
 
     <div class="col-md-4 text-center" style="background-color:aquamarine">
-        <h3 class="text-center">Създай дисциплина :</h3>
+        <h3 class="text-center">Създай урок :</h3>
         <a href="/Lesson/CreateLesson/?TeacherTheamId=@Model.Id" class="btn btn-light text-center m-md-2">Създай нов</a>
     </div>
 

@@ -20,37 +20,37 @@
         <div class="row">
             @foreach (var discipline in Model.Disciplines)
             {
-            <div class="col-md-5 rounded m-1 offset-1 container-fluid" style="background-color:aqua">
-                @if (Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName) || Model.IsTeachesToTeam)
-                {
-                    <a href="/Team/Passport?TeacherTheamId=@discipline.Id" class="btn btn-link"><h5 class="text-md-center">@discipline.DisciplineName</h5></a>
-                }
-                else
-                {
-                    <h5 class="text-md-center">@discipline.DisciplineName</h5>
-                }
-                @if (!string.IsNullOrWhiteSpace(discipline.TeacherNames))
-                {
-                    <p class="text-md-center">
-                        @discipline.TeacherNames
+                <div class="col-md-5 rounded m-1 offset-1 container-fluid" style="background-color:aqua">
+                    @if (Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName) || Model.IsTeachesToTeam)
+                    {
+                        <a href="/Team/Passport?TeacherTheamId=@discipline.Id" class="btn btn-link"><h5 class="text-md-center">@discipline.DisciplineName</h5></a>
+                    }
+                    else
+                    {
+                        <h5 class="text-md-center">@discipline.DisciplineName</h5>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(discipline.TeacherNames))
+                    {
+                        <p class="text-md-center">
+                            @discipline.TeacherNames
+
+                            @if (Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                            {
+                                <a href="/Team/ShiftsTecher?TeacherTeamId=@discipline.Id" class="btn btn-outline-danger btn-sm">Промени</a>
+                            }
+                        </p>
+                    }
+                    else
+                    {
 
                         @if (Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName))
                         {
-                            <a href="/Team/ShiftsTecher?TeacherTeamId=@discipline.Id" class="btn btn-outline-danger btn-sm">Промени</a>
+                            <p class="text-md-center">
+                                <a href="/Team/ShiftsTecher?TeacherTeamId=@discipline.Id" class="btn btn-outline-primary btn-sm">Добави преподавател</a>
+                            </p>
                         }
-                    </p>
-                }
-                else
-                {
-
-                    @if (Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName))
-                    {
-                        <p class="text-md-center">
-                            <a href="/Team/ShiftsTecher?TeacherTeamId=@discipline.Id" class="btn btn-outline-primary btn-sm">Добави преподавател</a>
-                        </p>
                     }
-                }
-            </div>
+                </div>
             }
             @if (Model.IsUserManager || this.User.IsInRole(GlobalConstants.AdministratorRoleName))
             {
@@ -81,6 +81,15 @@
     </div>
 
 </div>
+@if (true)
+{
+    @section ChatFooter{
+        <div class="text-md-right">
+            <a class="mx-md-2 " asp-area="" asp-controller="Chat" asp-action="ChatStart" asp-route-teamId="@Model.Id"><i class="fas fa-comment fa-5x"></i></a>
+        </div>
+    }
+}
+
 
 
 

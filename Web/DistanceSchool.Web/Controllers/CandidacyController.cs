@@ -45,8 +45,7 @@
         {
             await this.candidacyServices.DeleteCandicayAsync(id);
 
-            this.emailSender.DiapprovedUserSend(id);
-            
+            _ = this.emailSender.DiapprovedUserSend(id);
             if (string.IsNullOrWhiteSpace(redirectUrl))
             {
                 return this.Redirect("/");

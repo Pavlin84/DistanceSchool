@@ -68,5 +68,40 @@
             var teacher = this.teacherTeamRepository.All().FirstOrDefault(x => x.Id == teacherTheamId);
             return this.CheckIsUser(userId, teacher.TeacherId);
         }
+
+        public bool CheckHasAccessToTeam(string userId, int teamId)
+        {
+            var result = this.CheckUserIsManagerWithTeamId(userId, teamId);
+            if (result)
+            {
+                return result;
+            }
+
+            var user = this.userRepository.AllAsNoTracking().FirstOrDefault(x => x.Id == userId && x.Teacher != null);
+            if (user != null)
+            {
+                 result = this.IsTeacherToTeam(userId, teamId);
+            }
+            else
+            {
+                result = this.IsStudentToTeam(userId, teamId);
+            }
+
+            return result;
+        }
+
+        private bool IsTeacherToTeam(string userId, int teamId)
+        {
+            var result = this.userRepository.AllAsNoTracking().FirstOrDefault(x => x.Teacher.TeacherTeams.Any(x => x.TeamId == teamId) && x.Id == userId);
+
+            return result != null;
+        }
+
+        private bool IsStudentToTeam(string userId,int teamId)
+        {
+            var result = this.userRepository.AllAsNoTracking().FirstOrDefault(x => x.Student.TeamId == teamId && x.Id == userId);
+
+            return result != null;
+        }
     }
 }

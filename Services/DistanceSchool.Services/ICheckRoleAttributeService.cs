@@ -18,5 +18,7 @@
 
         bool CheckUserIsUserWithTeacherTeamId(string userId, int teacherTheamId);
 
+        bool CheckHasAccessToTeam(string userId, int teamId);
+
     }
 }

@@ -13,6 +13,7 @@
     using DistanceSchool.Services.Data;
     using DistanceSchool.Services.Mapping;
     using DistanceSchool.Services.Messaging;
+    using DistanceSchool.Web.Hubs;
     using DistanceSchool.Web.ViewModels;
 
     using Microsoft.AspNetCore.Builder;
@@ -75,6 +76,7 @@
                     }).AddRazorRuntimeCompilation();
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddSignalR();
 
             services.AddSingleton(this.configuration);
 
@@ -96,7 +98,7 @@
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<ILessonService, LessonService>();
             services.AddTransient<ICustomEmailSenderService, CustomEmailSenderService>();
-            services.AddApplicationInsightsTelemetry();
+            // services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -136,6 +138,7 @@
             app.UseEndpoints(
                 endpoints =>
                     {
+                        endpoints.MapHub<TeamChatHub>("/chat");
                         endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapRazorPages();

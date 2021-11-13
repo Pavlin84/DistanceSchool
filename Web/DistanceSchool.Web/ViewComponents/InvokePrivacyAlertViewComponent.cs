@@ -12,7 +12,6 @@ namespace DistanceSchool.Web.ViewComponents
     {
         public IViewComponentResult Invoke()
         {
-
             var viewModel = this.HttpContext.Session.GetString("LookPrivacy") == null
                  ? false
                  : JsonConvert.DeserializeObject<bool>(this.HttpContext.Session.GetString("LookPrivacy"));
