@@ -98,7 +98,7 @@
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<ILessonService, LessonService>();
             services.AddTransient<ICustomEmailSenderService, CustomEmailSenderService>();
-            // services.AddApplicationInsightsTelemetry();
+            services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
