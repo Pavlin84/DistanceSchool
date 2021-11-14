@@ -21,22 +21,22 @@
         private readonly ISchoolService schoolService;
         private readonly ITeacherService teacherService;
         private readonly IWebHostEnvironment environment;
-        // private readonly IDistributedCache distributedCache;
+        private readonly IDistributedCache distributedCache;
 
         public DashboardController(
             IDisciplineService disciplineService,
             ICandidacyServices candidacyService,
             ISchoolService schoolService,
             ITeacherService teacherService,
-            IWebHostEnvironment environment/*,
-            *IDistributedCache distributedCache*/)
+            IWebHostEnvironment environment,
+            IDistributedCache distributedCache)
         {
             this.disciplineService = disciplineService;
             this.candidacyService = candidacyService;
             this.schoolService = schoolService;
             this.teacherService = teacherService;
             this.environment = environment;
-            // this.distributedCache = distributedCache;
+            this.distributedCache = distributedCache;
         }
 
         public IActionResult Index()
