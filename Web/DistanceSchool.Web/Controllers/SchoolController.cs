@@ -66,9 +66,8 @@
         [Authorize]
         public IActionResult OneSchool(int id)
         {
-            var school = this.schoolService.GetSchoolData(id);
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            school.IsUserManager = this.schoolService.IsUserMangerToSchool(userId, id);
+            var school = this.schoolService.GetSchoolData(id, userId);
             school.IsTeacherInSchool = this.teacherServisce.IsUserTeacherToSchool(userId, id);
 
             return this.View(school);

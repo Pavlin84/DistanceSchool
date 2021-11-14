@@ -20,6 +20,8 @@
             var teacherService = new Mock<ITeacherService>();
             var candidacyService = new Mock<ICandidacyServices>();
             var disciplineService = new Mock<IDisciplineService>();
+            var disciplineRepository = new Mock<IDeletableEntityRepository<Discipline>>();
+
 
             var schoolRepo = new List<School>();
 
@@ -27,7 +29,7 @@
                 schoolRepository.Object,
                 teacherService.Object,
                 candidacyService.Object,
-                disciplineService.Object);
+                disciplineRepository.Object);
 
             schoolRepository.Setup(r => r.AddAsync(It.IsAny<School>())).Callback((School school) => schoolRepo.Add(school));
 
@@ -52,6 +54,8 @@
             var teacherService = new Mock<ITeacherService>();
             var candidacyService = new Mock<ICandidacyServices>();
             var disciplineService = new Mock<IDisciplineService>();
+            var disciplineRepository = new Mock<IDeletableEntityRepository<Discipline>>();
+
 
             var schoolRepo = new List<School>
             {
@@ -97,7 +101,7 @@
                 schoolRepository.Object,
                 teacherService.Object,
                 candidacyService.Object,
-                disciplineService.Object);
+                disciplineRepository.Object);
 
             schoolRepository.Setup(r => r.All()).Returns(schoolRepo.AsQueryable());
 
@@ -122,7 +126,8 @@
             var schoolRepository = new Mock<IDeletableEntityRepository<School>>();
             var teacherService = new Mock<ITeacherService>();
             var candidacyService = new Mock<ICandidacyServices>();
-            var disciplineService = new Mock<IDisciplineService>();
+            var disciplineRepository = new Mock<IDeletableEntityRepository<Discipline>>();
+
 
             var schoolRepo = new List<School>
             {
@@ -147,7 +152,7 @@
                 schoolRepository.Object,
                 teacherService.Object,
                 candidacyService.Object,
-                disciplineService.Object);
+                disciplineRepository.Object);
 
             schoolRepository.Setup(r => r.All()).Returns(schoolRepo.AsQueryable());
 
