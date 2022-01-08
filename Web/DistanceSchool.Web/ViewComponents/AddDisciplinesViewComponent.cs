@@ -11,6 +11,7 @@
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.Extensions.Primitives;
 
+    [ViewComponent(Name = "AddDisciplines")]
     public class AddDisciplinesViewComponent : ViewComponent
     {
         private readonly IHttpContextAccessor httpContextAccessor;
