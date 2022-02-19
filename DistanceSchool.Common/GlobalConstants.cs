@@ -33,8 +33,5 @@
         public const string CyrillicMangerCandicdacyHedarMessage = "Кандидатура за директор на";
         public const string CyrillicTeachererCandicdacyHedarMessage = "Кандидатура за учител в";
         public const string CyrillicStudentCandicdacyHedarMessage = "Кандидатура за обучение в";
-
-
-
     }
 }
