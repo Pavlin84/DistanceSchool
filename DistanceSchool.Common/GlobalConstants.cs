@@ -19,8 +19,6 @@
         public const string CyrillicMaxLenghtTeamNameErrorMessage = "Полето трябва да има не повече от 8 символа";
         public const string CyrillicMinLenghtTeamNameErrorMessage = "Полето трябва да има 2 или повече символа";
 
-
-
         // Sucsess messages
         public const string CyrillicSucssesMangerCandidacy = "Успешно подадохте заявка за директор на {0}!";
 
