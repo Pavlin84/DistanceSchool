@@ -17,18 +17,18 @@
         private readonly IDeletableEntityRepository<School> schoolRepository;
         private readonly ITeacherService teacherService;
         private readonly ICandidacyServices candidacyService;
-        private readonly IDisciplineService disciplineService;
+        private readonly IDeletableEntityRepository<Discipline> disciplineRepository;
 
         public SchoolService(
             IDeletableEntityRepository<School> schoolRepository,
             ITeacherService teacherServisce,
             ICandidacyServices candidacyService,
-            IDisciplineService disciplineService)
+            IDeletableEntityRepository<Discipline> disciplineRepository)
         {
             this.schoolRepository = schoolRepository;
             this.teacherService = teacherServisce;
             this.candidacyService = candidacyService;
-            this.disciplineService = disciplineService;
+            this.disciplineRepository = disciplineRepository;
         }
 
         public async Task<int> AddManagerAsync(int candidacyId)
@@ -89,7 +89,7 @@
             return schools;
         }
 
-        public OneSchoolViewModel GetSchoolData(int schoolId)
+        public OneSchoolViewModel GetSchoolData(int schoolId, string userId)
         {
             var techers = this.teacherService.GetAllTeacherFromSchool(schoolId);
 
@@ -112,7 +112,14 @@
                     {
                         Name = x.Manager.Teacher.FirstName + " " + x.Manager.Teacher.LastName,
                     },
-                    NotStudiedDisciplines = this.disciplineService.GetNotStudiedDisciplines(x.Id),
+                    IsUserManager = x.ManagerId == userId,
+                    NotStudiedDisciplines = this.disciplineRepository.All()
+                              .Where(x => x.SchoolDisciplines.All(x => x.SchoolId != schoolId))
+                              .Select(x => new DisciplineForOneSchoolViewModel
+                              {
+                                  Id = x.Id.ToString(),
+                                  Name = x.Name,
+                              }).ToList(),
                     Disciplines = x.SchoolDisciplines.Select(y => new DisciplineForOneSchoolViewModel
                     {
                         Name = y.Discipline.Name,

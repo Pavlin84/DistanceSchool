@@ -24,6 +24,7 @@
         private readonly IRepository<StudentExam> studentExamRepository;
         private readonly ICandidacyServices candidacyServices;
         private readonly IStudentService studentService;
+        private readonly IDeletableEntityRepository<School> schoolRepository;
 
         public TeamService(
             IDeletableEntityRepository<Team> teamsRepository,
@@ -35,7 +36,8 @@
             IRepository<StudentLesson> studentLesonRepository,
             IRepository<StudentExam> studentExamRepository,
             ICandidacyServices candidacyServices,
-            IStudentService studentService)
+            IStudentService studentService,
+            IDeletableEntityRepository<School> schoolRepository)
         {
             this.teamsRepository = teamsRepository;
             this.disciplineService = disciplineService;
@@ -47,6 +49,7 @@
             this.studentExamRepository = studentExamRepository;
             this.candidacyServices = candidacyServices;
             this.studentService = studentService;
+            this.schoolRepository = schoolRepository;
         }
 
         public async Task AddDiscipineToTeamAsync(AddDisciplinesToTeamInputModel inputModel)
@@ -198,7 +201,7 @@
                     TeamName = x.Level + " " + x.Name,
                     SchoolName = x.School.Name,
                     Disciplines = this.disciplineService.GetTeamDisciplines(id),
-                    IsUserManager = this.schoolService.IsUserMangerToSchool(userId, x.SchoolId),
+                    IsUserManager = this.schoolRepository.All().FirstOrDefault(y => y.Id == x.SchoolId).ManagerId == userId,
                     IsTeachesToTeam = x.TeacherTeams.Any(y => y.Teacher.ApplicationUserId == userId),
                     IsStudiesToTeam = x.Students.Any(y => y.ApplicationUserId == userId),
                     Students = x.Students.Select(y => new StudentForOneTeamViewModel

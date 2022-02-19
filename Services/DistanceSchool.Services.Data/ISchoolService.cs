@@ -22,7 +22,7 @@
 
         Task CheckAndDeleteOldSchoolManager(string userId);
 
-        OneSchoolViewModel GetSchoolData(int schoolId);
+        OneSchoolViewModel GetSchoolData(int schoolId, string userId);
 
         bool IsUserMangerToSchool(string userId, int schoolId);
 
