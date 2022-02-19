@@ -34,5 +34,6 @@
         public const string CyrillicStudentCandicdacyHedarMessage = "Кандидатура за обучение в";
 
         public const string Test = "test";
+        public const string test2 = "gitTest";
     }
 }
