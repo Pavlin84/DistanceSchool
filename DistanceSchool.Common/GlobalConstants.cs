@@ -28,16 +28,10 @@
 
         public const string CyrillicSucssesStudentCandidacy = "Успешно подадохте заявка за обучение в {0}!";
 
-
         // Candidacy form Hedar message
         public const string CyrillicMangerCandicdacyHedarMessage = "Кандидатура за директор на";
         public const string CyrillicTeachererCandicdacyHedarMessage = "Кандидатура за учител в";
         public const string CyrillicStudentCandicdacyHedarMessage = "Кандидатура за обучение в";
-<<<<<<< HEAD
-  
-=======
->>>>>>> parent of 2e4f4df (test2)
-
 
         public const string Test = "test";
     }
