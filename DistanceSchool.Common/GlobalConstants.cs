@@ -39,5 +39,6 @@
 >>>>>>> parent of 2e4f4df (test2)
 
 
+        public const string Test = "test";
     }
 }
