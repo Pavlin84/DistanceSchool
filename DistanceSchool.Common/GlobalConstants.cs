@@ -19,8 +19,6 @@
         public const string CyrillicMaxLenghtTeamNameErrorMessage = "Полето трябва да има не повече от 8 символа";
         public const string CyrillicMinLenghtTeamNameErrorMessage = "Полето трябва да има 2 или повече символа";
 
-
-
         // Sucsess messages
         public const string CyrillicSucssesMangerCandidacy = "Успешно подадохте заявка за директор на {0}!";
 
@@ -28,13 +26,8 @@
 
         public const string CyrillicSucssesStudentCandidacy = "Успешно подадохте заявка за обучение в {0}!";
 
-
         // Candidacy form Hedar message
         public const string CyrillicMangerCandicdacyHedarMessage = "Кандидатура за директор на";
         public const string CyrillicTeachererCandicdacyHedarMessage = "Кандидатура за учител в";
-        public const string CyrillicStudentCandicdacyHedarMessage = "Кандидатура за обучение в";
-
-
-
     }
 }
